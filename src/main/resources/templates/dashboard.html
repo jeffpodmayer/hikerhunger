@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            margin-top: 50px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .elevate-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Admin Dashboard</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Iterate over the list of users -->
+                <tr th:each="user : ${userList}">
+                    <td th:text="${user.id}"></td>
+                    <td th:text="${user.firstName}"></td>
+                    <td th:text="${user.lastName}"></td>
+                    <td th:text="${user.email}"></td>
+                    <!-- <td th:text="${user.authorities}"></td> -->
+                    <td>
+                        <!-- Iterate over the list of authorities for the user -->
+                        <span th:each="authority : ${user.authorities}" th:text="${authority.getAuthority()} + ' '"></span>
+                    </td>
+                    <td>
+                        <!-- Display elevate button only if the user is not already an admin -->
+                        <span th:unless="${user.authorities == 'ADMIN'}">
+                            <form th:action="@{/admin/makeAdmin}" th:method="post">
+                                <input type="hidden" th:name="userId" th:value="${user.id}" />
+                                <button type="submit" class="elevate-button">Elevate to Admin</button>
+                            </form>
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <form action="/logout" method="post">
+        <button type="submit">Logout</button>
+    </form>
+</body>
+
+</html>

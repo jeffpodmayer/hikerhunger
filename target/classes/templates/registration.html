@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>Registration Form</title>
+  <style>
+    /* Add some basic styling for the form */
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      width: 300px;
+      padding: 16px;
+      background-color: white;
+      margin: 0 auto;
+      margin-top: 50px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    input[type=text],
+    input[type=password] {
+      width: 100%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 14px 20px;
+      margin: 8px 0;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button:hover {
+      opacity: 0.8;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h2>Registration Form</h2>
+    <form th:object="${user}" th:action="@{/register}" method="post" enctype="application/x-www-form-urlencoded"
+      id="registrationForm">
+      <label for="firstName"><b>First Name</b></label>
+      <input type="text" placeholder="Enter First Name *" th:field="*{firstName}" name="firstName" class="required"
+        required>
+
+      <label for="lastName"><b>Last Name</b></label>
+      <input type="text" placeholder="Enter Last Name *" th:field="*{lastName}" name="lastName" class="required"
+        required>
+
+      <label for="email"><b>Email</b></label>
+      <input type="text" placeholder="Enter Email *" th:field="*{email}" name="email" class="required" required>
+
+      <label for="password"><b>Password</b></label>
+      <input type="password" placeholder="Enter Password *" th:field="*{password}" name="password" id="password"
+        class="required" required>
+
+      <label for="confirmPassword"><b>Confirm Password</b></label>
+      <input type="password" placeholder="Confirm Password *" name="confirmPassword" id="confirmPassword"
+        class="required" required>
+      <div id="passwordMatchMessage" style="color: red;"></div>
+      <button type="submit">Register</button>
+    </form>
+  </div>
+
+  <script th:inline="javascript">
+    /*<![CDATA[*/
+
+    document.getElementById('registrationForm').addEventListener('submit', function (event) {
+      var password = document.getElementById('password').value;
+      var confirmPassword = document.getElementById('confirmPassword').value;
+      var passwordMatchMessage = document.getElementById('passwordMatchMessage');
+
+      if (password !== confirmPassword) {
+        passwordMatchMessage.textContent = 'Passwords do not match!';
+        // alert('Passwords do not match!');
+        event.preventDefault(); // Prevent form submission
+      } else {
+        passwordMatchMessage.textContent = ''; // Clear previous message
+      }
+    });
+
+    /*]]>*/
+  </script>
+
+</body>
+
+</html>

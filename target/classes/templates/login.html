@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Sign in Form</title>
+  <style>
+    /* Add some basic styling for the form */
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      width: 300px;
+      padding: 16px;
+      background-color: white;
+      margin: 0 auto;
+      margin-top: 50px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    input[type=text], input[type=password] {
+      width: 100%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 14px 20px;
+      margin: 8px 0;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+    }
+    button:hover {
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Login Form</h2>
+  <form th:object="${user}" th:action="@{/signin}" method="post" enctype="application/x-www-form-urlencoded" id="loginForm">
+
+    <label for="email"><b>Email</b></label>
+    <input type="text" placeholder="Enter Email *" th:field="*{email}" name="email" class="required" required>
+
+    <label for="password"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password *" th:field="*{password}" name="password" class="required" required>
+
+    <button type="submit">Log in</button>
+  </form>
+</div>
+
+</body>
+</html>

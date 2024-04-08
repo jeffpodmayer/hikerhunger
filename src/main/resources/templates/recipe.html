@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add a Recipe</title>
+</head>
+<body>
+<h1>Enter your recipe details:</h1>
+<form method="post" action="">
+    <div>
+        <label>Recipe Name: </label>
+        <input type="text" th:field="${recipe.recipeName}"/>
+    </div>
+    <div>
+        <label>Meal Category: </label>
+        <select th:field="*{recipe.recipeType}">
+            <option th:each="type : ${recipeType}" th:value="${recipeType}"
+                    th:text="${#strings.capitalize(type.toString())}"></option>
+        </select>
+    </div>
+    <div>
+        <label>Instructions: </label>
+        <input type="text" th:field="${recipe.instructions}"/>
+    </div>
+    <div>
+        <label>How Many people does this serve: </label>
+        <input type="number" th:field="${recipe.servings}"/>
+    </div>
+<!--    <div>-->
+<!--        <h3>Add Ingredients</h3>-->
+<!--        <label>Ingredient Name:</label>-->
+<!--        <input type="text" th:field="${ingredients.ingredientName}"/>-->
+<!--        <label>Quantity:</label>-->
+<!--        <input type="number" step="0.01" th:field="${ingredients.quantity}"/>-->
+<!--        <label>Measurement Unit:</label>-->
+<!--        <input type="text" th:field="${ingredients.unit}"/>-->
+<!--        <label>Weight In Grams:</label>-->
+<!--        <input type="number" th:field="${ingredients.weightInGrams}"/>-->
+<!--        <label>Notes:</label>-->
+<!--        <input type="text" th:field="${ingredients.notes}"/>-->
+<!--    </div>-->
+    <div>
+        <input type="submit" value="Add this Recipe!"/>
+    </div>
+</form>
+</body>
+</html>

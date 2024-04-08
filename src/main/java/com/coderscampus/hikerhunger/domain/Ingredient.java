@@ -1,18 +1,24 @@
 package com.coderscampus.hikerhunger.domain;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 
 @Entity
 public class Ingredient {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ingredientId;
+    @ManyToOne
+    @JoinColumn(name="recipe_id")
+    private Recipe recipe;
     private String ingredientName;
     private Float quantity;
     private String unit;
     private Float weightInGrams;
     private String notes;
 
-    public Ingredient(Long ingredientId, String ingredientName, Float quantity, String unit, Float weightInGrams, String notes) {
+    public Ingredient(Long ingredientId, Recipe recipe, String ingredientName, Float quantity, String unit, Float weightInGrams, String notes) {
         this.ingredientId = ingredientId;
+        this.recipe = recipe;
         this.ingredientName = ingredientName;
         this.quantity = quantity;
         this.unit = unit;
@@ -24,6 +30,7 @@ public class Ingredient {
     public String toString() {
         return "Ingredient{" +
                 "ingredientId=" + ingredientId +
+                ", recipe=" + recipe +
                 ", ingredientName='" + ingredientName + '\'' +
                 ", quantity=" + quantity +
                 ", unit='" + unit + '\'' +

@@ -13,10 +13,19 @@
         <link rel="stylesheet" href="">
     </head>
     <body>
-        <h1>Successful Registration / Log in</h1>
-        <h3>Hello World</h3>
+        <h1>Hey [[${user.firstName}]]! Start planning!</h1>
+        <h3>Create a recipe by clicking below.</h3>
 
-        <form th:action="@{/landingPage}" method="get">
+        <form th:action="@{/addRecipe/{userId}}" method="get">
+            <button type="submit">Add New Recipe</button>
+        </form>
+
+
+        <form>
+            <button type="submit">Build A Trip</button>
+        </form>
+
+        <form th:action="@{/landing}" method="get">
             <button type="submit">Logout</button>
         </form>
         

@@ -48,6 +48,11 @@ public class RegistrationController {
 		this.passwordEncoder = passwordEncoder;
 	}
 
+	@GetMapping("/landing")
+	public String getLandingPage() {
+		return "landing";
+	}
+
 	@GetMapping("/register")
 	public String getRegistration (ModelMap model) {
 		model.addAttribute("user", new User());

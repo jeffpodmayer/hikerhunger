@@ -79,7 +79,7 @@ public class RegistrationController {
 	            } else {
 	                // Handle the case where authentication is not successful
 	            	logger.error("User registration failed. Redirecting to error.");
-	                return "redirect:/error";
+	                return "redirect:/registration";
 	            }
 	        }
 	    }

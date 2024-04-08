@@ -9,7 +9,7 @@ public class ErrorController {
 	
 	@GetMapping("/error")
 	public String getErrorMessage () {
-		return "error";
+		return "redirect:/registration";
 	}
 	
 	@GetMapping("/userExists")

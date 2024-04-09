@@ -7,6 +7,7 @@ import java.util.List;
 
 @Entity
 public class Recipe {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long recipeId;
@@ -102,5 +103,21 @@ public class Recipe {
 
     public void setTotalWeight(Float totalWeight) {
         this.totalWeight = totalWeight;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
     }
 }

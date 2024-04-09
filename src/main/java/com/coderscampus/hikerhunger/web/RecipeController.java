@@ -5,9 +5,7 @@ import com.coderscampus.hikerhunger.service.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class RecipeController {
@@ -19,15 +17,17 @@ public class RecipeController {
         this.recipeService = recipeService;
     }
 
-    @GetMapping("/addRecipe")
+    @GetMapping("/createRecipe/{userId}")
     public String addNewRecipe(ModelMap model){
         model.put("recipe", new Recipe());
-        return "recipe";
+        return "createRecipe";
     }
 
-    @PostMapping("/addRecipe")
-    public String addNewRecipe(){
-        return "home";
+    @PostMapping("/createRecipe/{userId}")
+    public String saveNewRecipe(Recipe recipe, @PathVariable Integer userId){
+        System.out.println("Recipe that was posted:" + recipe);
+        recipeService.save(recipe, userId);
+        return "redirect:/home/" + userId;
     }
 
 

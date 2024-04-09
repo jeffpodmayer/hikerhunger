@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Add a Recipe</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
 </head>
 <body>
 <h1>Enter your recipe details:</h1>
@@ -13,9 +14,11 @@
     <div>
         <label>Meal Category: </label>
         <select th:field="${recipe.recipeType}">
-            <option th:each="type : ${T(com.coderscampus.hikerhunger.domain.Recipe.RecipeType).values()}"
+            <option
+                    th:each="type : ${T(com.coderscampus.hikerhunger.domain.Recipe.RecipeType).values()}"
                     th:value="${type}"
-                    th:text="${type}"></option>
+                    th:text="${type}"
+            ></option>
         </select>
     </div>
     <div>
@@ -26,23 +29,45 @@
         <label>How Many people does this serve: </label>
         <input type="number" th:field="${recipe.servings}"/>
     </div>
-    <!--    <div>-->
-    <!--        <h3>Add Ingredients</h3>-->
-    <!--        <label>Ingredient Name:</label>-->
-    <!--        <input type="text" th:field="${ingredients.ingredientName}"/>-->
-    <!--        <label>Quantity:</label>-->
-    <!--        <input type="number" step="0.01" th:field="${ingredients.quantity}"/>-->
-    <!--        <label>Measurement Unit:</label>-->
-    <!--        <input type="text" th:field="${ingredients.unit}"/>-->
-    <!--        <label>Weight In Grams:</label>-->
-    <!--        <input type="number" th:field="${ingredients.weightInGrams}"/>-->
-    <!--        <label>Notes:</label>-->
-    <!--        <input type="text" th:field="${ingredients.notes}"/>-->
-    <!--    </div>-->
+    <button class="show-modal">Add Ingredient</button>
+    <div class="modal hidden">
+        <button class="close-modal">&times;</button>
+        <h3>Add an Ingredient</h3>
+        <label>Ingredient Name:</label>
+        <input type="text"/><br/>
+        <label>Quantity:</label>
+        <input type="number"/><br/>
+        <label>Measurement Unit:</label>
+        <input type="text"/><br/>
+        <label>Weight In Grams:</label>
+        <input type="number"/><br/>
+        <label>Notes:</label>
+        <input type="text"/>
+        <div>
+            <input type="submit" value="Add!"/>
+        </div>
+    </div>
+    <div class="overlay hidden"></div>
+
     <div>
         <input type="submit" value="Add this Recipe!"/>
     </div>
-
 </form>
+
+<script src="recipe.js"></script>
 </body>
 </html>
+
+<!--    <div>-->
+<!--        <h3>Add Ingredients</h3>-->
+<!--        <label>Ingredient Name:</label>-->
+<!--        <input type="text" th:value="${ingredients.ingredientName}"/>-->
+<!--        <label>Quantity:</label>-->
+<!--        <input type="number" step="0.01" th:field="${ingredients.quantity}"/>-->
+<!--        <label>Measurement Unit:</label>-->
+<!--        <input type="text" th:field="${ingredients.unit}"/>-->
+<!--        <label>Weight In Grams:</label>-->
+<!--        <input type="number" th:field="${ingredients.weightInGrams}"/>-->
+<!--        <label>Notes:</label>-->
+<!--        <input type="text" th:field="${ingredients.notes}"/>-->
+<!--    </div>-->

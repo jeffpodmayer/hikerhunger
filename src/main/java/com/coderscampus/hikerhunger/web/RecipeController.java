@@ -25,8 +25,8 @@ public class RecipeController {
 
     @PostMapping("/createRecipe/{userId}")
     public String saveNewRecipe(Recipe recipe, @PathVariable Integer userId){
+//        recipeService.save(recipe, userId);
         System.out.println("Recipe that was posted:" + recipe);
-        recipeService.save(recipe, userId);
         return "redirect:/home/" + userId;
     }
 

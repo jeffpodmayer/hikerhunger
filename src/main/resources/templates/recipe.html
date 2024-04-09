@@ -12,9 +12,9 @@
     </div>
     <div>
         <label>Meal Category: </label>
-        <select th:field="*{recipe.recipeType}">
-            <option th:each="type : ${recipeType}" th:value="${recipeType}"
-                    th:text="${#strings.capitalize(type.toString())}"></option>
+        <select th:field="${recipe.recipeType}">
+            <option th:each="type : ${T(com.coderscampus.hikerhunger.domain.Recipe.RecipeType).values()}" th:value="${type}"
+                    th:text="${type}"></option>
         </select>
     </div>
     <div>

@@ -16,15 +16,15 @@ public class Ingredient {
     private Float weightInGrams;
     private String notes;
 
-    public Ingredient(Long ingredientId, Recipe recipe, String ingredientName, Float quantity, String unit, Float weightInGrams, String notes) {
-        this.ingredientId = ingredientId;
-        this.recipe = recipe;
-        this.ingredientName = ingredientName;
-        this.quantity = quantity;
-        this.unit = unit;
-        this.weightInGrams = weightInGrams;
-        this.notes = notes;
-    }
+//    public Ingredient(Long ingredientId, Recipe recipe, String ingredientName, Float quantity, String unit, Float weightInGrams, String notes) {
+//        this.ingredientId = ingredientId;
+//        this.recipe = recipe;
+//        this.ingredientName = ingredientName;
+//        this.quantity = quantity;
+//        this.unit = unit;
+//        this.weightInGrams = weightInGrams;
+//        this.notes = notes;
+//    }
 
     @Override
     public String toString() {

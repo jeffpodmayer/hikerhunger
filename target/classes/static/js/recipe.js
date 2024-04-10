@@ -68,23 +68,84 @@ const addIngredient = function () {
   console.log(newIngredient);
   console.log(addedIngredients);
 
-  ///// RENDER INGREDIENT ON PAGE /////////
+  // RENDER INGREDIENTS AS A FORM IN THE TABLE ON THE PAGE
+  const createIngredientInputs = function (ingredient, index) {
+    const inputs = [];
+    for (const [key, value] of Object.entries(ingredient)) {
+      const input = document.createElement(`input`);
+      input.type = typeof value === "number" ? "number" : "text";
+      input.name = `ingredients[${index}].${key}`;
+      input.value = value;
+      inputs.push(input);
+    }
+    return inputs;
+  };
+
+  function createIngredientRow(ingredient, index) {
+    const row = document.createElement("tr");
+    row.classList.add("ingredient");
+
+    const inputs = createIngredientInputs(ingredient, index);
+    inputs.forEach((input) => {
+      const cell = document.createElement("td");
+      cell.appendChild(input);
+      row.appendChild(cell);
+    });
+
+    return row;
+  }
+
+  closeModal();
+
   const ingredientsContainer = document.getElementById("ingredientsContainer");
+  // const ingredientsFormFields = document.getElementById(`ingredientFormFields`);
 
-  const ingredientHTML = `
-  <tr class="ingredient">
-    <td>Ingredient Name: ${newIngredient.ingredientName}</td>
-    <td>Quantity: ${newIngredient.quantity}</td>
-    <td>Measurement Unit: ${newIngredient.unit}</td>
-    <td>Weight In Grams: ${newIngredient.weightInGrams}</td>
-    <td>Notes: ${newIngredient.notes}</td>
-  <tr>
-  `;
+  const ingredientRow = createIngredientRow(newIngredient, 0);
+  ingredientsContainer.appendChild(ingredientRow);
 
-  // CHECKING MARKUP VARIABLE
-  console.log(ingredientHTML);
-
-  ingredientsContainer.insertAdjacentHTML(`beforeend`, ingredientHTML);
+  // const hiddenInputsRow = createIngredientRow(newIngredient, 0);
+  // ingredientsFormFields.appendChild(hiddenInputsRow);
 };
 
 btnAddIngredient.addEventListener(`click`, addIngredient);
+
+// // RENDER HIDDEN INGREDIENTS INPUT ON PAGE
+// const ingredientsFormFields = document.getElementById(`ingredientFormFields`);
+// const hiddenInputsHTML = `
+// <input type="hidden" th:field="ingredients[${
+//   addedIngredients.length - 1
+// }].ingredientName" value="${newIngredient.ingredientName}" />
+// <input type="hidden" th:field="ingredients[${
+//   addedIngredients.length - 1
+// }].quantity" value="${newIngredient.quantity}" />
+// <input type="hidden" th:field="ingredients[${
+//   addedIngredients.length - 1
+// }].unit" value="${newIngredient.unit}" />
+// <input type="hidden" th:field="ingredients[${
+//   addedIngredients.length - 1
+// }].weightInGrams" value="${newIngredient.weightInGrams}" />
+// <input type="hidden" th:field="ingredients[${
+//   addedIngredients.length - 1
+// }].notes" value="${newIngredient.notes}" />`;
+
+// console.log(hiddenInputsHTML);
+
+// ingredientsFormFields.insertAdjacentHTML(`beforeend`, hiddenInputsHTML);
+
+// ///// RENDER INGREDIENT ON PAGE
+// const ingredientsContainer = document.getElementById("ingredientsContainer");
+
+// const ingredientHTML = `
+// <tr class="ingredient">
+//   <td>${newIngredient.ingredientName}</td>
+//   <td>${newIngredient.quantity}</td>
+//   <td>${newIngredient.unit}</td>
+//   <td>${newIngredient.weightInGrams}</td>
+//   <td>${newIngredient.notes}</td>
+// <tr>
+// `;
+
+// // CHECKING MARKUP VARIABLE
+// console.log(ingredientHTML);
+
+// ingredientsContainer.insertAdjacentHTML(`beforeend`, ingredientHTML);

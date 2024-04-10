@@ -34,9 +34,7 @@ document.addEventListener(`keydown`, function (event) {
   }
 });
 
-/////////////// ADD NEW INGREDIENT TO CLIENT SIDE ARRAY /////////////////
-//FUNCTIONS
-
+/////////////// ADD NEW INGREDIENT TO CLIENT SIDE  //////////////////////
 const addedIngredients = [];
 
 const addIngredient = function () {
@@ -47,6 +45,7 @@ const addIngredient = function () {
   const weightInGrams = document.getElementById("weightInput").value;
   const notes = document.getElementById("notesInput").value;
 
+  // CREATE INGREDIENT OBJECT
   const newIngredient = {
     ingredientName,
     quantity,
@@ -58,7 +57,7 @@ const addIngredient = function () {
   // ADDS INGREDIENT TO ARRAY
   addedIngredients.push(newIngredient);
 
-  // CLEAR INOUT FIELDS
+  // CLEAR INPUT FIELDS
   document.getElementById("ingredientNameInput").value = ``;
   document.getElementById("quantityInput").value = ``;
   document.getElementById("unitInput").value = ``;
@@ -68,8 +67,24 @@ const addIngredient = function () {
   // CHECKING OUTPUT
   console.log(newIngredient);
   console.log(addedIngredients);
+
+  ///// RENDER INGREDIENT ON PAGE /////////
+  const ingredientsContainer = document.getElementById("ingredientsContainer");
+
+  const ingredientHTML = `
+  <tr class="ingredient">
+    <td>Ingredient Name: ${newIngredient.ingredientName}</td>
+    <td>Quantity: ${newIngredient.quantity}</td>
+    <td>Measurement Unit: ${newIngredient.unit}</td>
+    <td>Weight In Grams: ${newIngredient.weightInGrams}</td>
+    <td>Notes: ${newIngredient.notes}</td>
+  <tr>
+  `;
+
+  // CHECKING MARKUP VARIABLE
+  console.log(ingredientHTML);
+
+  ingredientsContainer.insertAdjacentHTML(`beforeend`, ingredientHTML);
 };
 
 btnAddIngredient.addEventListener(`click`, addIngredient);
-
-///// POPULATE RECIPE PAGE W/ INGREDIENT /////////

@@ -6,6 +6,8 @@
   </head>
   <body>
     <h1>Enter your recipe details:</h1>
+
+    <!-- RECIPE DETAILS SECTION -->
     <form method="post" action="">
       <div>
         <label>Recipe Name: </label>
@@ -29,7 +31,28 @@
         <label>How Many people does this serve: </label>
         <input type="number" th:field="${recipe.servings}" />
       </div>
+
+      <!-- INGREDIENTS SECTION -->
+      <div id="ingredientsSection">
+        <h2>Ingredients</h2>
+        <div id="ingredientsContainer">
+          <table>
+            <tr>
+              <th>Ingredeint Name</th>
+              <th>Quantity</th>
+              <th>Unit</th>
+              <th>Grams</th>
+              <th>Notes</th>
+            </tr>
+        </div>
+      </div>
       <button class="show-modal" type="button">Add Ingredient</button>
+
+      <div>
+        <input type="submit" value="Add this Recipe!" />
+      </div>
+
+      <!-- INGREDIENT MODAL WINDOW -->
       <div class="modal hidden">
         <button type="button" class="close-modal">&times;</button>
         <h3>Add an Ingredient</h3>
@@ -48,25 +71,7 @@
         </div>
       </div>
       <div class="overlay hidden"></div>
-
-      <div>
-        <input type="submit" value="Add this Recipe!" />
-      </div>
     </form>
     <script src="/js/recipe.js"></script>
   </body>
 </html>
-
-<!--    <div>-->
-<!--        <h3>Add Ingredients</h3>-->
-<!--        <label>Ingredient Name:</label>-->
-<!--        <input type="text" th:value="${ingredients.ingredientName}"/>-->
-<!--        <label>Quantity:</label>-->
-<!--        <input type="number" step="0.01" th:field="${ingredients.quantity}"/>-->
-<!--        <label>Measurement Unit:</label>-->
-<!--        <input type="text" th:field="${ingredients.unit}"/>-->
-<!--        <label>Weight In Grams:</label>-->
-<!--        <input type="number" th:field="${ingredients.weightInGrams}"/>-->
-<!--        <label>Notes:</label>-->
-<!--        <input type="text" th:field="${ingredients.notes}"/>-->
-<!--    </div>-->

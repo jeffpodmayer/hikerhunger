@@ -34,7 +34,7 @@ document.addEventListener(`keydown`, function (event) {
   }
 });
 
-/////////////// ADD NEW INGREDIENT TO CLIENT  /////////////////
+/////////////// ADD NEW INGREDIENT TO CLIENT SIDE  //////////////////////
 const addedIngredients = [];
 
 const addIngredient = function () {
@@ -72,17 +72,17 @@ const addIngredient = function () {
   const ingredientsContainer = document.getElementById("ingredientsContainer");
 
   const ingredientHTML = `
-  <div class="ingredient">
-    <p>Ingredient Name: ${newIngredient.ingredientName}</p>
-    <p>Quantity: ${newIngredient.quantity}</p>
-    <p>Measurement Unit: ${newIngredient.unit}</p>
-    <p>Weight In Grams: ${newIngredient.weightInGrams}</p>
-    <p>Notes: ${newIngredient.notes}</p>
-  <div>
+  <tr class="ingredient">
+    <td>${newIngredient.ingredientName}</td>
+    <td>${newIngredient.quantity}</td>
+    <td>${newIngredient.unit}</td>
+    <td>${newIngredient.weightInGrams}</td>
+    <td>${newIngredient.notes}</td>
+  <tr>
   `;
 
   // CHECKING MARKUP VARIABLE
-  console.log(markup);
+  console.log(ingredientHTML);
 
   ingredientsContainer.insertAdjacentHTML(`beforeend`, ingredientHTML);
 };

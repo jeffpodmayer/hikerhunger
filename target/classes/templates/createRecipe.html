@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
     <title>Add a Recipe</title>
-    <!-- <link rel="stylesheet" type="text/css" href="../static/css/style.css" /> -->
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
   </head>
   <body>
     <h1>Enter your recipe details:</h1>
@@ -29,32 +29,31 @@
         <label>How Many people does this serve: </label>
         <input type="number" th:field="${recipe.servings}" />
       </div>
-      <!-- <button class="show-modal">Add Ingredient</button>
+      <button class="show-modal" type="button">Add Ingredient</button>
       <div class="modal hidden">
-        <button class="close-modal">&times;</button>
+        <button type="button" class="close-modal">&times;</button>
         <h3>Add an Ingredient</h3>
         <label>Ingredient Name:</label>
-        <input type="text" /><br />
+        <input id="ingredientNameInput" type="text" /><br />
         <label>Quantity:</label>
-        <input type="number" /><br />
-        <label>Measurement Unit:</label>
-        <input type="text" /><br />
+        <input id="quantityInput" type="number" /><br />
+        <label>Unit:</label>
+        <input id="unitInput" type="text" /><br />
         <label>Weight In Grams:</label>
-        <input type="number" /><br />
+        <input id="weightInput" type="number" /><br />
         <label>Notes:</label>
-        <input type="text" />
+        <input id="notesInput" type="text" />
         <div>
-          <input type="submit" value="Add!" />
+          <input type="button" id="addIngredientButton" value="Add!" />
         </div>
       </div>
-      <div class="overlay hidden"></div> -->
+      <div class="overlay hidden"></div>
 
       <div>
         <input type="submit" value="Add this Recipe!" />
       </div>
     </form>
-
-    <script src="recipe.js"></script>
+    <script src="/js/recipe.js"></script>
   </body>
 </html>
 

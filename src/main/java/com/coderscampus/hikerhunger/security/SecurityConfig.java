@@ -67,8 +67,10 @@ public class SecurityConfig {
                                 .requestMatchers("/admin/**").hasRole(Role.ADMIN.name())
                                 .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
                                 .requestMatchers("/products").authenticated()
-                                .requestMatchers("/home/**").authenticated()
-                                .requestMatchers("/createRecipe/**").authenticated()
+//                                .requestMatchers("/home/**").authenticated()
+//                                .requestMatchers("/createRecipe/**").authenticated()
+                                .requestMatchers("/home/**").permitAll()
+                                .requestMatchers("/createRecipe/**").permitAll()
                                 .requestMatchers("/register").permitAll()
                                 .requestMatchers("/landingPage").permitAll()
                                 .requestMatchers("/login").permitAll()
@@ -125,7 +127,6 @@ public class SecurityConfig {
                                     logger.error("Authentication failed: " + exception.getMessage(), exception);
                                     logger.info("Raw password during login: " + password);
                                     logger.info("Encoded password during login: " + passwordEncoder().encode(password));
-
                                     response.sendRedirect("/error");
                                 }
                             })

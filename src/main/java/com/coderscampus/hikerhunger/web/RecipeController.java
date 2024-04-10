@@ -27,7 +27,7 @@ public class RecipeController {
     public String postCreateRecipe(Recipe recipe, @PathVariable Integer userId){
         recipeService.save(recipe, userId);
         System.out.println("Recipe that was posted:" + recipe);
-        return "redirect:/home/" + userId;
+        return "redirect:/home/" + userId ;
     }
 
 

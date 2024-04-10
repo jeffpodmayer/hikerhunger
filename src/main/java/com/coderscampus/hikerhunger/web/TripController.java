@@ -2,7 +2,7 @@ package com.coderscampus.hikerhunger.web;
 
 import org.springframework.stereotype.Controller;
 
-@Controller
+//@Controller
 public class TripController {
 
 }

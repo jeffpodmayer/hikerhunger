@@ -1,6 +1,6 @@
-body {
+/* body {
   background-color: blue;
-}
+} */
 
 /* BUTTON STYLES
 .close-modal {
@@ -29,9 +29,10 @@ body {
 .button {
   color: blue;
 }
+*/
 
 /* CLASSES TO MAKE MODAL WORK */
-/* .hidden {
+.hidden {
   display: none;
 }
 
@@ -58,4 +59,4 @@ body {
   background-color: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(3px);
   z-index: 5;
-} */
+}

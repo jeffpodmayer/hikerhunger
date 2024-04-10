@@ -34,9 +34,7 @@ document.addEventListener(`keydown`, function (event) {
   }
 });
 
-/////////////// ADD NEW INGREDIENT TO CLIENT SIDE ARRAY /////////////////
-
-//FUNCTIONS
+/////////////// ADD NEW INGREDIENT TO CLIENT  /////////////////
 const addedIngredients = [];
 
 const addIngredient = function () {
@@ -73,7 +71,7 @@ const addIngredient = function () {
   ///// RENDER INGREDIENT ON PAGE /////////
   const ingredientsContainer = document.getElementById("ingredientsContainer");
 
-  const markup = `
+  const ingredientHTML = `
   <div class="ingredient">
     <p>Ingredient Name: ${newIngredient.ingredientName}</p>
     <p>Quantity: ${newIngredient.quantity}</p>
@@ -85,6 +83,8 @@ const addIngredient = function () {
 
   // CHECKING MARKUP VARIABLE
   console.log(markup);
+
+  ingredientsContainer.insertAdjacentHTML(`beforeend`, ingredientHTML);
 };
 
 btnAddIngredient.addEventListener(`click`, addIngredient);

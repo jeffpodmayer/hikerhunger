@@ -1,5 +1,6 @@
 package com.coderscampus.hikerhunger.web;
 
+import com.coderscampus.hikerhunger.domain.Recipe;
 import com.coderscampus.hikerhunger.domain.User;
 import com.coderscampus.hikerhunger.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -25,6 +28,8 @@ public class UserController {
         if(user == null){
             return "redirect:/landing";
         }
+        List<Recipe> recipes = user.getRecipes();
+        model.put("recipes", recipes);
         model.put("user", user);
         return "home";
     }

@@ -48,11 +48,18 @@ public class Recipe {
 //    }
 
     public enum RecipeType {
-        Breakfast,
-        Lunch,
-        Dinner,
-        Snack,
-        Extra
+        BREAKFAST("Breakfast"),
+        LUNCH("Lunch"),
+        DINNER("Dinner"),
+        SNACK("Snack"),
+        EXTRA("Extra");
+        private final String displayValue;
+        private RecipeType(String displayValue) {
+            this.displayValue = displayValue;
+        }
+        public String getDisplayValue() {
+            return displayValue;
+        }
     }
 
 

@@ -1,61 +1,61 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+  <head>
     <title>Add a Recipe</title>
-    <link rel="stylesheet" type="text/css" href="css/style.css"/>
-</head>
-<body>
-<h1>Enter your recipe details:</h1>
-<form method="post" action="">
-    <div>
+    <!-- <link rel="stylesheet" type="text/css" href="../static/css/style.css" /> -->
+  </head>
+  <body>
+    <h1>Enter your recipe details:</h1>
+    <form method="post" action="">
+      <div>
         <label>Recipe Name: </label>
-        <input type="text" th:field="${recipe.recipeName}"/>
-    </div>
-    <div>
+        <input type="text" th:field="${recipe.recipeName}" />
+      </div>
+      <div>
         <label>Meal Category: </label>
         <select th:field="${recipe.recipeType}">
-            <option
-                    th:each="type : ${T(com.coderscampus.hikerhunger.domain.Recipe.RecipeType).values()}"
-                    th:value="${type}"
-                    th:text="${type}"
-            ></option>
+          <option
+            th:each="type : ${T(com.coderscampus.hikerhunger.domain.Recipe.RecipeType).values()}"
+            th:value="${type}"
+            th:text="${type.displayValue}"
+          ></option>
         </select>
-    </div>
-    <div>
+      </div>
+      <div>
         <label>Instructions: </label>
-        <input type="text" th:field="${recipe.instructions}"/>
-    </div>
-    <div>
+        <input type="text" th:field="${recipe.instructions}" />
+      </div>
+      <div>
         <label>How Many people does this serve: </label>
-        <input type="number" th:field="${recipe.servings}"/>
-    </div>
-    <button class="show-modal">Add Ingredient</button>
-    <div class="modal hidden">
+        <input type="number" th:field="${recipe.servings}" />
+      </div>
+      <!-- <button class="show-modal">Add Ingredient</button>
+      <div class="modal hidden">
         <button class="close-modal">&times;</button>
         <h3>Add an Ingredient</h3>
         <label>Ingredient Name:</label>
-        <input type="text"/><br/>
+        <input type="text" /><br />
         <label>Quantity:</label>
-        <input type="number"/><br/>
+        <input type="number" /><br />
         <label>Measurement Unit:</label>
-        <input type="text"/><br/>
+        <input type="text" /><br />
         <label>Weight In Grams:</label>
-        <input type="number"/><br/>
+        <input type="number" /><br />
         <label>Notes:</label>
-        <input type="text"/>
+        <input type="text" />
         <div>
-            <input type="submit" value="Add!"/>
+          <input type="submit" value="Add!" />
         </div>
-    </div>
-    <div class="overlay hidden"></div>
+      </div>
+      <div class="overlay hidden"></div> -->
 
-    <div>
-        <input type="submit" value="Add this Recipe!"/>
-    </div>
-</form>
+      <div>
+        <input type="submit" value="Add this Recipe!" />
+      </div>
+    </form>
 
-<script src="recipe.js"></script>
-</body>
+    <script src="recipe.js"></script>
+  </body>
 </html>
 
 <!--    <div>-->

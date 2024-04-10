@@ -4,35 +4,57 @@
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]>      <html class="no-js"> <![endif]-->
 <html xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" type="text/css" href="static/css/style.css"/>
-    </head>
-    <body>
-        <h1>Hey [[${user.firstName}]]! Start planning!</h1>
-        <h3>Create a recipe by clicking below.</h3>
+  <head>
+    <!-- <link rel="stylesheet" type="text/css" href="css/style.css" /> -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Welcome to hikerhunger!</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <h1>Hey [[${user.firstName}]]! Start cooking!</h1>
+    <form th:action="@{/createRecipe/{userId}(userId=${user.id})}" method="get">
+      <button type="submit">Add New Recipe</button>
+    </form>
+    <div th:if="${recipes == null or #lists.size(recipes) == 0}">
+      You don't have any recipes yet!
+    </div>
+    <div th:if="${#lists.size(recipes) > 0}">
+      <h2>Your Recipes</h2>
+      <table>
+        <tr>
+          <th>Recipe Name</th>
+          <th>Recipe Type</th>
+          <th>Instructions</th>
+          <th>Serves</th>
+          <th>Weight</th>
+        </tr>
+        <tr method="get" th:each="recipe : ${recipes}">
+          <td th:text="${recipe.recipeName}"></td>
+          <td th:text="${recipe.recipeType.displayValue}"></td>
+          <td th:text="${recipe.instructions}"></td>
+          <td th:text="${recipe.servings}"></td>
+          <td th:text="${recipe.totalWeight}"></td>
+        </tr>
+      </table>
+    </div>
 
-        <form th:action="@{/createRecipe/{userId}(userId=${user.id})}" method="get">
-            <button type="submit">Add New Recipe</button>
-        </form>
+    <form>
+      <button type="submit">Build A Trip</button>
+    </form>
 
+    <form th:action="@{/landing}" method="get">
+      <button type="submit">Logout</button>
+    </form>
 
-        <form>
-            <button type="submit">Build A Trip</button>
-        </form>
+    <!--[if lt IE 7]>
+      <p class="browsehappy">
+        You are using an <strong>outdated</strong> browser. Please
+        <a href="#">upgrade your browser</a> to improve your experience.
+      </p>
+    <![endif]-->
 
-        <form th:action="@{/landing}" method="get">
-            <button type="submit">Logout</button>
-        </form>
-        
-        <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-        
-        <script src="" async defer></script>
-    </body>
+    <script src="" async defer></script>
+  </body>
 </html>

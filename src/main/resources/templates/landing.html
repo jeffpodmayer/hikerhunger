@@ -1,22 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+  <head>
     <title>Welcome to hikerhunger</title>
-    <link rel="stylesheet" type="text/css" href="static/css/style.css"/>
-</head>
-<body>
-<h1>Welcome to hikerhunger</h1>
-<div class="container">
-    <form th:action="@{/register}" method="get">
+    <!-- <link rel="stylesheet" type="text/css" href="css/style.css"/> -->
+  </head>
+  <body>
+    <h1>Welcome to hikerhunger</h1>
+    <div class="container">
+      <form th:action="@{/register}" method="get">
         <h2>Sign Up!</h2>
         <button type="submit">Register</button>
-    </form>
+      </form>
 
-
-    <form th:action="@{/signin}" method="get">
+      <form th:action="@{/signin}" method="get">
         <h2>Already Registered?</h2>
-        <button type ="submit">Log In</button>
-    </form>
-</div>
-</body>
+        <button type="submit">Log In</button>
+      </form>
+    </div>
+  </body>
 </html>

@@ -38,6 +38,64 @@ document.addEventListener(`keydown`, function (event) {
 /////////////// ADD NEW INGREDIENT TO CLIENT SIDE  //////////////////////
 const addedIngredients = [];
 
+const addIngredient = function () {
+  //GET INGREDIENT VALUES
+  const ingredientName = document.getElementById("ingredientNameInput").value;
+  const quantity = document.getElementById("quantityInput").value;
+  const unit = document.getElementById("unitInput").value;
+  const weightInGrams = document.getElementById("weightInput").value;
+  const notes = document.getElementById("notesInput").value;
+
+  // CREATE INGREDIENT OBJECT
+  const ingredient = {
+    ingredientName: ingredientName,
+    quantity: quantity,
+    unit: unit,
+    weightInGrams: weightInGrams,
+    notes: notes,
+  };
+
+  // ADDS INGREDIENT TO ARRAY
+  addedIngredients.push(ingredient);
+
+  // CLEAR INPUT FIELDS
+  document.getElementById("ingredientNameInput").value = ``;
+  document.getElementById("quantityInput").value = ``;
+  document.getElementById("unitInput").value = ``;
+  document.getElementById("weightInput").value = ``;
+  document.getElementById("notesInput").value = ``;
+
+  // CHECKING OUTPUT
+  console.log(ingredient);
+  console.log(addedIngredients);
+
+  ///// RENDER INGREDIENT ON PAGE
+  // Create a new tr element
+  const tr = document.createElement("tr");
+  tr.classList.add(`ingredient`);
+
+  const ingredientHTML = `
+      <td><input type="text" th:field="${ingredient.ingredientName}" value="${ingredient.ingredientName}"></td>
+      <td><input type="number" th:field="${ingredient.quantity}" value="${ingredient.quantity}"></td>
+      <td><input type="text" th:field="${ingredient.unit}" value="${ingredient.unit}"></td>
+      <td><input type="number" th:field="${ingredient.weightInGrams}" value="${ingredient.weightInGrams}"></td>
+      <td><input type="text" th:field="${ingredient.notes}"  value="${ingredient.notes}"></td>
+  `;
+  // CHECKING MARKUP VARIABLE
+  console.log(ingredientHTML);
+
+  tr.innerHTML = ingredientHTML;
+  const ingredientsContainer = document.getElementById("ingredientsContainer");
+  ingredientsContainer.appendChild(tr);
+
+  updateWeight();
+
+  closeModal();
+};
+
+btnAddIngredient.addEventListener(`click`, addIngredient);
+
+///////////////// SEND INGREDIENT DATA TO SERVER ////////////////
 const recipeId = document.getElementById("recipeIdInput").value;
 const recipeIdNumber = +recipeId;
 
@@ -61,63 +119,16 @@ const submitIngredients = function () {
 
 btnSubmitIngredients.addEventListener(`click`, submitIngredients);
 
-const addIngredient = function () {
-  //GET INGREDIENT VALUES
-  const ingredientName = document.getElementById("ingredientNameInput").value;
-  const quantity = document.getElementById("quantityInput").value;
-  const unit = document.getElementById("unitInput").value;
-  const weightInGrams = document.getElementById("weightInput").value;
-  const notes = document.getElementById("notesInput").value;
+///////////////////////// CALC RECIPE WEIGHT IN GRAMS AND POUNDS //////////////////////
+const labelWeightInGrams = document.querySelector(`.weightInGrams`);
+const labelWeightInPounds = document.querySelector(`.weightInPounds`);
 
-  // CREATE INGREDIENT OBJECT
-  const newIngredient = {
-    ingredientName: ingredientName,
-    quantity: quantity,
-    unit: unit,
-    weightInGrams: weightInGrams,
-    notes: notes,
-  };
-
-  // ADDS INGREDIENT TO ARRAY
-  addedIngredients.push(newIngredient);
-
-  // CLEAR INPUT FIELDS
-  document.getElementById("ingredientNameInput").value = ``;
-  document.getElementById("quantityInput").value = ``;
-  document.getElementById("unitInput").value = ``;
-  document.getElementById("weightInput").value = ``;
-  document.getElementById("notesInput").value = ``;
-
-  // CHECKING OUTPUT
-  console.log(newIngredient);
-  console.log(addedIngredients);
-
-  ///// RENDER INGREDIENT ON PAGE
-
-  addedIngredients.forEach((ingredient) => {
-    // Create a new tr element
-    const tr = document.createElement("tr");
-    tr.classList.add(`ingredient`);
-
-    const ingredientHTML = `
-      <td><input type="text" th:field="${ingredient.ingredientName}" value="${ingredient.ingredientName}"></td>
-      <td><input type="number" th:field="${ingredient.quantity}" value="${ingredient.quantity}"></td>
-      <td><input type="text" th:field="${ingredient.unit}" value="${ingredient.unit}"></td>
-      <td><input type="number" th:field="${ingredient.weightInGrams}" value="${ingredient.weightInGrams}"></td>
-      <td><input type="text" th:field="${ingredient.notes}"  value="${ingredient.notes}"></td>
-  `;
-
-    // CHECKING MARKUP VARIABLE
-    console.log(ingredientHTML);
-
-    tr.innerHTML = ingredientHTML;
-    const ingredientsContainer = document.getElementById(
-      "ingredientsContainer"
-    );
-    ingredientsContainer.appendChild(tr);
-  });
-
-  closeModal();
+const updateWeight = function () {
+  const gramsToPounds = 0.00220462;
+  const totalWeight = addedIngredients.reduce(
+    (acc, ingredient) => acc + +ingredient.weightInGrams,
+    0
+  );
+  labelWeightInGrams.value = totalWeight;
+  labelWeightInPounds.textContent = (totalWeight * gramsToPounds).toFixed(2);
 };
-
-btnAddIngredient.addEventListener(`click`, addIngredient);

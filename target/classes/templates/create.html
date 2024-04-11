@@ -35,6 +35,13 @@
         <label>How Many people does this serve: </label>
         <input type="number" th:field="${recipe.servings}" />
       </div>
+      <div>
+        <label>Weight in Grams: </label>
+        <input id="weightInGrams" type="number" th:field="${recipe.totalWeight}" />
+        <label>Weight in Pounds: </label>
+        <h4 id="weightInPounds" type="number">0</h4>
+        
+      </div>
 
       <!-- INGREDIENTS SECTION -->
       <div id="ingredientsSection">

@@ -27,9 +27,9 @@ public class IngredientService {
         Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
         // Check if the recipe exists
         if (optionalRecipe.isPresent()) {
-            Recipe recipe = optionalRecipe.get(); // Retrieve the recipe from the Optional
-            // Create a list to store the saved ingredients
+            Recipe recipe = optionalRecipe.get();
             List<Ingredient> savedIngredients = new ArrayList<>();
+
             // Associate each ingredient with the recipe and save it
             for (Ingredient ingredient : ingredients) {
                 ingredient.setRecipe(recipe);

@@ -31,20 +31,16 @@ public class IngredientController {
     @PostMapping("/saveIngredients/{recipeId}")
     public ResponseEntity<List<Ingredient>> saveIngredients(@RequestBody List<Ingredient> ingredients, @PathVariable Long recipeId) {
         List<Ingredient> savedIngredients = ingredientService.saveIngredients(ingredients, recipeId);
-        for(Ingredient ingredient : savedIngredients){
-            System.out.println(ingredient.getRecipe().getRecipeId());
-        }
+
         Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
         if (optionalRecipe.isPresent()) {
             Recipe recipe = optionalRecipe.get();
             recipe.setIngredients(savedIngredients);
-             //PRINT
-            System.out.println(recipe);
             recipeService.saveRecipe(recipe);
+            return ResponseEntity.ok().body(savedIngredients);
         } else {
-            System.out.println("Recipe Not Found.");
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok().body(savedIngredients);
 
     }
 }

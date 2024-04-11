@@ -37,13 +37,5 @@ public class RecipeService {
         return recipeRepo.findById(recipeId);
     }
 
-//    public Recipe save(Recipe recipe, Integer userId) {
-//        User user = userService.findUserById(userId).orElse(null);
-//        recipe.setUser(user);
-//        assert user != null;
-//        user.getRecipes().add(recipe);
-//        return recipeRepo.save(recipe);
-//    }
-
 
 }

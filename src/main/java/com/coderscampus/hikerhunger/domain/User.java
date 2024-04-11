@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = "users")
-
 public class User implements UserDetails {
     private static final long serialVersionUID = 2025389852147750927L;
     @Id
@@ -149,7 +148,5 @@ public class User implements UserDetails {
     public void setRecipes(List<Recipe> recipes) {
         this.recipes = recipes;
     }
-
-
 
 }

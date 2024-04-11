@@ -6,6 +6,7 @@ const modal = document.querySelector(`.modal`);
 const overlay = document.querySelector(`.overlay`);
 const btnCloseModal = document.querySelector(`.close-modal`);
 const btnOpenModal = document.querySelector(`.show-modal`);
+const btnSubmitIngredients = document.getElementById("btn-submit-recipe");
 
 // SELECTED VARIABLES FOR ADDING INGREDIENT
 const btnAddIngredient = document.getElementById(`addIngredientButton`);
@@ -37,6 +38,29 @@ document.addEventListener(`keydown`, function (event) {
 /////////////// ADD NEW INGREDIENT TO CLIENT SIDE  //////////////////////
 const addedIngredients = [];
 
+const recipeId = document.getElementById("recipeIdInput").value;
+const recipeIdNumber = +recipeId;
+
+const submitIngredients = function () {
+  // POST request to server to save ingredient data
+  fetch(`/saveIngredients/${recipeIdNumber}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(addedIngredients),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Saved:", data);
+    })
+    .catch((error) => {
+      console.error("Error saving ingredients:", error);
+    });
+};
+
+btnSubmitIngredients.addEventListener(`click`, submitIngredients);
+
 const addIngredient = function () {
   //GET INGREDIENT VALUES
   const ingredientName = document.getElementById("ingredientNameInput").value;
@@ -47,11 +71,11 @@ const addIngredient = function () {
 
   // CREATE INGREDIENT OBJECT
   const newIngredient = {
-    ingredientName,
-    quantity,
-    unit,
-    weightInGrams,
-    notes,
+    ingredientName: ingredientName,
+    quantity: quantity,
+    unit: unit,
+    weightInGrams: weightInGrams,
+    notes: notes,
   };
 
   // ADDS INGREDIENT TO ARRAY
@@ -68,84 +92,32 @@ const addIngredient = function () {
   console.log(newIngredient);
   console.log(addedIngredients);
 
-  // RENDER INGREDIENTS AS A FORM IN THE TABLE ON THE PAGE
-  const createIngredientInputs = function (ingredient, index) {
-    const inputs = [];
-    for (const [key, value] of Object.entries(ingredient)) {
-      const input = document.createElement(`input`);
-      input.type = typeof value === "number" ? "number" : "text";
-      input.name = `ingredients[${index}].${key}`;
-      input.value = value;
-      inputs.push(input);
-    }
-    return inputs;
-  };
+  ///// RENDER INGREDIENT ON PAGE
 
-  function createIngredientRow(ingredient, index) {
-    const row = document.createElement("tr");
-    row.classList.add("ingredient");
+  addedIngredients.forEach((ingredient) => {
+    // Create a new tr element
+    const tr = document.createElement("tr");
+    tr.classList.add(`ingredient`);
 
-    const inputs = createIngredientInputs(ingredient, index);
-    inputs.forEach((input) => {
-      const cell = document.createElement("td");
-      cell.appendChild(input);
-      row.appendChild(cell);
-    });
+    const ingredientHTML = `
+      <td><input type="text" th:field="${ingredient.ingredientName}" value="${ingredient.ingredientName}"></td>
+      <td><input type="number" th:field="${ingredient.quantity}" value="${ingredient.quantity}"></td>
+      <td><input type="text" th:field="${ingredient.unit}" value="${ingredient.unit}"></td>
+      <td><input type="number" th:field="${ingredient.weightInGrams}" value="${ingredient.weightInGrams}"></td>
+      <td><input type="text" th:field="${ingredient.notes}"  value="${ingredient.notes}"></td>
+  `;
 
-    return row;
-  }
+    // CHECKING MARKUP VARIABLE
+    console.log(ingredientHTML);
+
+    tr.innerHTML = ingredientHTML;
+    const ingredientsContainer = document.getElementById(
+      "ingredientsContainer"
+    );
+    ingredientsContainer.appendChild(tr);
+  });
 
   closeModal();
-
-  const ingredientsContainer = document.getElementById("ingredientsContainer");
-  // const ingredientsFormFields = document.getElementById(`ingredientFormFields`);
-
-  const ingredientRow = createIngredientRow(newIngredient, 0);
-  ingredientsContainer.appendChild(ingredientRow);
-
-  // const hiddenInputsRow = createIngredientRow(newIngredient, 0);
-  // ingredientsFormFields.appendChild(hiddenInputsRow);
 };
 
 btnAddIngredient.addEventListener(`click`, addIngredient);
-
-// // RENDER HIDDEN INGREDIENTS INPUT ON PAGE
-// const ingredientsFormFields = document.getElementById(`ingredientFormFields`);
-// const hiddenInputsHTML = `
-// <input type="hidden" th:field="ingredients[${
-//   addedIngredients.length - 1
-// }].ingredientName" value="${newIngredient.ingredientName}" />
-// <input type="hidden" th:field="ingredients[${
-//   addedIngredients.length - 1
-// }].quantity" value="${newIngredient.quantity}" />
-// <input type="hidden" th:field="ingredients[${
-//   addedIngredients.length - 1
-// }].unit" value="${newIngredient.unit}" />
-// <input type="hidden" th:field="ingredients[${
-//   addedIngredients.length - 1
-// }].weightInGrams" value="${newIngredient.weightInGrams}" />
-// <input type="hidden" th:field="ingredients[${
-//   addedIngredients.length - 1
-// }].notes" value="${newIngredient.notes}" />`;
-
-// console.log(hiddenInputsHTML);
-
-// ingredientsFormFields.insertAdjacentHTML(`beforeend`, hiddenInputsHTML);
-
-// ///// RENDER INGREDIENT ON PAGE
-// const ingredientsContainer = document.getElementById("ingredientsContainer");
-
-// const ingredientHTML = `
-// <tr class="ingredient">
-//   <td>${newIngredient.ingredientName}</td>
-//   <td>${newIngredient.quantity}</td>
-//   <td>${newIngredient.unit}</td>
-//   <td>${newIngredient.weightInGrams}</td>
-//   <td>${newIngredient.notes}</td>
-// <tr>
-// `;
-
-// // CHECKING MARKUP VARIABLE
-// console.log(ingredientHTML);
-
-// ingredientsContainer.insertAdjacentHTML(`beforeend`, ingredientHTML);

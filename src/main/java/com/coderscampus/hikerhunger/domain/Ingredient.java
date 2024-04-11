@@ -2,6 +2,8 @@ package com.coderscampus.hikerhunger.domain;
 
 import jakarta.persistence.*;
 
+import java.util.Optional;
+
 @Entity
 public class Ingredient {
     @Id
@@ -26,17 +28,25 @@ public class Ingredient {
 //        this.notes = notes;
 //    }
 
-    @Override
-    public String toString() {
-        return "Ingredient{" +
-                "ingredientId=" + ingredientId +
-                ", recipe=" + recipe +
-                ", ingredientName='" + ingredientName + '\'' +
-                ", quantity=" + quantity +
-                ", unit='" + unit + '\'' +
-                ", weightInGrams=" + weightInGrams +
-                ", notes='" + notes + '\'' +
-                '}';
+//    @Override
+//    public String toString() {
+//        return "Ingredient{" +
+//                "ingredientId=" + ingredientId +
+//                ", recipe=" + recipe +
+//                ", ingredientName='" + ingredientName + '\'' +
+//                ", quantity=" + quantity +
+//                ", unit='" + unit + '\'' +
+//                ", weightInGrams=" + weightInGrams +
+//                ", notes='" + notes + '\'' +
+//                '}';
+//    }
+
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
     }
 
     public Long getIngredientId() {
@@ -87,11 +97,5 @@ public class Ingredient {
         this.notes = notes;
     }
 
-    public Recipe getRecipe() {
-        return recipe;
-    }
 
-    public void setRecipe(Recipe recipe) {
-        this.recipe = recipe;
-    }
 }

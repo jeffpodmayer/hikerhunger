@@ -6,12 +6,14 @@ import com.coderscampus.hikerhunger.repository.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class RecipeService {
 
-    private final RecipeRepository recipeRepo;
+    private RecipeRepository recipeRepo;
 
-    private final UserServiceImpl userService;
+    private UserServiceImpl userService;
 
     @Autowired
     public RecipeService(RecipeRepository recipeRepo, UserServiceImpl userService) {
@@ -19,11 +21,29 @@ public class RecipeService {
         this.userService = userService;
     }
 
-    public Recipe save(Recipe recipe, Integer userId) {
-        User user = userService.findUserById(userId).orElse(null);
+    public void saveRecipe(Recipe recipe){
+        recipeRepo.save(recipe);
+    }
+
+    public Recipe createRecipe(Recipe recipe, User user) {
         recipe.setUser(user);
-        assert user != null;
         user.getRecipes().add(recipe);
         return recipeRepo.save(recipe);
     }
+
+
+
+    public Optional<Recipe> findById(Long recipeId) {
+        return recipeRepo.findById(recipeId);
+    }
+
+//    public Recipe save(Recipe recipe, Integer userId) {
+//        User user = userService.findUserById(userId).orElse(null);
+//        recipe.setUser(user);
+//        assert user != null;
+//        user.getRecipes().add(recipe);
+//        return recipeRepo.save(recipe);
+//    }
+
+
 }

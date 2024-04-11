@@ -14,8 +14,11 @@
   </head>
   <body>
     <h1>Hey [[${user.firstName}]]! Start cooking!</h1>
-    <form th:action="@{/createRecipe/{userId}(userId=${user.id})}" method="get">
-      <button type="submit">Add New Recipe</button>
+    <form
+      th:action="@{/home/{userId}/recipe(userId=${user.id})}"
+      method="post"
+    >
+      <input type="submit" value="Add New Recipe"></input>
     </form>
     <div th:if="${recipes == null or #lists.size(recipes) == 0}">
       You don't have any recipes yet!

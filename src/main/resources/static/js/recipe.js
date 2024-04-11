@@ -80,7 +80,10 @@ const addIngredient = function () {
       <td><input type="text" th:field="${ingredient.unit}" value="${ingredient.unit}"></td>
       <td><input type="number" th:field="${ingredient.weightInGrams}" value="${ingredient.weightInGrams}"></td>
       <td><input type="text" th:field="${ingredient.notes}"  value="${ingredient.notes}"></td>
+      <td class="trash_icon"><i class="fa-regular fa-trash-can"></i></td>
+      
   `;
+
   // CHECKING MARKUP VARIABLE
   console.log(ingredientHTML);
 
@@ -95,6 +98,19 @@ const addIngredient = function () {
 
 btnAddIngredient.addEventListener(`click`, addIngredient);
 
+///////// DELETE INGREDIENT BEFORE SUBMITTING /////////
+document.addEventListener("click", function (event) {
+  if (event.target.closest(".trash_icon")) {
+    const row = event.target.closest(".ingredient");
+    // Remove the row from the ingredients container
+    row.remove();
+    // Remove the corresponding ingredient from the addedIngredients array
+    const index = Array.from(ingredientsContainer.children).indexOf(row);
+    addedIngredients.splice(index, 1);
+    // Update the total weight after deletion
+    updateWeight();
+  }
+});
 ///////////////// SEND INGREDIENT DATA TO SERVER ////////////////
 const recipeId = document.getElementById("recipeIdInput").value;
 const recipeIdNumber = +recipeId;

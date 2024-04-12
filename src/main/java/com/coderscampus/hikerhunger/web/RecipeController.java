@@ -11,8 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 @RequestMapping("/home")
 @Controller
@@ -53,8 +51,16 @@ public class RecipeController {
     }
 
     @GetMapping("/fetch-recipe/{recipeId}")
-    public ResponseEntity<Recipe> fetchRecipe(ModelMap model, @PathVariable Long recipeId){
-        return null;
+    @ResponseBody
+    public ResponseEntity<Recipe> fetchRecipe(ModelMap model, @PathVariable Long recipeId) {
+        Optional<Recipe> recipeOptional = recipeService.findById(recipeId);
+        if (recipeOptional.isPresent()) {
+            Recipe recipe = recipeOptional.get();
+            System.out.println("Retrieved recipe: " + recipe);
+            return ResponseEntity.ok().body(recipe);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 

@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class ErrorController {
 // THIS CONTROLLER IS FOR TESTING PURPOSES
 	
-	@GetMapping("/error")
-	public String getErrorMessage () {
-		return "redirect:/registration";
-	}
+//	@GetMapping("/error")
+//	public String getErrorMessage () {
+//		return "redirect:/registration";
+//	}
 	
 	@GetMapping("/userExists")
 	public String getUserExistsMessage () {

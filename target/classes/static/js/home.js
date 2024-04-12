@@ -3,16 +3,29 @@
 //////// VIEW RECIPE IN POP_UP ///////////////////
 const recipeTable = document.getElementById(`homeRecipesTable`);
 
-recipeTable.addEventListener("click", function (event) {
-  const clickedRow = event.target.closest(`tr`);
+if (recipeTable) {
+  recipeTable.addEventListener("click", function (event) {
+    const clickedRow = event.target.closest(`tr`);
 
-  if (clickedRow) {
-    ///GET RECIPE ID OF THAT ROW USING THE DATA ATTRIBUTE
-    const recipeIdInput = clickedRow.querySelector(`.recipe-id`);
-    const recipeId = recipeIdInput.value;
-    console.log(recipeId);
+    if (clickedRow) {
+      ///GET RECIPE ID OF THAT ROW USING THE DATA ATTRIBUTE
+      const recipeIdInput = clickedRow.querySelector(`.recipe-id`);
+      const recipeId = recipeIdInput.value;
+      console.log(recipeId);
 
-    ///SEND A FETCH REQUEST TO `/fetch-recipe/{recipeId}`
-    //RENDER RECIPE IN POP-UP
-  }
-});
+      ///SEND A FETCH REQUEST TO `/fetch-recipe/{recipeId}`
+      fetch(`/home/fetch-recipe/${recipeId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+        });
+      // .catch((error) => {
+      //   console.error("Error:", error);
+      // });
+    }
+  });
+}
+
+const renderRecipePopUp = function (data) {
+  console.log(`POP-UP RENDERED`);
+};

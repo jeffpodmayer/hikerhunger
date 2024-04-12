@@ -1,9 +1,13 @@
-/* body {
-  background-color: blue;
-} */
+body {
+  background-color: lightslategrey;
+}
 
-/* BUTTON STYLES
-.close-modal {
+#homeRecipesTable tr {
+  border: 10px solid black;
+  border-radius: 2px;
+}
+
+/* .close-modal {
   position: absolute;
   top: 1.2rem;
   right: 2rem;
@@ -24,12 +28,11 @@
   color: #444;
   border-radius: 10rem;
   cursor: pointer;
-}
+} */
 
-.button {
-  color: blue;
-}
-*/
+/* button {
+  color: lightpink;
+} */
 
 /* CLASSES TO MAKE MODAL WORK */
 .hidden {

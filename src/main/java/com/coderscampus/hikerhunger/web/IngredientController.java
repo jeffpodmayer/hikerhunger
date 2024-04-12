@@ -37,6 +37,7 @@ public class IngredientController {
             Recipe recipe = optionalRecipe.get();
             recipe.setIngredients(savedIngredients);
             recipeService.saveRecipe(recipe);
+            System.out.println(recipe);
             return ResponseEntity.ok().body(savedIngredients);
         } else {
             return ResponseEntity.notFound().build();

@@ -6,6 +6,7 @@ import com.coderscampus.hikerhunger.domain.User;
 import com.coderscampus.hikerhunger.service.RecipeService;
 import com.coderscampus.hikerhunger.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -39,7 +40,7 @@ public class RecipeController {
         Optional<Recipe> recipe = recipeService.findById(recipeId);
         model.put("user", user);
         model.put("recipe", recipe);
-        return "create";
+        return "recipe/create";
     }
 
     @PostMapping("/{userId}/recipe/{recipeId}")
@@ -49,6 +50,11 @@ public class RecipeController {
         recipeService.saveRecipe(recipe);
         System.out.println("Recipe that was posted:" + recipe);
         return "redirect:/home/" + userId;
+    }
+
+    @GetMapping("/fetch-recipe/{recipeId}")
+    public ResponseEntity<Recipe> fetchRecipe(ModelMap model, @PathVariable Long recipeId){
+        return null;
     }
 
 

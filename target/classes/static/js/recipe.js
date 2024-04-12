@@ -1,10 +1,8 @@
 "use strict";
 ////////////////////// GLOBAL VARIABLE DECLARATION //////////////////////
-// STAND ALONE VARIABLES
 const btnSubmitIngredients = document.getElementById("btn-submit-recipe");
 
 ////////////////// FUNCTIONS /////////////////////////////
-
 const renderIngredient = (ingredient) => {
   ///// RENDER INGREDIENT ON PAGE
   const tr = document.createElement("tr");
@@ -21,14 +19,11 @@ const renderIngredient = (ingredient) => {
   <td class="edit_icon"><i class="fa-solid fa-pencil"></i></td>
      `;
 
-  // CHECKING MARKUP VARIABLE
-  console.log(ingredientHTML);
-
   tr.innerHTML = ingredientHTML;
   const ingredientsContainer = document.getElementById("ingredientsContainer");
   ingredientsContainer.appendChild(tr);
 };
-////////////////// CALC RECIPE WEIGHT IN GRAMS AND POUNDS ///////////////////
+///////////// CALC RECIPE WEIGHT IN GRAMS AND POUNDS //////////
 const labelWeightInGrams = document.querySelector(`.weightInGrams`);
 const labelWeightInPounds = document.querySelector(`.weightInPounds`);
 

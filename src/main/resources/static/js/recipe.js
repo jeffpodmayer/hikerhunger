@@ -5,7 +5,7 @@
 const modal = document.querySelector(`.modal`);
 const overlay = document.querySelector(`.overlay`);
 const btnCloseModal = document.querySelector(`.close-modal`);
-const btnOpenModal = document.querySelector(`.show-modal`);
+const btnOpenModal = document.querySelector(`.show-newIngredient-modal`);
 const btnSubmitIngredients = document.getElementById("btn-submit-recipe");
 
 // SELECTED VARIABLES FOR ADDING INGREDIENT
@@ -73,16 +73,17 @@ const addIngredient = function () {
   // Create a new tr element
   const tr = document.createElement("tr");
   tr.classList.add(`ingredient`);
+  tr.setAttribute("data-index", addedIngredients.length - 1);
 
   const ingredientHTML = `
-      <td><input type="text" th:field="${ingredient.ingredientName}" value="${ingredient.ingredientName}"></td>
-      <td><input type="number" th:field="${ingredient.quantity}" value="${ingredient.quantity}"></td>
-      <td><input type="text" th:field="${ingredient.unit}" value="${ingredient.unit}"></td>
-      <td><input type="number" th:field="${ingredient.weightInGrams}" value="${ingredient.weightInGrams}"></td>
-      <td><input type="text" th:field="${ingredient.notes}"  value="${ingredient.notes}"></td>
-      <td class="trash_icon"><i class="fa-regular fa-trash-can"></i></td>
-      
-  `;
+  <td><p>${ingredient.ingredientName}</p></td>
+  <td><p>${ingredient.quantity}</p></td>
+  <td><p>${ingredient.unit}</p></td>
+  <td><p class="weightInput">${ingredient.weightInGrams}</p></td>
+  <td><p>${ingredient.notes}</p></td>
+  <td class="trash_icon"><i class="fa-regular fa-trash-can"></i></td>
+  <td class="edit_icon"><i class="fa-solid fa-pencil"></i></td>
+     `;
 
   // CHECKING MARKUP VARIABLE
   console.log(ingredientHTML);
@@ -97,6 +98,26 @@ const addIngredient = function () {
 };
 
 btnAddIngredient.addEventListener(`click`, addIngredient);
+
+///////////////////// EDIT INGREDIENT ICON ///////////////////////////
+document.addEventListener("click", function (event) {
+  if (event.target.closest(".edit_icon")) {
+    const row = event.target.closest(".ingredient");
+    const index = Array.from(ingredientsContainer.children).indexOf(row);
+    const ingredient = addedIngredients[index];
+
+    // Populate the input fields in the popup with the ingredient data
+    document.getElementById("ingredientNameInput").value =
+      ingredient.ingredientName;
+    document.getElementById("quantityInput").value = ingredient.quantity;
+    document.getElementById("unitInput").value = ingredient.unit;
+    document.getElementById("weightInput").value = ingredient.weightInGrams;
+    document.getElementById("notesInput").value = ingredient.notes;
+
+    // Show the popup
+    // Code to show the popup (e.g., set display property to 'block')
+  }
+});
 
 ///////// DELETE INGREDIENT BEFORE SUBMITTING /////////
 document.addEventListener("click", function (event) {
@@ -135,16 +156,19 @@ const submitIngredients = function () {
 
 btnSubmitIngredients.addEventListener(`click`, submitIngredients);
 
-///////////////////////// CALC RECIPE WEIGHT IN GRAMS AND POUNDS //////////////////////
+///////////////////////// CALC RECIPE WEIGHT IN GRAMS AND POUNDS ///////////////////
 const labelWeightInGrams = document.querySelector(`.weightInGrams`);
 const labelWeightInPounds = document.querySelector(`.weightInPounds`);
 
 const updateWeight = function () {
+  console.log(`in update weight function....`);
   const gramsToPounds = 0.00220462;
   const totalWeight = addedIngredients.reduce(
     (acc, ingredient) => acc + +ingredient.weightInGrams,
     0
   );
   labelWeightInGrams.value = totalWeight;
-  labelWeightInPounds.textContent = (totalWeight * gramsToPounds).toFixed(2);
+  labelWeightInPounds.textContent = isNaN(totalWeight * gramsToPounds)
+    ? 0
+    : (totalWeight * gramsToPounds).toFixed(2);
 };

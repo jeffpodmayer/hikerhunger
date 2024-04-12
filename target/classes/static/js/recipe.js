@@ -73,16 +73,17 @@ const addIngredient = function () {
   // Create a new tr element
   const tr = document.createElement("tr");
   tr.classList.add(`ingredient`);
+  tr.setAttribute("data-index", addedIngredients.length - 1);
 
   const ingredientHTML = `
-      <td><input type="text" th:field="${ingredient.ingredientName}" value="${ingredient.ingredientName}"></td>
-      <td><input type="number" th:field="${ingredient.quantity}" value="${ingredient.quantity}"></td>
-      <td><input type="text" th:field="${ingredient.unit}" value="${ingredient.unit}"></td>
-      <td><input type="number" th:field="${ingredient.weightInGrams}" value="${ingredient.weightInGrams}"></td>
-      <td><input type="text" th:field="${ingredient.notes}"  value="${ingredient.notes}"></td>
-      <td class="trash_icon"><i class="fa-regular fa-trash-can"></i></td>
-      
-  `;
+  <td><p>${ingredient.ingredientName}</p></td>
+  <td><p>${ingredient.quantity}</p></td>
+  <td><p>${ingredient.unit}</p></td>
+  <td><p class="weightInput">${ingredient.weightInGrams}</p></td>
+  <td><p>${ingredient.notes}</p></td>
+  <td class="trash_icon"><i class="fa-regular fa-trash-can"></i></td>
+  <td class="edit_icon"><i class="fa-solid fa-pencil"></i></td>
+     `;
 
   // CHECKING MARKUP VARIABLE
   console.log(ingredientHTML);
@@ -135,16 +136,19 @@ const submitIngredients = function () {
 
 btnSubmitIngredients.addEventListener(`click`, submitIngredients);
 
-///////////////////////// CALC RECIPE WEIGHT IN GRAMS AND POUNDS //////////////////////
+///////////////////////// CALC RECIPE WEIGHT IN GRAMS AND POUNDS ///////////////////
 const labelWeightInGrams = document.querySelector(`.weightInGrams`);
 const labelWeightInPounds = document.querySelector(`.weightInPounds`);
 
 const updateWeight = function () {
+  console.log(`in update weight function....`);
   const gramsToPounds = 0.00220462;
   const totalWeight = addedIngredients.reduce(
     (acc, ingredient) => acc + +ingredient.weightInGrams,
     0
   );
   labelWeightInGrams.value = totalWeight;
-  labelWeightInPounds.textContent = (totalWeight * gramsToPounds).toFixed(2);
+  labelWeightInPounds.textContent = isNaN(totalWeight * gramsToPounds)
+    ? 0
+    : (totalWeight * gramsToPounds).toFixed(2);
 };

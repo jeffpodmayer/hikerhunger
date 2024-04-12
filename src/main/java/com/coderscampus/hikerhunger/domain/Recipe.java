@@ -36,16 +36,17 @@ public class Recipe {
                 '}';
     }
 
-//    public Recipe(Long recipeId, User user, String recipeName, RecipeType recipeType, String instructions, Integer servings, Float totalWeight, List<Ingredient> ingredients) {
-//        this.recipeId = recipeId;
-//        this.user = user;
-//        this.recipeName = recipeName;
-//        this.recipeType = recipeType;
-//        this.instructions = instructions;
-//        this.servings = servings;
-//        this.totalWeight = totalWeight;
-//        this.ingredients = ingredients;
-//    }
+    public Recipe(){}
+    public Recipe(Long recipeId, User user, String recipeName, RecipeType recipeType, String instructions, Integer servings, Float totalWeight, List<Ingredient> ingredients) {
+        this.recipeId = recipeId;
+        this.user = user;
+        this.recipeName = recipeName;
+        this.recipeType = recipeType;
+        this.instructions = instructions;
+        this.servings = servings;
+        this.totalWeight = totalWeight;
+        this.ingredients = ingredients;
+    }
 
     public enum RecipeType {
         BREAKFAST("Breakfast"),

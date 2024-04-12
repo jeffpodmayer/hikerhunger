@@ -71,25 +71,45 @@
       </div>
     </form>
 
-    <!-- INGREDIENT MODAL WINDOW -->
-    <div class="modal hidden">
+    <!-- NEW INGREDIENT MODAL WINDOW -->
+    <div class="new-ingredient-modal hidden">
       <button type="button" class="close-modal">&times;</button>
       <h3>Add an Ingredient</h3>
       <label>Ingredient Name:</label>
       <input id="ingredientNameInput" type="text" /><br />
       <label>Quantity:</label>
-      <input id="quantityInput" type="number" /><br />
+      <input id="quantityInput"type="number" /><br />
       <label>Unit:</label>
-      <input id="unitInput" type="text" /><br />
+      <input id="unitInput"type="text" /><br />
       <label>Weight In Grams:</label>
-      <input id="weightInput" type="number" /><br />
+      <input id="weightInput"type="number" /><br />
       <label>Notes:</label>
-      <input id="notesInput" type="text" />
+      <input id="notesInput"type="text" />
       <div>
         <input type="button" id="addIngredientButton" value="Add!" />
       </div>
     </div>
     <div class="overlay hidden"></div>
+
+ <!-- EDIT INGREDIENT MODAL WINDOW -->
+    <div class="edit-ingredient-modal hidden">
+      <button type="button" class="close-modal">&times;</button>
+      <label>Ingredient Name:</label>
+      <input id="ingredientName" type="text" /><br />
+      <label>Quantity:</label>
+      <input id="quantity" type="number" /><br />
+      <label>Unit:</label>
+      <input id="unit" type="text" /><br />
+      <label>Weight In Grams:</label>
+      <input id="weight" type="number" /><br />
+      <label>Notes:</label>
+      <input id="notes" type="text" />
+      <div>
+        <input type="button" id="editIngredientButton" value="Update!" />
+      </div>
+    </div>
+    <div class="edit-overlay hidden"></div>
+
 
     <script src="/js/recipe.js"></script>
   </body>

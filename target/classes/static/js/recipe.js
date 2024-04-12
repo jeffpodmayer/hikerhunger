@@ -1,41 +1,76 @@
 "use strict";
-////////////// GLOBAL VARIABLE DECLARATION ////////
-
-//SELECTED CSS VARIABLE ELEMENTS FOR POP-UP
-const modal = document.querySelector(`.modal`);
-const overlay = document.querySelector(`.overlay`);
-const btnCloseModal = document.querySelector(`.close-modal`);
-const btnOpenModal = document.querySelector(`.show-modal`);
+////////////////////// GLOBAL VARIABLE DECLARATION //////////////////////
+// STAND ALONE VARIABLES
 const btnSubmitIngredients = document.getElementById("btn-submit-recipe");
 
-// SELECTED VARIABLES FOR ADDING INGREDIENT
+////////////////// FUNCTIONS /////////////////////////////
+
+const renderIngredient = (ingredient) => {
+  ///// RENDER INGREDIENT ON PAGE
+  const tr = document.createElement("tr");
+  tr.classList.add(`ingredient`);
+  tr.setAttribute("data-index", addedIngredients.length - 1);
+
+  const ingredientHTML = `
+  <td><p>${ingredient.ingredientName}</p></td>
+  <td><p>${ingredient.quantity}</p></td>
+  <td><p>${ingredient.unit}</p></td>
+  <td><p class="weightInput">${ingredient.weightInGrams}</p></td>
+  <td><p>${ingredient.notes}</p></td>
+  <td class="trash_icon"><i class="fa-regular fa-trash-can"></i></td>
+  <td class="edit_icon"><i class="fa-solid fa-pencil"></i></td>
+     `;
+
+  // CHECKING MARKUP VARIABLE
+  console.log(ingredientHTML);
+
+  tr.innerHTML = ingredientHTML;
+  const ingredientsContainer = document.getElementById("ingredientsContainer");
+  ingredientsContainer.appendChild(tr);
+};
+////////////////// CALC RECIPE WEIGHT IN GRAMS AND POUNDS ///////////////////
+const labelWeightInGrams = document.querySelector(`.weightInGrams`);
+const labelWeightInPounds = document.querySelector(`.weightInPounds`);
+
+const updateWeight = function () {
+  console.log(`in update weight function....`);
+  const gramsToPounds = 0.00220462;
+  const totalWeight = addedIngredients.reduce(
+    (acc, ingredient) => acc + +ingredient.weightInGrams,
+    0
+  );
+  labelWeightInGrams.value = totalWeight;
+  labelWeightInPounds.textContent = isNaN(totalWeight * gramsToPounds)
+    ? 0
+    : (totalWeight * gramsToPounds).toFixed(2);
+};
+
+///////////////////// NEW INGREDIENT POPUP ///////////////////////////////////
+const ingredientOverlay = document.querySelector(`.overlay`);
+const btnCloseModal1 = document.querySelector(
+  `.new-ingredient-modal .close-modal`
+);
+const openIngredientModal = document.querySelector(`.show-newIngredient-modal`);
+const newIngredientModal = document.querySelector(`.new-ingredient-modal`);
 const btnAddIngredient = document.getElementById(`addIngredientButton`);
 
-//////////////// MODAL WINDOW ///////////////////////
-// OPEN MODAL FUNCTION
-const openModal = function () {
-  modal.classList.remove(`hidden`);
-  overlay.classList.remove(`hidden`);
+// OPEN
+const openNewIngredientModal = function () {
+  newIngredientModal.classList.remove(`hidden`);
+  ingredientOverlay.classList.remove(`hidden`);
+};
+// CLOSE
+const closeNewIngredientModal = function () {
+  newIngredientModal.classList.add(`hidden`);
+  ingredientOverlay.classList.add(`hidden`);
 };
 
-// CLOSE MODAL FUNCTION
-const closeModal = function () {
-  modal.classList.add(`hidden`);
-  overlay.classList.add(`hidden`);
-};
+// EVENT LISTENERS
+openIngredientModal.addEventListener(`click`, openNewIngredientModal);
+btnCloseModal1.addEventListener(`click`, closeNewIngredientModal);
+ingredientOverlay.addEventListener(`click`, closeNewIngredientModal);
 
-// EVENT LISTENERS FOR MODAL WINDOW
-btnOpenModal.addEventListener(`click`, openModal);
-btnCloseModal.addEventListener(`click`, closeModal);
-overlay.addEventListener(`click`, closeModal);
-
-document.addEventListener(`keydown`, function (event) {
-  if (event.key === `Escape` && !modal.classList.contains(`hidden`)) {
-    closeModal();
-  }
-});
-
-/////////////// ADD NEW INGREDIENT TO CLIENT SIDE  //////////////////////
+/////////////// ADD NEW INGREDIENT FUNCTION ///////////////////////////////
 const addedIngredients = [];
 
 const addIngredient = function () {
@@ -65,41 +100,99 @@ const addIngredient = function () {
   document.getElementById("weightInput").value = ``;
   document.getElementById("notesInput").value = ``;
 
-  // CHECKING OUTPUT
-  console.log(ingredient);
-  console.log(addedIngredients);
-
-  ///// RENDER INGREDIENT ON PAGE
-  // Create a new tr element
-  const tr = document.createElement("tr");
-  tr.classList.add(`ingredient`);
-  tr.setAttribute("data-index", addedIngredients.length - 1);
-
-  const ingredientHTML = `
-  <td><p>${ingredient.ingredientName}</p></td>
-  <td><p>${ingredient.quantity}</p></td>
-  <td><p>${ingredient.unit}</p></td>
-  <td><p class="weightInput">${ingredient.weightInGrams}</p></td>
-  <td><p>${ingredient.notes}</p></td>
-  <td class="trash_icon"><i class="fa-regular fa-trash-can"></i></td>
-  <td class="edit_icon"><i class="fa-solid fa-pencil"></i></td>
-     `;
-
-  // CHECKING MARKUP VARIABLE
-  console.log(ingredientHTML);
-
-  tr.innerHTML = ingredientHTML;
-  const ingredientsContainer = document.getElementById("ingredientsContainer");
-  ingredientsContainer.appendChild(tr);
+  renderIngredient(ingredient);
 
   updateWeight();
 
-  closeModal();
+  closeNewIngredientModal();
 };
 
 btnAddIngredient.addEventListener(`click`, addIngredient);
 
-///////// DELETE INGREDIENT BEFORE SUBMITTING /////////
+// ///////////////////// EDIT INGREDIENT ICON ///////////////////////////
+const editOverlay = document.querySelector(`.edit-overlay`);
+const btnCloseModal2 = document.querySelector(
+  `.edit-ingredient-modal .close-modal`
+);
+const editIngredientModal = document.querySelector(`.edit-ingredient-modal`);
+const btnUpdateIngredient = document.getElementById(`editIngredientButton`);
+const btnEditIngredient = document.querySelector(".edit_icon");
+
+// OPEN
+const openEditIngredientModal = function () {
+  editIngredientModal.classList.remove(`hidden`);
+  editOverlay.classList.remove(`hidden`);
+};
+
+// CLOSE
+const closeEditIngredientModal = function () {
+  editIngredientModal.classList.add(`hidden`);
+  editOverlay.classList.add(`hidden`);
+};
+
+// EVENT LISTENER FOR CLOSING EDIT MODAL (X,click overlay,ESC)
+btnCloseModal2.addEventListener(`click`, closeEditIngredientModal);
+editOverlay.addEventListener(`click`, closeEditIngredientModal);
+
+// EVENT LISTENER FOR CLICKING EDIT ICON
+let indexToUpdate;
+document.addEventListener("click", function (event) {
+  if (event.target.closest(".edit_icon")) {
+    console.log(`Icon Clicked.`);
+    const row = event.target.closest(".ingredient");
+    indexToUpdate = Array.from(row.parentElement.children).indexOf(row) - 1;
+    const ingredient = addedIngredients[indexToUpdate];
+
+    // POPULATE FIELDS
+    document.getElementById("ingredientName").value = ingredient.ingredientName;
+    document.getElementById("quantity").value = ingredient.quantity;
+    document.getElementById("unit").value = ingredient.unit;
+    document.getElementById("weight").value = ingredient.weightInGrams;
+    document.getElementById("notes").value = ingredient.notes;
+
+    openEditIngredientModal();
+  }
+});
+
+const updateIngredient = (index, newIngredientData) => {
+  addedIngredients[index] = newIngredientData;
+  // Update the existing ingredient row on the page
+  const ingredientRow = document.querySelector(
+    `.ingredient[data-index="${index}"]`
+  );
+  if (ingredientRow) {
+    // Update the HTML content of the row with the new ingredient data
+    ingredientRow.innerHTML = `
+      <td><p>${newIngredientData.ingredientName}</p></td>
+      <td><p>${newIngredientData.quantity}</p></td>
+      <td><p>${newIngredientData.unit}</p></td>
+      <td><p class="weightInput">${newIngredientData.weightInGrams}</p></td>
+      <td><p>${newIngredientData.notes}</p></td>
+      <td class="trash_icon"><i class="fa-regular fa-trash-can"></i></td>
+      <td class="edit_icon"><i class="fa-solid fa-pencil"></i></td>
+    `;
+  } else {
+    console.log(`Who knows....`);
+  }
+};
+
+btnUpdateIngredient.addEventListener(`click`, () => {
+  const newIngredientData = {
+    ingredientName: document.getElementById("ingredientName").value,
+    quantity: document.getElementById("quantity").value,
+    unit: document.getElementById("unit").value,
+    weightInGrams: document.getElementById("weight").value,
+    notes: document.getElementById("notes").value,
+  };
+
+  updateIngredient(indexToUpdate, newIngredientData);
+
+  updateWeight();
+
+  closeEditIngredientModal();
+});
+
+/////////////////////// DELETE INGREDIENT BEFORE SUBMITTING ///////////////////
 document.addEventListener("click", function (event) {
   if (event.target.closest(".trash_icon")) {
     const row = event.target.closest(".ingredient");
@@ -112,7 +205,8 @@ document.addEventListener("click", function (event) {
     updateWeight();
   }
 });
-///////////////// SEND INGREDIENT DATA TO SERVER ////////////////
+
+////////////////////// SEND INGREDIENT DATA TO SERVER //////////////////////////
 const recipeId = document.getElementById("recipeIdInput").value;
 const recipeIdNumber = +recipeId;
 
@@ -136,19 +230,13 @@ const submitIngredients = function () {
 
 btnSubmitIngredients.addEventListener(`click`, submitIngredients);
 
-///////////////////////// CALC RECIPE WEIGHT IN GRAMS AND POUNDS ///////////////////
-const labelWeightInGrams = document.querySelector(`.weightInGrams`);
-const labelWeightInPounds = document.querySelector(`.weightInPounds`);
-
-const updateWeight = function () {
-  console.log(`in update weight function....`);
-  const gramsToPounds = 0.00220462;
-  const totalWeight = addedIngredients.reduce(
-    (acc, ingredient) => acc + +ingredient.weightInGrams,
-    0
-  );
-  labelWeightInGrams.value = totalWeight;
-  labelWeightInPounds.textContent = isNaN(totalWeight * gramsToPounds)
-    ? 0
-    : (totalWeight * gramsToPounds).toFixed(2);
-};
+// EVENT LISTENER TO CLOSE BOTH MODALS WITH `ESC`
+document.addEventListener(`keydown`, function (event) {
+  if (event.key === `Escape`) {
+    if (!newIngredientModal.classList.contains(`hidden`)) {
+      closeNewIngredientModal();
+    } else if (!editIngredientModal.classList.contains(`hidden`)) {
+      closeEditIngredientModal();
+    }
+  }
+});

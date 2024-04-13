@@ -1,5 +1,7 @@
 package com.coderscampus.hikerhunger.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ public class Recipe {
     private Integer servings;
     private Float totalWeight;
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Ingredient> ingredients = new ArrayList<>();
 
     @Override

@@ -1,5 +1,8 @@
 package com.coderscampus.hikerhunger.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.Optional;
@@ -11,6 +14,7 @@ public class Ingredient {
     private Long ingredientId;
     @ManyToOne
     @JoinColumn(name="recipe_id")
+    @JsonBackReference
     private Recipe recipe;
     private String ingredientName;
     private Float quantity;

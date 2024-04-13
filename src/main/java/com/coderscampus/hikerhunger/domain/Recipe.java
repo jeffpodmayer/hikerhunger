@@ -1,5 +1,6 @@
 package com.coderscampus.hikerhunger.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class Recipe {
     private Integer servings;
     private Float totalWeight;
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("ingredient")
     private List<Ingredient> ingredients = new ArrayList<>();
 
     @Override
@@ -35,17 +37,17 @@ public class Recipe {
                 ", ingredients=" + ingredients +
                 '}';
     }
-
-//    public Recipe(Long recipeId, User user, String recipeName, RecipeType recipeType, String instructions, Integer servings, Float totalWeight, List<Ingredient> ingredients) {
-//        this.recipeId = recipeId;
-//        this.user = user;
-//        this.recipeName = recipeName;
-//        this.recipeType = recipeType;
-//        this.instructions = instructions;
-//        this.servings = servings;
-//        this.totalWeight = totalWeight;
-//        this.ingredients = ingredients;
-//    }
+public Recipe(){}
+    public Recipe(Long recipeId, User user, String recipeName, RecipeType recipeType, String instructions, Integer servings, Float totalWeight, List<Ingredient> ingredients) {
+        this.recipeId = recipeId;
+        this.user = user;
+        this.recipeName = recipeName;
+        this.recipeType = recipeType;
+        this.instructions = instructions;
+        this.servings = servings;
+        this.totalWeight = totalWeight;
+        this.ingredients = ingredients;
+    }
 
     public enum RecipeType {
         BREAKFAST("Breakfast"),

@@ -14,14 +14,17 @@ if (recipeTable) {
       console.log(recipeId);
 
       ///SEND A FETCH REQUEST TO `/fetch-recipe/{recipeId}`
-      fetch(`/home/fetch-recipe/${recipeId}`)
+      fetch(`/home/fetch-recipe/${recipeId}`, {
+        method: "GET",
+      })
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
+          renderRecipePopUp();
+        })
+        .catch((error) => {
+          console.error("Error:", error);
         });
-      // .catch((error) => {
-      //   console.error("Error:", error);
-      // });
     }
   });
 }

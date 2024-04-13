@@ -1,6 +1,7 @@
 package com.coderscampus.hikerhunger.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -21,8 +22,8 @@ public class Recipe {
     private String instructions;
     private Integer servings;
     private Float totalWeight;
+    @JsonIgnoreProperties("recipe") // Ignore the 'recipe' property in Ingredient to break the recursion loop
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
-    @JsonManagedReference
     private List<Ingredient> ingredients = new ArrayList<>();
 
     @Override

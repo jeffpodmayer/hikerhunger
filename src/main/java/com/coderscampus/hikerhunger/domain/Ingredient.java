@@ -14,7 +14,6 @@ public class Ingredient {
     private Long ingredientId;
     @ManyToOne
     @JoinColumn(name="recipe_id")
-    @JsonBackReference
     private Recipe recipe;
     private String ingredientName;
     private Float quantity;

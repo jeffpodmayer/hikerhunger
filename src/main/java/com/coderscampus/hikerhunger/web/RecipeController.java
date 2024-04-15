@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 @RequestMapping("/home")
 @Controller
@@ -52,7 +54,7 @@ public class RecipeController {
 
     @GetMapping("/fetch-recipe/{recipeId}")
     @ResponseBody
-    public ResponseEntity<Recipe> fetchRecipe(ModelMap model, @PathVariable Long recipeId) {
+    public ResponseEntity<Recipe> fetchRecipe(@PathVariable Long recipeId) {
         Optional<Recipe> recipeOptional = recipeService.findById(recipeId);
         if (recipeOptional.isPresent()) {
             Recipe recipe = recipeOptional.get();
@@ -60,6 +62,26 @@ public class RecipeController {
             return ResponseEntity.ok().body(recipe);
         } else {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/edit-recipe/{recipeId}")
+    public String getEditRecipe(ModelMap model, @PathVariable Long recipeId) {
+        Optional<Recipe> recipe = recipeService.findById(recipeId);
+        User user = recipe.get().getUser();
+        model.put("user", user);
+        model.put("recipe", recipe.get());
+       return "recipe/update";
+    }
+
+    @GetMapping("/edit-recipe/{recipeId}/ingredients")
+    @ResponseBody
+    public List<Ingredient> getIngredientsForRecipe(@PathVariable Long recipeId) {
+        Optional<Recipe> recipe = recipeService.findById(recipeId);
+        if (recipe.isPresent()) {
+            return recipe.get().getIngredients();
+        } else {
+            return Collections.emptyList();
         }
     }
 

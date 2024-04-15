@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Edit Recipe</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <script
+      src="https://kit.fontawesome.com/783d090aa0.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <h1>Edit your recipe details:</h1>
+    <input type="hidden" id="recipeIdInput" th:value="${recipeId}" />
+    <form
+      method="post"
+      th:action="@{/home/{userId}/recipe/{recipeId}(userId=${user.id},recipeId=${recipeId})}"
+    >
+      <div>
+        <label>Recipe Name: </label>
+        <input type="text" name="recipeName" th:field="${recipe.recipeName}" />
+      </div>
+   
+   <div> 
+        <label>Meal Category: </label>
+        <select th:field="${recipe.recipeType}">
+          <option
+            th:each="type : ${T(com.coderscampus.hikerhunger.domain.Recipe.RecipeType).values()}"
+            th:value="${type}"
+            th:text="${type.displayValue}"
+          ></option>
+        </select>
+      </div>
+      <div>
+        <label>Instructions: </label>
+        <input type="text" th:field="${recipe.instructions}" />
+      </div>
+      <div>
+        <label>How Many people does this serve: </label>
+        <input type="number" th:field="${recipe.servings}" />
+      </div>
+
+      <div class="totalWeight">
+        <h3>Weight</h3>
+        <div>
+            <p class="weight__label">Grams:</label>
+            <input class="weightInGrams" type="number" th:field="${recipe.totalWeight}" readonly/>
+        </div>
+        <div>
+            <p class="weight__label">Pounds:</p>
+            <p class="weightInPounds">0</h3>
+        </div>
+    </div> 
+
+    <!-- INGREDIENTS SECTION -->
+    <div id="ingredientsSection">
+        <h2>Ingredients</h2>
+        <table id="ingredientsContainer">
+          <tr>
+            <th>Ingredient Name</th>
+            <th>Quantity</th>
+            <th>Unit</th>
+            <th>Grams</th>
+            <th>Notes</th>
+            <th></th>
+          </tr>
+        </table>
+    </div>
+        
+      <button class="show-newIngredient-modal" type="button">Add Ingredient</button>
+      <div>
+        <input id="btn-submit-recipe" type="submit" value="Update Recipe" />
+      </div>
+    </form>
+
+    <!-- NEW INGREDIENT MODAL WINDOW -->
+    <div class="new-ingredient-modal hidden">
+      <button type="button" class="close-modal">&times;</button>
+      <h3>Add an Ingredient</h3>
+      <label>Ingredient Name:</label>
+      <input id="ingredientNameInput" type="text" /><br />
+      <label>Quantity:</label>
+      <input id="quantityInput"type="number" /><br />
+      <label>Unit:</label>
+      <input id="unitInput"type="text" /><br />
+      <label>Weight In Grams:</label>
+      <input id="weightInput"type="number" /><br />
+      <label>Notes:</label>
+      <input id="notesInput"type="text" />
+      <div>
+        <input type="button" id="addIngredientButton" value="Add!" />
+      </div>
+    </div>
+    <div class="overlay hidden"></div>
+
+    <!-- EDIT INGREDIENT MODAL WINDOW -->
+    <div class="edit-ingredient-modal hidden">
+      <button type="button" class="close-modal">&times;</button>
+      <label>Ingredient Name:</label>
+      <input id="ingredientName" type="text" /><br />
+      <label>Quantity:</label>
+      <input id="quantity" type="number" /><br />
+      <label>Unit:</label>
+      <input id="unit" type="text" /><br />
+      <label>Weight In Grams:</label>
+      <input id="weight" type="number" /><br />
+      <label>Notes:</label>
+      <input id="notes" type="text" />
+      <div>
+        <input type="button" id="editIngredientButton" value="Update!" />
+      </div>
+    </div>
+    <div class="edit-overlay hidden"></div>
+
+
+    <script src="/js/recipe.js"></script>
+  </body>
+</html>

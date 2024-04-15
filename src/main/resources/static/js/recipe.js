@@ -1,9 +1,35 @@
 "use strict";
 ////////////////////// GLOBAL VARIABLE DECLARATION //////////////////////
 const btnSubmitIngredients = document.getElementById("btn-submit-recipe");
+let addedIngredients = [];
+const recipeId = document.getElementById("recipeIdInput").value;
+const recipeIdNumber = +recipeId;
 
 ////////////////// FUNCTIONS /////////////////////////////
+document.addEventListener("DOMContentLoaded", function () {
+  fetch(`/home/edit-recipe/${recipeIdNumber}/ingredients`)
+    .then((response) => {
+      if (response.ok) {
+        return response.json(); // Extract JSON data from the response
+      } else {
+        throw new Error("Failed to fetch ingredients");
+      }
+    })
+    .then((ingredients) => {
+      // Populate ingredients array with the fetched data
+      addedIngredients = ingredients;
+      console.log(addedIngredients);
+
+      renderIngredientsOnLoad(addedIngredients);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      // Handle the error
+    });
+});
+
 const renderIngredient = (ingredient) => {
+  console.log();
   ///// RENDER INGREDIENT ON PAGE
   const tr = document.createElement("tr");
   tr.classList.add(`ingredient`);
@@ -22,6 +48,13 @@ const renderIngredient = (ingredient) => {
   tr.innerHTML = ingredientHTML;
   const ingredientsContainer = document.getElementById("ingredientsContainer");
   ingredientsContainer.appendChild(tr);
+};
+
+const renderIngredientsOnLoad = (ingredients) => {
+  // Loop through each ingredient in the array and render it
+  ingredients.forEach((ingredient) => {
+    renderIngredient(ingredient);
+  });
 };
 ///////////// CALC RECIPE WEIGHT IN GRAMS AND POUNDS //////////
 const labelWeightInGrams = document.querySelector(`.weightInGrams`);
@@ -65,8 +98,7 @@ openIngredientModal.addEventListener(`click`, openNewIngredientModal);
 btnCloseModal1.addEventListener(`click`, closeNewIngredientModal);
 ingredientOverlay.addEventListener(`click`, closeNewIngredientModal);
 
-/////////////// ADD NEW INGREDIENT FUNCTION ///////////////////////////////
-const addedIngredients = [];
+/////////////// ADD NEW INGREDIENT FUNCTION //////////////////////////////
 
 const addIngredient = function () {
   //GET INGREDIENT VALUES
@@ -202,9 +234,6 @@ document.addEventListener("click", function (event) {
 });
 
 ////////////////////// SEND INGREDIENT DATA TO SERVER //////////////////////////
-const recipeId = document.getElementById("recipeIdInput").value;
-const recipeIdNumber = +recipeId;
-
 const submitIngredients = function () {
   // POST request to server to save ingredient data
   fetch(`/saveIngredients/${recipeIdNumber}`, {

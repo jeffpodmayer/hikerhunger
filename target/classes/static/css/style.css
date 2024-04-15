@@ -40,7 +40,8 @@ table tr {
 }
 
 .new-ingredient-modal,
-.edit-ingredient-modal {
+.edit-ingredient-modal,
+.recipeViewPopup {
   position: absolute;
   top: 50%;
   left: 50%;

@@ -2,7 +2,7 @@ body {
   background-color: lightslategrey;
 }
 
-#homeRecipesTable tr {
+table tr {
   border: 10px solid black;
   border-radius: 2px;
 }

@@ -1,39 +1,54 @@
 "use strict";
-////////////////////// GLOBAL VARIABLE DECLARATION //////////////////////
-const btnSubmitIngredients = document.getElementById("btn-submit-recipe");
-let addedIngredients = [];
+
+////////////////////// GLOBAL VARIABLE DECLARATION ////////
+const recipeForm = document.getElementById("recipeForm");
+const recipeNameInput = document.getElementById("recipeName");
+const recipeTypeSelect = document.getElementById("recipeType");
+const instructionsInput = document.getElementById("instructions");
+const servingsInput = document.getElementById("servings");
+const weightInGramsInput = document.getElementById("weightInGrams");
+const submitButton = document.getElementById("submitButton");
+
 const recipeId = document.getElementById("recipeIdInput").value;
 const recipeIdNumber = +recipeId;
 
-////////////////// FUNCTIONS /////////////////////////////
-document.addEventListener("DOMContentLoaded", function () {
-  fetch(`/home/edit-recipe/${recipeIdNumber}/ingredients`)
-    .then((response) => {
-      if (response.ok) {
-        return response.json(); // Extract JSON data from the response
-      } else {
-        throw new Error("Failed to fetch ingredients");
-      }
-    })
-    .then((ingredients) => {
-      // Populate ingredients array with the fetched data
-      addedIngredients = ingredients;
-      console.log(addedIngredients);
+const id = document.getElementById("userIdInput").value;
+const userId = +id;
 
-      renderIngredientsOnLoad(addedIngredients);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      // Handle the error
-    });
-});
+const labelWeightInGrams = document.querySelector(`.weightInGrams`);
+const labelWeightInPounds = document.querySelector(`.weightInPounds`);
+
+let ingredientsList = [];
+
+////////////////// FUNCTIONS /////////////////////////////
+// document.addEventListener("DOMContentLoaded", function () {
+//   fetch(`/home/edit-recipe/${recipeIdNumber}/ingredients`)
+//     .then((response) => {
+//       if (response.ok) {
+//         return response.json(); // Extract JSON data from the response
+//       } else {
+//         throw new Error("Failed to fetch ingredients");
+//       }
+//     })
+//     .then((ingredients) => {
+//       // Populate ingredients array with the fetched data
+//       ingredientsList = ingredients;
+//       console.log(ingredientsList);
+
+//       renderIngredientsOnLoad(ingredientsList);
+//     })
+//     .catch((error) => {
+//       console.error("Error:", error);
+//       // Handle the error
+//     });
+// });
 
 const renderIngredient = (ingredient) => {
-  console.log();
+  console.log(ingredient);
   ///// RENDER INGREDIENT ON PAGE
   const tr = document.createElement("tr");
   tr.classList.add(`ingredient`);
-  tr.setAttribute("data-index", addedIngredients.length - 1);
+  tr.setAttribute("data-index", ingredientsList.length - 1);
 
   const ingredientHTML = `
   <td><p>${ingredient.ingredientName}</p></td>
@@ -50,20 +65,11 @@ const renderIngredient = (ingredient) => {
   ingredientsContainer.appendChild(tr);
 };
 
-const renderIngredientsOnLoad = (ingredients) => {
-  // Loop through each ingredient in the array and render it
-  ingredients.forEach((ingredient) => {
-    renderIngredient(ingredient);
-  });
-};
 ///////////// CALC RECIPE WEIGHT IN GRAMS AND POUNDS //////////
-const labelWeightInGrams = document.querySelector(`.weightInGrams`);
-const labelWeightInPounds = document.querySelector(`.weightInPounds`);
-
 const updateWeight = function () {
   console.log(`in update weight function....`);
   const gramsToPounds = 0.00220462;
-  const totalWeight = addedIngredients.reduce(
+  const totalWeight = ingredientsList.reduce(
     (acc, ingredient) => acc + +ingredient.weightInGrams,
     0
   );
@@ -73,7 +79,7 @@ const updateWeight = function () {
     : (totalWeight * gramsToPounds).toFixed(2);
 };
 
-///////////////////// NEW INGREDIENT POPUP ///////////////////////////////////
+///////////////////// NEW INGREDIENT POPUP ////////////////////////////
 const ingredientOverlay = document.querySelector(`.overlay`);
 const btnCloseModal1 = document.querySelector(
   `.new-ingredient-modal .close-modal`
@@ -87,6 +93,7 @@ const openNewIngredientModal = function () {
   newIngredientModal.classList.remove(`hidden`);
   ingredientOverlay.classList.remove(`hidden`);
 };
+
 // CLOSE
 const closeNewIngredientModal = function () {
   newIngredientModal.classList.add(`hidden`);
@@ -98,8 +105,7 @@ openIngredientModal.addEventListener(`click`, openNewIngredientModal);
 btnCloseModal1.addEventListener(`click`, closeNewIngredientModal);
 ingredientOverlay.addEventListener(`click`, closeNewIngredientModal);
 
-/////////////// ADD NEW INGREDIENT FUNCTION //////////////////////////////
-
+/////////////// ADD NEW INGREDIENT FUNCTION ////////////////////////
 const addIngredient = function () {
   //GET INGREDIENT VALUES
   const ingredientName = document.getElementById("ingredientNameInput").value;
@@ -110,6 +116,7 @@ const addIngredient = function () {
 
   // CREATE INGREDIENT OBJECT
   const ingredient = {
+    recipeId: recipeIdNumber,
     ingredientName: ingredientName,
     quantity: quantity,
     unit: unit,
@@ -118,7 +125,8 @@ const addIngredient = function () {
   };
 
   // ADDS INGREDIENT TO ARRAY
-  addedIngredients.push(ingredient);
+  ingredientsList.push(ingredient);
+  console.log(ingredientsList);
 
   // CLEAR INPUT FIELDS
   document.getElementById("ingredientNameInput").value = ``;
@@ -136,7 +144,7 @@ const addIngredient = function () {
 
 btnAddIngredient.addEventListener(`click`, addIngredient);
 
-// ///////////////////// EDIT INGREDIENT ICON ///////////////////////////
+// ///////////////////// EDIT INGREDIENT ICON /////////////////////
 const editOverlay = document.querySelector(`.edit-overlay`);
 const btnCloseModal2 = document.querySelector(
   `.edit-ingredient-modal .close-modal`
@@ -168,7 +176,7 @@ document.addEventListener("click", function (event) {
     console.log(`Icon Clicked.`);
     const row = event.target.closest(".ingredient");
     indexToUpdate = Array.from(row.parentElement.children).indexOf(row) - 1;
-    const ingredient = addedIngredients[indexToUpdate];
+    const ingredient = ingredientsList[indexToUpdate];
 
     // POPULATE FIELDS
     document.getElementById("ingredientName").value = ingredient.ingredientName;
@@ -182,7 +190,7 @@ document.addEventListener("click", function (event) {
 });
 
 const updateIngredient = (index, newIngredientData) => {
-  addedIngredients[index] = newIngredientData;
+  ingredientsList[index] = newIngredientData;
   // Update the existing ingredient row on the page
   const ingredientRow = document.querySelector(
     `.ingredient[data-index="${index}"]`
@@ -219,40 +227,20 @@ btnUpdateIngredient.addEventListener(`click`, () => {
   closeEditIngredientModal();
 });
 
-/////////////////////// DELETE INGREDIENT BEFORE SUBMITTING ///////////////////
+/////////////////////// DELETE INGREDIENT BEFORE SUBMITTING //////////
 document.addEventListener("click", function (event) {
   if (event.target.closest(".trash_icon")) {
     const row = event.target.closest(".ingredient");
     // Remove the row from the ingredients container
     row.remove();
-    // Remove the corresponding ingredient from the addedIngredients array
+    // Remove the corresponding ingredient from the ingredientsList array
     const index = Array.from(ingredientsContainer.children).indexOf(row);
-    addedIngredients.splice(index, 1);
+    ingredientsList.splice(index, 1);
+    console.log(ingredientsList);
     // Update the total weight after deletion
     updateWeight();
   }
 });
-
-////////////////////// SEND INGREDIENT DATA TO SERVER //////////////////////////
-const submitIngredients = function () {
-  // POST request to server to save ingredient data
-  fetch(`/saveIngredients/${recipeIdNumber}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(addedIngredients),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Saved:", data);
-    })
-    .catch((error) => {
-      console.error("Error saving ingredients:", error);
-    });
-};
-
-btnSubmitIngredients.addEventListener(`click`, submitIngredients);
 
 // EVENT LISTENER TO CLOSE BOTH MODALS WITH `ESC`
 document.addEventListener(`keydown`, function (event) {

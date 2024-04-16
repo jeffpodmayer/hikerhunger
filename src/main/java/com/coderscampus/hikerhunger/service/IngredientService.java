@@ -23,23 +23,41 @@ public class IngredientService {
         this.recipeService = recipeService;
     }
 
-    public List<Ingredient> saveIngredients(List<Ingredient> ingredients, Long recipeId) {
-        Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
-        // Check if the recipe exists
-        if (optionalRecipe.isPresent()) {
-            Recipe recipe = optionalRecipe.get();
-            List<Ingredient> savedIngredients = new ArrayList<>();
+    public Ingredient saveIngredient(Ingredient ingredient) {
+        ingredientRepo.save(ingredient);
+        return ingredient;
+    }
 
-            // Associate each ingredient with the recipe and save it
-            for (Ingredient ingredient : ingredients) {
-                ingredient.setRecipe(recipe);
-                savedIngredients.add(ingredientRepo.save(ingredient));
-            }
-            // Return the list of saved ingredients
-            return savedIngredients;
-        } else {
-            // Recipe with the given ID does not exist
-            throw new RuntimeException("Recipe with ID " + recipeId + " not found");
+    public void clearRecipeIngredients(Recipe recipe) {
+        for (Ingredient ingredient : recipe.getIngredients()) {
+            deleteIngredient(ingredient);
         }
     }
+    public void deleteIngredient(Ingredient ingredient) {
+        System.out.println("Deleted ingredient");
+        ingredientRepo.delete(ingredient);
+    }
+
+
+//    public List<Ingredient> saveIngredients(List<Ingredient> newIngredients, Long recipeId) {
+//        Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
+//        // Check if the recipe exists
+//        if (optionalRecipe.isPresent()) {
+//            Recipe recipe = optionalRecipe.get();
+//
+//            List<Ingredient> existingIngredients = recipe.getIngredients();
+//            existingIngredients.clear();
+//
+//            // Associate each ingredient with the recipe and save it
+//            for (Ingredient ingredient : newIngredients) {
+//                ingredient.setRecipe(recipe);
+//                newIngredients.add(ingredientRepo.save(ingredient));
+//            }
+//            // Return the list of saved ingredients
+//            return newIngredients;
+//        } else {
+//            // Recipe with the given ID does not exist
+//            throw new RuntimeException("Recipe with ID " + recipeId + " not found");
+//        }
+//    }
 }

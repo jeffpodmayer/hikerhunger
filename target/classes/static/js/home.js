@@ -82,29 +82,27 @@ const renderRecipePopUp = function (data) {
   // EVENT LISTENERS
   btnCloseRecipeView.addEventListener(`click`, closeViewRecipePopup);
   viewRecipeOverlay.addEventListener(`click`, closeViewRecipePopup);
-
-  btnEditRecipe.addEventListener("click", function () {
-    fetch(`/home/edit-recipe/${data.recipeId}`, {
-      method: "GET",
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.text();
-        } else {
-          throw new Error("Failed to load edit form");
-        }
-      })
-      .then((html) => {
-        document.open();
-        document.write(html);
-        document.close();
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  });
+  btnEditRecipe.addEventListener("click", () => goToEditPage(data.recipeId));
 };
 
+const goToEditPage = function (recipeId) {
+  const editUrl = `/home/edit-recipe/${recipeId}`;
+  window.location.href = editUrl;
+};
+
+// const fetchRecipeData = async (recipeId) => {
+//   try {
+//     const response = await fetch(`/home/fetch-recipe/${recipeId}`);
+//     if (!response.ok) {
+//       throw new Error("Failed to fetch recipe data");
+//     }
+//     const recipeData = await response.json();
+//     console.log("Recipe Data:", recipeData);
+
+//   } catch (error) {
+//     console.error("Error fetching recipe data:", error);
+//   }
+// };
 // OPEN
 const openViewRecipePopup = function () {
   recipePopup.classList.remove(`hidden`);

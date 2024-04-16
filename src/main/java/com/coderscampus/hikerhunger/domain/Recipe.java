@@ -64,8 +64,6 @@ public Recipe(){}
         }
     }
 
-
-
     public Long getRecipeId() {
         return recipeId;
     }

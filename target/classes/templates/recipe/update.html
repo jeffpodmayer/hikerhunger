@@ -10,46 +10,43 @@
   </head>
   <body>
     <h1>Edit your recipe details:</h1>
-    <input type="hidden" id="recipeIdInput" th:value="${recipeId}" />
-    <form
-      method="post"
-      th:action="@{/home/{userId}/recipe/{recipeId}(userId=${user.id},recipeId=${recipeId})}"
-    >
-      <div>
-        <label>Recipe Name: </label>
-        <input type="text" name="recipeName" th:field="${recipe.recipeName}" />
-      </div>
-   
-   <div> 
-        <label>Meal Category: </label>
-        <select th:field="${recipe.recipeType}">
-          <option
-            th:each="type : ${T(com.coderscampus.hikerhunger.domain.Recipe.RecipeType).values()}"
-            th:value="${type}"
-            th:text="${type.displayValue}"
-          ></option>
-        </select>
-      </div>
-      <div>
-        <label>Instructions: </label>
-        <input type="text" th:field="${recipe.instructions}" />
-      </div>
-      <div>
-        <label>How Many people does this serve: </label>
-        <input type="number" th:field="${recipe.servings}" />
-      </div>
+    <input type="" id="recipeIdInput" th:value="${recipeId}" />
+    <input type="" id="userIdInput" th:value="${user.id}" />
 
-      <div class="totalWeight">
+<form id="recipeForm">
+    <div>
+        <label for="recipeName">Recipe Name:</label>
+        <input type="text" id="recipeName" />
+    </div>
+    <div>
+        <label for="mealCategory">Meal Category:</label>
+        <select id="recipeType">
+            <option value="BREAKFAST">Breakfast</option>
+            <option value="LUNCH">Lunch</option>
+            <option value="DINNER">Dinner</option>
+            <option value="SNACK">Snack</option>
+            <option value="EXTRA">Extra</option>
+        </select>
+    </div>
+    <div>
+        <label for="instructions">Instructions:</label>
+        <input type="text" id="instructions" />
+    </div>
+    <div>
+        <label for="servings">How many people does this serve:</label>
+        <input type="number" id="servings" />
+    </div>
+    <div class="totalWeight">
         <h3>Weight</h3>
         <div>
             <p class="weight__label">Grams:</label>
-            <input class="weightInGrams" type="number" th:field="${recipe.totalWeight}" readonly/>
+            <input class="weightInGrams" type="number" id="weightInGrams" readonly/>
         </div>
         <div>
             <p class="weight__label">Pounds:</p>
-            <p class="weightInPounds">0</h3>
+            <p class="weightInPounds">0</p>
         </div>
-    </div> 
+    </div>
 
     <!-- INGREDIENTS SECTION -->
     <div id="ingredientsSection">
@@ -68,7 +65,7 @@
         
       <button class="show-newIngredient-modal" type="button">Add Ingredient</button>
       <div>
-        <input id="btn-submit-recipe" type="submit" value="Update Recipe" />
+        <input id="updateButton" type="submit" value="Update Recipe" />
       </div>
     </form>
 
@@ -113,5 +110,6 @@
 
 
     <script src="/js/recipe.js"></script>
+    <script src="/js/update.js"></script>
   </body>
 </html>

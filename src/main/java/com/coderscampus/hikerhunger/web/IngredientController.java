@@ -28,20 +28,9 @@ public class IngredientController {
         this.recipeService = recipeService;
     }
 
-    @PostMapping("/saveIngredients/{recipeId}")
-    public ResponseEntity<List<Ingredient>> saveIngredients(@RequestBody List<Ingredient> ingredients, @PathVariable Long recipeId) {
-        List<Ingredient> savedIngredients = ingredientService.saveIngredients(ingredients, recipeId);
-
-        Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
-        if (optionalRecipe.isPresent()) {
-            Recipe recipe = optionalRecipe.get();
-            recipe.setIngredients(savedIngredients);
-            recipeService.saveRecipe(recipe);
-            System.out.println(recipe);
-            return ResponseEntity.ok().body(savedIngredients);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-
-    }
+//    @PostMapping("/saveIngredients/{recipeId}")
+//    public ResponseEntity<List<Ingredient>> saveIngredients(@RequestBody List<Ingredient> ingredients, @PathVariable Long recipeId) {
+//        List<Ingredient> savedIngredients = ingredientService.saveIngredients(ingredients, recipeId);
+//        return ResponseEntity.ok().body(savedIngredients);
+//    }
 }

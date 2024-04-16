@@ -2,8 +2,6 @@ package com.coderscampus.hikerhunger.domain;
 
 import jakarta.persistence.*;
 
-import java.util.Optional;
-
 @Entity
 public class Ingredient {
     @Id

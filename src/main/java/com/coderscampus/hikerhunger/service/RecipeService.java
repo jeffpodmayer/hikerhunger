@@ -21,8 +21,9 @@ public class RecipeService {
         this.userService = userService;
     }
 
-    public void saveRecipe(Recipe recipe){
+    public Recipe saveRecipe(Recipe recipe){
         recipeRepo.save(recipe);
+        return recipe;
     }
 
     public Recipe createRecipe(Recipe recipe, User user) {
@@ -30,7 +31,6 @@ public class RecipeService {
         user.getRecipes().add(recipe);
         return recipeRepo.save(recipe);
     }
-
 
 
     public Optional<Recipe> findById(Long recipeId) {

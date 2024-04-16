@@ -3,6 +3,7 @@ package com.coderscampus.hikerhunger.service;
 import com.coderscampus.hikerhunger.domain.Ingredient;
 import com.coderscampus.hikerhunger.domain.Recipe;
 import com.coderscampus.hikerhunger.repository.IngredientRepository;
+import jakarta.transaction.Transactional;
 import org.apache.tomcat.util.digester.ArrayStack;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,16 +28,17 @@ public class IngredientService {
         ingredientRepo.save(ingredient);
         return ingredient;
     }
-
+    @Transactional
     public void clearRecipeIngredients(Recipe recipe) {
-        for (Ingredient ingredient : recipe.getIngredients()) {
-            deleteIngredient(ingredient);
+        List<Ingredient> ingredients = recipe.getIngredients();
+        if (!ingredients.isEmpty()) {
+            ingredientRepo.deleteAll(ingredients);
         }
     }
-    public void deleteIngredient(Ingredient ingredient) {
-        System.out.println("Deleted ingredient");
-        ingredientRepo.delete(ingredient);
-    }
+//    public void deleteIngredient(Ingredient ingredient) {
+//        System.out.println("Deleted ingredient");
+//        ingredientRepo.delete(ingredient);
+//    }
 
 
 //    public List<Ingredient> saveIngredients(List<Ingredient> newIngredients, Long recipeId) {

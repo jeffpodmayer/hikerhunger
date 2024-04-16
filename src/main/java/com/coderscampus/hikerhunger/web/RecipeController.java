@@ -13,10 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
+import static java.util.spi.ToolProvider.findFirst;
 
 @RequestMapping("/home")
 @Controller
@@ -72,7 +71,7 @@ public class RecipeController {
 
 
                 Recipe savedRecipe = recipeService.saveRecipe(recipe);
-                System.out.println("Sent from fetchAPI:" + savedRecipe);
+                System.out.println("Sent from createRecipe page:" + savedRecipe);
 
                 return ResponseEntity.ok().body(savedRecipe);
             } catch (Exception e) {
@@ -97,23 +96,43 @@ public class RecipeController {
                 recipe.setServings(recipeData.getServings());
                 recipe.setTotalWeight(recipeData.getTotalWeight());
 
-                // clear ingredients
-                ingredientService.clearRecipeIngredients(recipe);
-                System.out.println(recipe.getIngredients());
+                // Get existing ingredients associated with the recipe
+                List<Ingredient> existingIngredients = recipe.getIngredients();
 
-                // Update ingredients
-//                List<Ingredient> updatedIngredients = new ArrayList<>();
-//                for (Ingredient ingredient : recipeData.getIngredients()) {
-//                    ingredient.setRecipe(recipe); // Set the recipe for each ingredient
-//                    updatedIngredients.add(ingredient); // Save each ingredient to the database
-//                }
-//                recipe.setIngredients(updatedIngredients); // Set the updated ingredient list in the recipe
+                System.out.println(existingIngredients);
+
+                // Update existing ingredient or add new one
+                for (Ingredient ingredient : recipeData.getIngredients()) {
+                    if (ingredient.getIngredientId() != null) {
+                        // If the ingredient has an ID, it's an existing ingredient
+                        // Find the corresponding existing ingredient and update its properties
+                        Optional<Ingredient> optionalExistingIngredient = existingIngredients.stream()
+                                .filter(i -> i.getIngredientId().equals(ingredient.getIngredientId()))
+                                .findFirst();
+                        if (optionalExistingIngredient.isPresent()) {
+                            Ingredient existingIngredient = optionalExistingIngredient.get();
+                            existingIngredient.setIngredientName((ingredient.getIngredientName()));
+                            existingIngredient.setQuantity(ingredient.getQuantity());
+                            existingIngredient.setUnit(ingredient.getUnit());
+                            existingIngredient.setWeightInGrams(ingredient.getWeightInGrams());
+                            existingIngredient.setNotes(ingredient.getNotes());
+//                        } else {
+//                            // If the ingredient doesn't exist in the existingIngredients list, add it
+//                            existingIngredients.add(ingredient);
+                        }
+                    } else {
+                        // If the ingredient doesn't have an ID, it's a new ingredient
+                        // Set the recipe for the new ingredient and add it to the list of existing ingredients
+                        ingredient.setRecipe(recipe);
+                        existingIngredients.add(ingredient);
+                    }
+                }
 
                 // Save the updated recipe
                 Recipe savedRecipe = recipeService.saveRecipe(recipe);
                 System.out.println("Updated Recipe: " + savedRecipe);
 
-                return ResponseEntity.ok().body(savedRecipe);
+                return ResponseEntity.ok().body(recipe);
             } catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
             }

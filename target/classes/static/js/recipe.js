@@ -21,19 +21,21 @@ const labelWeightInPounds = document.querySelector(`.weightInPounds`);
 let ingredientsList = [];
 
 ////////////////// FUNCTIONS /////////////////////////////
-const renderIngredient = (ingredient) => {
+const renderIngredient = (ingredient, index) => {
   // console.log(ingredient);
   ///// RENDER INGREDIENT ON PAGE
   const tr = document.createElement("tr");
   tr.classList.add(`ingredient`);
-  tr.setAttribute("data-index", ingredientsList.length - 1);
+  tr.setAttribute("data-index", index);
+  tr.setAttribute("data-ingredient-id", ingredient.ingredientId);
 
   const ingredientHTML = `
-  <td><p>${ingredient.ingredientName}</p></td>
-  <td><p>${ingredient.quantity}</p></td>
-  <td><p>${ingredient.unit}</p></td>
-  <td><p class="weightInput">${ingredient.weightInGrams}</p></td>
-  <td><p>${ingredient.notes}</p></td>
+  <td class="id"><p>${ingredient.ingredientId}</p></td>
+  <td class="ingredientName"><p>${ingredient.ingredientName}</p></td>
+  <td class="quantity"><p>${ingredient.quantity}</p></td>
+  <td class="unit"><p>${ingredient.unit}</p></td>
+  <td class="weight"><p class="weightInput">${ingredient.weightInGrams}</p></td>
+  <td class="notes"><p>${ingredient.notes}</p></td>
   <td class="trash_icon"><i class="fa-regular fa-trash-can"></i></td>
   <td class="edit_icon"><i class="fa-solid fa-pencil"></i></td>
      `;
@@ -45,7 +47,6 @@ const renderIngredient = (ingredient) => {
 
 ///////////// CALC RECIPE WEIGHT IN GRAMS AND POUNDS //////////
 const updateWeight = function () {
-  console.log(`in update weight function....`);
   const gramsToPounds = 0.00220462;
   const totalWeight = ingredientsList.reduce(
     (acc, ingredient) => acc + +ingredient.weightInGrams,
@@ -112,7 +113,7 @@ const addIngredient = function () {
   document.getElementById("weightInput").value = ``;
   document.getElementById("notesInput").value = ``;
 
-  renderIngredient(ingredient);
+  renderIngredient(ingredient, ingredientsList.length - 1);
 
   updateWeight();
 
@@ -150,17 +151,14 @@ editOverlay.addEventListener(`click`, closeEditIngredientModal);
 let indexToUpdate;
 document.addEventListener("click", function (event) {
   if (event.target.closest(".edit_icon")) {
-    console.log(`Icon Clicked.`);
     const row = event.target.closest(".ingredient");
     indexToUpdate = Array.from(row.parentElement.children).indexOf(row) - 1;
-    console.log("Index to update:", indexToUpdate);
     const ingredient = ingredientsList[indexToUpdate];
-    console.log(ingredient);
 
-    console.log(ingredient.ingredientName);
     openEditIngredientModal();
 
     // POPULATE FIELDS
+    document.getElementById("id").value = ingredient.ingredientId;
     document.getElementById("ingredientName").value = ingredient.ingredientName;
     document.getElementById("quantity").value = ingredient.quantity;
     document.getElementById("unit").value = ingredient.unit;
@@ -171,31 +169,40 @@ document.addEventListener("click", function (event) {
 
 const updateIngredient = (index, updatedIngredientData) => {
   console.log(updatedIngredientData);
-  ingredientsList[index] = updatedIngredientData;
+
+  const dataIndex = parseInt(index); // Convert the index to a number
+  ingredientsList[dataIndex] = updatedIngredientData;
 
   // Update the existing ingredient row on the page
   const ingredientRow = document.querySelector(
     `.ingredient[data-index="${index}"]`
   );
   if (ingredientRow) {
-    const cells = ingredientRow.querySelectorAll("td");
-    // Update the content of each cell based on its index
-    cells[0].innerText = updatedIngredientData.ingredientName;
-    // Assuming ingredient name is in the first cell
-    cells[1].innerText = updatedIngredientData.quantity;
-    // Assuming quantity is in the second cell
-    cells[2].innerText = updatedIngredientData.unit;
-    // Assuming unit is in the third cell
-    cells[3].innerText = updatedIngredientData.weightInGrams;
-    // Assuming weight is in the fourth cell
-    cells[4].innerText = updatedIngredientData.notes;
+    ingredientRow.querySelector(".ingredientName").innerText =
+      updatedIngredientData.ingredientName;
+    ingredientRow.querySelector(".quantity").innerText =
+      updatedIngredientData.quantity;
+    ingredientRow.querySelector(".unit").innerText = updatedIngredientData.unit;
+    ingredientRow.querySelector(".weight").innerText =
+      updatedIngredientData.weightInGrams;
+    ingredientRow.querySelector(".notes").innerText =
+      updatedIngredientData.notes;
+
+    ingredientRow.setAttribute(
+      "data-ingredient-id",
+      updatedIngredientData.ingredientId
+    );
   } else {
-    console.log(`Who knows....`);
+    console.log(`Could not find row!`);
   }
 };
 
 btnUpdateIngredient.addEventListener(`click`, () => {
   const updatedIngredientData = {
+    // ingredientId: document
+    //   .querySelector(`.ingredient[data-index="${index}"]`)
+    //   .getAttribute("data-ingredient-id"),
+    ingredientId: parseInt(document.getElementById("id").value),
     ingredientName: document.getElementById("ingredientName").value,
     quantity: document.getElementById("quantity").value,
     unit: document.getElementById("unit").value,
@@ -211,17 +218,32 @@ btnUpdateIngredient.addEventListener(`click`, () => {
 });
 
 // /////////////////////// DELETE INGREDIENT BEFORE SUBMITTING //////////
+const updateDataIndexAttributes = () => {
+  const ingredientRows = document.querySelectorAll(".ingredient");
+  ingredientRows.forEach((row, index) => {
+    row.setAttribute("data-index", index);
+  });
+};
 document.addEventListener("click", function (event) {
   if (event.target.closest(".trash_icon")) {
     const row = event.target.closest(".ingredient");
+    const dataIndex = row.dataset.index;
     // Remove the row from the ingredients container
     row.remove();
     // Remove the corresponding ingredient from the ingredientsList array
-    const index = Array.from(ingredientsContainer.children).indexOf(row);
-    ingredientsList.splice(index, 1);
-    console.log(ingredientsList);
-    // Update the total weight after deletion
-    updateWeight();
+    const index = parseInt(dataIndex);
+    if (!isNaN(index) && index >= 0 && index < ingredientsList.length) {
+      ingredientsList.splice(index, 1);
+      console.log(ingredientsList);
+
+      updateDataIndexAttributes();
+
+      updateWeight();
+    } else {
+      console.error(
+        "Invalid data-index or ingredient not found in ingredientsList."
+      );
+    }
   }
 });
 

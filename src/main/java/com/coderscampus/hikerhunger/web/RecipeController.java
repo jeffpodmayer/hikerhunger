@@ -6,6 +6,7 @@ import com.coderscampus.hikerhunger.domain.User;
 import com.coderscampus.hikerhunger.service.IngredientService;
 import com.coderscampus.hikerhunger.service.RecipeService;
 import com.coderscampus.hikerhunger.service.UserService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.util.spi.ToolProvider.findFirst;
 
@@ -36,7 +38,7 @@ public class RecipeController {
     public String postCreateRecipe(@PathVariable Integer userId, @ModelAttribute("recipe") Recipe recipe) {
         User user = userService.findById(userId);
         Recipe newRecipe = recipeService.createRecipe(recipe, user);
-        System.out.println("Created new recipe:" + newRecipe);
+//        System.out.println("Created new recipe:" + newRecipe);
         return "redirect:/home/" + userId + "/recipe/" + newRecipe.getRecipeId();
     }
 
@@ -71,7 +73,7 @@ public class RecipeController {
 
 
                 Recipe savedRecipe = recipeService.saveRecipe(recipe);
-                System.out.println("Sent from createRecipe page:" + savedRecipe);
+//                System.out.println("Sent from createRecipe page:" + savedRecipe);
 
                 return ResponseEntity.ok().body(savedRecipe);
             } catch (Exception e) {
@@ -82,7 +84,8 @@ public class RecipeController {
         }
     }
 
-    @PostMapping("/updateRecipe/{recipeId}")
+    @PutMapping("/updateRecipe/{recipeId}")
+    @Transactional
     public ResponseEntity<Recipe> updateRecipe(@RequestBody Recipe recipeData, @PathVariable Long recipeId) {
         Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
 
@@ -98,27 +101,54 @@ public class RecipeController {
 
                 // Get existing ingredients associated with the recipe
                 List<Ingredient> existingIngredients = recipe.getIngredients();
+                for (Ingredient ingredient : existingIngredients) {
+                    System.out.println("Existing ingredient ID:" + ingredient.getIngredientId());
+                }
 
-                System.out.println(existingIngredients);
+                // EXTRACT INTO INGREDIENT SERVICE!! // DELETE INGREDIENTS THAT DON'T EXIST ANYMORE
+                // Get the IDs of existing ingredients
+                List<Long> existingIngredientIds = existingIngredients.stream()
+                        .map(Ingredient::getIngredientId)
+                        .toList();
 
-                // Update existing ingredient or add new one
+                // Get the IDs of ingredients in the updated recipe
+                List<Long> updatedIngredientIds = recipeData.getIngredients().stream()
+                        .map(Ingredient::getIngredientId)
+                        .toList();
+
+                // Find the IDs of ingredients to remove
+                List<Long> ingredientIdsToRemove = existingIngredientIds.stream()
+                        .filter(existingId -> !updatedIngredientIds.contains(existingId))
+                        .toList();
+
+                System.out.println("Id's to remove: " + ingredientIdsToRemove);
+
+                // Delete ingredients from the database based on their IDs
+                for (Long ingredientId : ingredientIdsToRemove) {
+                    ingredientService.deleteIngredientById(ingredientId);
+                    System.out.println("Deleted:" + ingredientId);
+                }
+
+                System.out.println("Should be empty:" + ingredientIdsToRemove);
+
+                // UPDATE OR ADD INGREDIENTS
                 for (Ingredient ingredient : recipeData.getIngredients()) {
                     if (ingredient.getIngredientId() != null) {
-                        // If the ingredient has an ID, it's an existing ingredient
-                        // Find the corresponding existing ingredient and update its properties
-                        Optional<Ingredient> optionalExistingIngredient = existingIngredients.stream()
-                                .filter(i -> i.getIngredientId().equals(ingredient.getIngredientId()))
-                                .findFirst();
-                        if (optionalExistingIngredient.isPresent()) {
-                            Ingredient existingIngredient = optionalExistingIngredient.get();
-                            existingIngredient.setIngredientName((ingredient.getIngredientName()));
-                            existingIngredient.setQuantity(ingredient.getQuantity());
-                            existingIngredient.setUnit(ingredient.getUnit());
-                            existingIngredient.setWeightInGrams(ingredient.getWeightInGrams());
-                            existingIngredient.setNotes(ingredient.getNotes());
-//                        } else {
-//                            // If the ingredient doesn't exist in the existingIngredients list, add it
-//                            existingIngredients.add(ingredient);
+                        if (updatedIngredientIds.contains(ingredient.getIngredientId())) {
+                            Optional<Ingredient> optionalExistingIngredient = existingIngredients.stream()
+                                    .filter(i -> i.getIngredientId().equals(ingredient.getIngredientId()))
+                                    .findFirst();
+                            if (optionalExistingIngredient.isPresent()) {
+                                Ingredient existingIngredient = optionalExistingIngredient.get();
+                                existingIngredient.setIngredientName(ingredient.getIngredientName());
+                                existingIngredient.setQuantity(ingredient.getQuantity());
+                                existingIngredient.setUnit(ingredient.getUnit());
+                                existingIngredient.setWeightInGrams(ingredient.getWeightInGrams());
+                                existingIngredient.setNotes(ingredient.getNotes());
+                            } else {
+                                // If the ingredient doesn't exist in the existingIngredients list, add it
+                                existingIngredients.add(ingredient);
+                            }
                         }
                     } else {
                         // If the ingredient doesn't have an ID, it's a new ingredient

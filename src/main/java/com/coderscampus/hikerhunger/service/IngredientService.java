@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -28,11 +29,30 @@ public class IngredientService {
         ingredientRepo.save(ingredient);
         return ingredient;
     }
-    @Transactional
-    public void clearRecipeIngredients(Recipe recipe) {
-        List<Ingredient> ingredients = recipe.getIngredients();
-        if (!ingredients.isEmpty()) {
-            ingredientRepo.deleteAll(ingredients);
+//    @Transactional
+//    public void clearRecipeIngredients(Recipe recipe) {
+//        List<Ingredient> ingredients = recipe.getIngredients();
+//        if (!ingredients.isEmpty()) {
+//            ingredientRepo.deleteAll(ingredients);
+//        }
+//    }
+
+    public void delete(Ingredient ingredient) {
+        ingredientRepo.delete(ingredient);
+    }
+
+    public void deleteById(Long ingredientId) {
+        ingredientRepo.deleteById(ingredientId);
+    }
+
+    public void deleteIngredientById(Long ingredientId) {
+        Optional<Ingredient> optionalIngredient = ingredientRepo.findById(ingredientId);
+        if (optionalIngredient.isPresent()) {
+            Ingredient ingredient = optionalIngredient.get();
+            ingredientRepo.delete(ingredient);
+        } else {
+            // Handle case where ingredient with given ID does not exist
+            throw new NoSuchElementException("Ingredient not found with ID: " + ingredientId);
         }
     }
 //    public void deleteIngredient(Ingredient ingredient) {

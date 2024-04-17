@@ -10,8 +10,8 @@
   </head>
   <body>
     <h1>Edit your recipe details:</h1>
-    <input type="" id="recipeIdInput" th:value="${recipeId}" />
-    <input type="" id="userIdInput" th:value="${user.id}" />
+    <input type="hidden" id="recipeIdInput" th:value="${recipeId}" />
+    <input type="hidden" id="userIdInput" th:value="${user.id}" />
 
 <form id="recipeForm">
     <div>
@@ -53,11 +53,13 @@
         <h2>Ingredients</h2>
         <table id="ingredientsContainer">
           <tr>
+            <th>ID</th>
             <th>Ingredient Name</th>
             <th>Quantity</th>
             <th>Unit</th>
             <th>Grams</th>
             <th>Notes</th>
+            <th></th>
             <th></th>
           </tr>
         </table>
@@ -92,6 +94,7 @@
     <!-- EDIT INGREDIENT MODAL WINDOW -->
     <div class="edit-ingredient-modal hidden">
       <button type="button" class="close-modal">&times;</button>
+      <input id="id" type="text" /><br />
       <label>Ingredient Name:</label>
       <input id="ingredientName" type="text" /><br />
       <label>Quantity:</label>

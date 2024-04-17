@@ -9,8 +9,8 @@
     <h1>Enter your recipe details:</h1>
 
     <!-- RECIPE DETAILS SECTION -->
-    <input type="" id="recipeIdInput" th:value="${recipeId}" />
-    <input type="" id="userIdInput" th:value="${user.id}" />
+    <input type="hidden" id="recipeIdInput" th:value="${recipeId}" />
+    <input type="hidden" id="userIdInput" th:value="${user.id}" />
 
 <form id="recipeForm">
     <div>
@@ -52,11 +52,13 @@
         <h2>Ingredients</h2>
         <table id="ingredientsContainer">
           <tr>
+            <th>ID</th>
             <th>Ingredient Name</th>
             <th>Quantity</th>
             <th>Unit</th>
             <th>Grams</th>
             <th>Notes</th>
+            <th></th>
             <th></th>
           </tr>
         </table>

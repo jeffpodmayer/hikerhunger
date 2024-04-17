@@ -1,3 +1,5 @@
+console.log(userId);
+
 const editRecipePage = async () => {
   const recipeId = window.location.pathname.split("/").pop();
   const recipeData = await fetchRecipeData(recipeId);
@@ -59,9 +61,10 @@ const updateRecipe = async function () {
     totalWeight: weightInGramsInput.value,
     ingredients: ingredientsList,
   };
+
   try {
     // POST request to server to save ingredient data
-    const response = await fetch(`/home/updateRecipe/${recipeIdNumber}`, {
+    const response = await fetch(`/home/updateRecipe/${recipeId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -81,5 +84,37 @@ const updateRecipe = async function () {
     console.error("Error saving:", error);
   }
 };
-
+const updateButton = document.getElementById("updateButton");
 updateButton.addEventListener(`click`, updateRecipe);
+
+//////////////// DELETE BUTTON /////////////////////////////
+const deleteButton = document.getElementById("deleteButton");
+
+// Event listener for the delete button click
+deleteButton.addEventListener("click", function () {
+  const recipeId = window.location.pathname.split("/").pop();
+
+  const requestData = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ recipeId }), // Send only the recipe ID
+  };
+
+  fetch(`/home/deleteRecipe/${recipeId}`, requestData)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response;
+    })
+    .then((data) => {
+      console.log("Recipe deleted successfully:", data);
+      // Redirect to the home page
+      window.location.href = `/home/${userId}`;
+    })
+    .catch((error) => {
+      console.error("Error deleting recipe:", error);
+    });
+});

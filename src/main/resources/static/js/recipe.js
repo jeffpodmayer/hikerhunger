@@ -147,7 +147,7 @@ const closeEditIngredientModal = function () {
 btnCloseModal2.addEventListener(`click`, closeEditIngredientModal);
 editOverlay.addEventListener(`click`, closeEditIngredientModal);
 
-//////////////////////// EVENT LISTENER FOR CLICKING EDIT ICON ///////////////////////////
+//////////////////////// EVENT LISTENER FOR CLICKING EDIT ICON ////////////////
 let indexToUpdate;
 document.addEventListener("click", function (event) {
   if (event.target.closest(".edit_icon")) {
@@ -204,9 +204,9 @@ btnUpdateIngredient.addEventListener(`click`, () => {
     //   .getAttribute("data-ingredient-id"),
     ingredientId: parseInt(document.getElementById("id").value),
     ingredientName: document.getElementById("ingredientName").value,
-    quantity: parseInt(document.getElementById("quantity").value),
+    quantity: parseFloat(document.getElementById("quantity").value),
     unit: document.getElementById("unit").value,
-    weightInGrams: parseInt(document.getElementById("weight").value),
+    weightInGrams: parseFloat(document.getElementById("weight").value),
     notes: document.getElementById("notes").value,
   };
 

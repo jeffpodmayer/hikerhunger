@@ -7,6 +7,7 @@ import com.coderscampus.hikerhunger.service.IngredientService;
 import com.coderscampus.hikerhunger.service.RecipeService;
 import com.coderscampus.hikerhunger.service.UserService;
 import jakarta.transaction.Transactional;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -83,6 +84,19 @@ public class RecipeController {
             return ResponseEntity.notFound().build();
         }
     }
+    @PostMapping("/deleteRecipe/{recipeId}")
+    public ResponseEntity<Void> deleteRecipe(@PathVariable Long recipeId) {
+        Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
+        if (optionalRecipe.isPresent()) {
+            Recipe recipe = optionalRecipe.get();
+            recipeService.delete(recipe);
+            return ResponseEntity.noContent().build(); // Return 204 No Content for successful deletion
+        } else {
+            return ResponseEntity.notFound().build(); // Return 404 Not Found if recipe with the given ID doesn't exist
+        }
+    }
+
+
 
     @PutMapping("/updateRecipe/{recipeId}")
     @Transactional
@@ -121,7 +135,7 @@ public class RecipeController {
                         .filter(existingId -> !updatedIngredientIds.contains(existingId))
                         .toList();
 
-                System.out.println("Id's to remove: " + ingredientIdsToRemove);
+//                System.out.println("Id's to remove: " + ingredientIdsToRemove);
 
                 // Delete ingredients from the database based on their IDs
                 for (Long ingredientId : ingredientIdsToRemove) {
@@ -129,7 +143,7 @@ public class RecipeController {
                     System.out.println("Deleted:" + ingredientId);
                 }
 
-                System.out.println("Should be empty:" + ingredientIdsToRemove);
+//                System.out.println("Should be empty:" + ingredientIdsToRemove);
 
                 // UPDATE OR ADD INGREDIENTS
                 for (Ingredient ingredient : recipeData.getIngredients()) {

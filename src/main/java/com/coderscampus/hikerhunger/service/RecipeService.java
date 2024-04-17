@@ -4,6 +4,7 @@ import com.coderscampus.hikerhunger.domain.Recipe;
 import com.coderscampus.hikerhunger.domain.User;
 import com.coderscampus.hikerhunger.repository.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -38,4 +39,7 @@ public class RecipeService {
     }
 
 
+    public void delete(Recipe recipe) {
+        recipeRepo.delete(recipe);
+    }
 }

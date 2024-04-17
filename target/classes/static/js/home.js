@@ -90,19 +90,6 @@ const goToEditPage = function (recipeId) {
   window.location.href = editUrl;
 };
 
-// const fetchRecipeData = async (recipeId) => {
-//   try {
-//     const response = await fetch(`/home/fetch-recipe/${recipeId}`);
-//     if (!response.ok) {
-//       throw new Error("Failed to fetch recipe data");
-//     }
-//     const recipeData = await response.json();
-//     console.log("Recipe Data:", recipeData);
-
-//   } catch (error) {
-//     console.error("Error fetching recipe data:", error);
-//   }
-// };
 // OPEN
 const openViewRecipePopup = function () {
   recipePopup.classList.remove(`hidden`);

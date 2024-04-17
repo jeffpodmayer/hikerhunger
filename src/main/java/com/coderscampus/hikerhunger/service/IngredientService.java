@@ -45,6 +45,7 @@ public class IngredientService {
         ingredientRepo.deleteById(ingredientId);
     }
 
+    @Transactional
     public void deleteIngredientById(Long ingredientId) {
         Optional<Ingredient> optionalIngredient = ingredientRepo.findById(ingredientId);
         if (optionalIngredient.isPresent()) {

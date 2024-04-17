@@ -99,7 +99,6 @@ public class RecipeController {
 
 
     @PutMapping("/updateRecipe/{recipeId}")
-    @Transactional
     public ResponseEntity<Recipe> updateRecipe(@RequestBody Recipe recipeData, @PathVariable Long recipeId) {
         Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
 
@@ -115,27 +114,27 @@ public class RecipeController {
 
                 // Get existing ingredients associated with the recipe
                 List<Ingredient> existingIngredients = recipe.getIngredients();
-                for (Ingredient ingredient : existingIngredients) {
-                    System.out.println("Existing ingredient ID:" + ingredient.getIngredientId());
-                }
-
                 // EXTRACT INTO INGREDIENT SERVICE!! // DELETE INGREDIENTS THAT DON'T EXIST ANYMORE
                 // Get the IDs of existing ingredients
                 List<Long> existingIngredientIds = existingIngredients.stream()
                         .map(Ingredient::getIngredientId)
                         .toList();
 
+                System.out.println("Current ingredient id's:" + existingIngredientIds);
+
                 // Get the IDs of ingredients in the updated recipe
                 List<Long> updatedIngredientIds = recipeData.getIngredients().stream()
                         .map(Ingredient::getIngredientId)
                         .toList();
+
+                System.out.println("From client side:" + updatedIngredientIds);
 
                 // Find the IDs of ingredients to remove
                 List<Long> ingredientIdsToRemove = existingIngredientIds.stream()
                         .filter(existingId -> !updatedIngredientIds.contains(existingId))
                         .toList();
 
-//                System.out.println("Id's to remove: " + ingredientIdsToRemove);
+                System.out.println("Id's to remove: " + ingredientIdsToRemove);
 
                 // Delete ingredients from the database based on their IDs
                 for (Long ingredientId : ingredientIdsToRemove) {
@@ -143,7 +142,7 @@ public class RecipeController {
                     System.out.println("Deleted:" + ingredientId);
                 }
 
-//                System.out.println("Should be empty:" + ingredientIdsToRemove);
+                System.out.println("Should be empty:" + ingredientIdsToRemove);
 
                 // UPDATE OR ADD INGREDIENTS
                 for (Ingredient ingredient : recipeData.getIngredients()) {

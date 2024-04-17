@@ -45,16 +45,9 @@ public class IngredientService {
         ingredientRepo.deleteById(ingredientId);
     }
 
-    @Transactional
+
     public void deleteIngredientById(Long ingredientId) {
-        Optional<Ingredient> optionalIngredient = ingredientRepo.findById(ingredientId);
-        if (optionalIngredient.isPresent()) {
-            Ingredient ingredient = optionalIngredient.get();
-            ingredientRepo.delete(ingredient);
-        } else {
-            // Handle case where ingredient with given ID does not exist
-            throw new NoSuchElementException("Ingredient not found with ID: " + ingredientId);
-        }
+        ingredientRepo.deleteById(ingredientId);
     }
 //    public void deleteIngredient(Ingredient ingredient) {
 //        System.out.println("Deleted ingredient");

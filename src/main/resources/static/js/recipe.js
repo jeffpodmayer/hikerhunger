@@ -178,17 +178,15 @@ const updateIngredient = (index, updatedIngredientData) => {
     `.ingredient[data-index="${index}"]`
   );
   if (ingredientRow) {
-    ingredientRow.querySelector(`#ingredientName`).innerText =
-      updatedIngredientData.ingredientName;
-    ingredientRow.querySelector(`#quantity`).innerText =
-      updatedIngredientData.quantity;
-    ingredientRow.querySelector(`#unit`).innerText = updatedIngredientData.unit;
-    ingredientRow.querySelector(`#weight`).innerText =
-      updatedIngredientData.weightInGrams;
-    ingredientRow.querySelector(`#notes`).innerText =
-      updatedIngredientData.notes;
+    const cells = ingredientRow.querySelectorAll("td");
+    // Update the content of each cell based on its index
+    cells[0].innerText = updatedIngredientData.ingredientName;
+    cells[1].innerText = updatedIngredientData.quantity;
+    cells[2].innerText = updatedIngredientData.unit;
+    cells[3].innerText = updatedIngredientData.weightInGrams;
+    cells[4].innerText = updatedIngredientData.notes;
   } else {
-    console.log(`Who knows....`);
+    console.log(`Could not find row!`);
   }
 };
 

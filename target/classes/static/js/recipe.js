@@ -146,7 +146,7 @@ const closeEditIngredientModal = function () {
 btnCloseModal2.addEventListener(`click`, closeEditIngredientModal);
 editOverlay.addEventListener(`click`, closeEditIngredientModal);
 
-// EVENT LISTENER FOR CLICKING EDIT ICON
+//////////////////////// EVENT LISTENER FOR CLICKING EDIT ICON ///////////////////////////
 let indexToUpdate;
 document.addEventListener("click", function (event) {
   if (event.target.closest(".edit_icon")) {
@@ -178,50 +178,52 @@ const updateIngredient = (index, updatedIngredientData) => {
     `.ingredient[data-index="${index}"]`
   );
   if (ingredientRow) {
-    ingredientRow.querySelector(`#ingredientName`).innerText =
-      updatedIngredientData.ingredientName;
-    ingredientRow.querySelector(`#quantity`).innerText =
-      updatedIngredientData.quantity;
-    ingredientRow.querySelector(`#unit`).innerText = updatedIngredientData.unit;
-    ingredientRow.querySelector(`#weight`).innerText =
-      updatedIngredientData.weightInGrams;
-    ingredientRow.querySelector(`#notes`).innerText =
-      updatedIngredientData.notes;
+    const cells = ingredientRow.querySelectorAll("td");
+    // Update the content of each cell based on its index
+    cells[0].innerText = updatedIngredientData.ingredientName;
+    // Assuming ingredient name is in the first cell
+    cells[1].innerText = updatedIngredientData.quantity;
+    // Assuming quantity is in the second cell
+    cells[2].innerText = updatedIngredientData.unit;
+    // Assuming unit is in the third cell
+    cells[3].innerText = updatedIngredientData.weightInGrams;
+    // Assuming weight is in the fourth cell
+    cells[4].innerText = updatedIngredientData.notes;
   } else {
     console.log(`Who knows....`);
   }
 };
 
-// btnUpdateIngredient.addEventListener(`click`, () => {
-//   const updatedIngredientData = {
-//     ingredientName: document.getElementById("ingredientName").value,
-//     quantity: document.getElementById("quantity").value,
-//     unit: document.getElementById("unit").value,
-//     weightInGrams: document.getElementById("weight").value,
-//     notes: document.getElementById("notes").value,
-//   };
+btnUpdateIngredient.addEventListener(`click`, () => {
+  const updatedIngredientData = {
+    ingredientName: document.getElementById("ingredientName").value,
+    quantity: document.getElementById("quantity").value,
+    unit: document.getElementById("unit").value,
+    weightInGrams: document.getElementById("weight").value,
+    notes: document.getElementById("notes").value,
+  };
 
-//   updateIngredient(indexToUpdate, updatedIngredientData);
+  updateIngredient(indexToUpdate, updatedIngredientData);
 
-//   updateWeight();
+  updateWeight();
 
-//   closeEditIngredientModal();
-// });
+  closeEditIngredientModal();
+});
 
 // /////////////////////// DELETE INGREDIENT BEFORE SUBMITTING //////////
-// document.addEventListener("click", function (event) {
-//   if (event.target.closest(".trash_icon")) {
-//     const row = event.target.closest(".ingredient");
-//     // Remove the row from the ingredients container
-//     row.remove();
-//     // Remove the corresponding ingredient from the ingredientsList array
-//     const index = Array.from(ingredientsContainer.children).indexOf(row);
-//     ingredientsList.splice(index, 1);
-//     console.log(ingredientsList);
-//     // Update the total weight after deletion
-//     updateWeight();
-//   }
-// });
+document.addEventListener("click", function (event) {
+  if (event.target.closest(".trash_icon")) {
+    const row = event.target.closest(".ingredient");
+    // Remove the row from the ingredients container
+    row.remove();
+    // Remove the corresponding ingredient from the ingredientsList array
+    const index = Array.from(ingredientsContainer.children).indexOf(row);
+    ingredientsList.splice(index, 1);
+    console.log(ingredientsList);
+    // Update the total weight after deletion
+    updateWeight();
+  }
+});
 
 // EVENT LISTENER TO CLOSE BOTH MODALS WITH `ESC`
 document.addEventListener(`keydown`, function (event) {

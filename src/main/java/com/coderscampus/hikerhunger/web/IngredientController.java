@@ -80,6 +80,20 @@ public class IngredientController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @DeleteMapping("/deleteIngredient/{ingredientId}")
+    public ResponseEntity<String> deleteIngredient(@PathVariable Long ingredientId){
+        Optional<Ingredient> optionalIngredient = ingredientService.findById(ingredientId);
+
+        if (optionalIngredient.isPresent()) {
+            Ingredient ingredient = optionalIngredient.get();
+            ingredientService.delete(ingredient);
+            return ResponseEntity.ok("Ingredient deleted!");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ingredient not Found!");
+        }
+    }
+
     }
 
 

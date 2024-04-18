@@ -70,28 +70,18 @@ public class RecipeController {
                 recipe.setRecipeType(recipeData.getRecipeType());
                 recipe.setInstructions(recipeData.getInstructions());
                 recipe.setServings(recipeData.getServings());
-//                recipe.setTotalWeight(recipeData.getTotalWeight());
-
-                // Set the recipe for each ingredient
-//                List<Ingredient> ingredients = recipeData.getIngredients();
-//                for (Ingredient ingredient : ingredients) {
-//                    ingredient.setRecipe(recipe);
-//                }
-//                recipe.setIngredients(ingredients); // Set the updated ingredient list
-
+                recipe.setTotalWeight(recipeData.getTotalWeight());
 
                 Recipe savedRecipe = recipeService.saveRecipe(recipe);
                 System.out.println("Sent from createRecipe page:" + savedRecipe);
 
                 return "redirect:/home/" + recipe.getUser().getId();
             } catch (Exception e) {
-                // Handle exceptions here
-                e.printStackTrace(); // You might want to log the exception for debugging
-                return "error"; // Return an error view or redirect path
+                e.printStackTrace();
+                return "error";
             }
         } else {
-            // Handle case where the recipe ID is not found
-            return "error"; // Return an error view or redirect path
+            return "error";
         }
     }
     @PostMapping("/deleteRecipe/{recipeId}")

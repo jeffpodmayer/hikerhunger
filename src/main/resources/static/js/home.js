@@ -35,42 +35,43 @@ const renderRecipePopUp = function (data) {
   const ingredientsHTML = data.ingredients
     .map(
       (ingredient) => `
-        <tr>
-            <td>${ingredient.ingredientName}</td>
-            <td>${ingredient.quantity}</td>
-            <td>${ingredient.unit}</td>
-            <td>${ingredient.weightInGrams}</td>
-            <td>${ingredient.notes}</td>
-        </tr>`
+          <tr>
+              <td>${ingredient.ingredientName}</td>
+              <td>${ingredient.quantity}</td>
+              <td>${ingredient.unit}</td>
+              <td>${ingredient.weightInGrams}</td>
+              <td>${ingredient.notes}</td>
+          </tr>`
     )
     .join("");
 
   const tableHTML = `
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Quantity</th>
-                    <th>Unit</th>
-                    <th>Weight</th>
-                    <th>Notes</th>
-                </tr>
-            </thead>
-            <tbody>
-                ${ingredientsHTML}
-            </tbody>
-        </table>`;
+          <table>
+              <thead>
+                  <tr>
+                      <th>Name</th>
+                      <th>Quantity</th>
+                      <th>Unit</th>
+                      <th>Weight</th>
+                      <th>Notes</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  ${ingredientsHTML}
+              </tbody>
+          </table>`;
 
   const markupHTML = `
-  <button type="button" class="close-modal">&times;</button>
-  <button class="edit_icon"><i class="fa-solid fa-pencil"></i></button>
-  <h2>${data.recipeName}</h2>
-  <p>Recipe Type: ${data.recipeType}</p>
-  <p>Instructions: ${data.instructions}</p>
-  <p>Serves: ${data.servings}</p>
-  <p>Weight in Grams: ${data.totalWeight}</p>
-  <h3>Ingredients</h3>
-  <p>${tableHTML}</p>`;
+    <button type="button" class="close-modal">&times;</button>
+    <button class="edit_icon"><i class="fa-solid fa-pencil"></i></button>
+    <button class="trash_icon"><i class="fa-regular fa-trash-can"></i></button>
+    <h2>${data.recipeName}</h2>
+    <p>Recipe Type: ${data.recipeType}</p>
+    <p>Instructions: ${data.instructions}</p>
+    <p>Serves: ${data.servings}</p>
+    <p>Weight in Grams: ${data.totalWeight}</p>
+    <h3>Ingredients</h3>
+    <p>${tableHTML}</p>`;
 
   recipePopup.innerHTML = markupHTML;
 

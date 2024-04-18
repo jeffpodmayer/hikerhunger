@@ -196,57 +196,67 @@ document.addEventListener("click", async function (event) {
   }
 });
 
-const updateIngredient = (index, updatedIngredientData) => {
-  console.log(updatedIngredientData);
+const updateIngredient = async (updatedIngredientData, ingredientId) => {
+  try {
+    const response = await fetch(`/updateIngredient/${ingredientId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedIngredientData),
+    });
 
-  const dataIndex = parseInt(index); // Convert the index to a number
-  ingredientsList[dataIndex] = updatedIngredientData;
+    if (response.ok) {
+      // Ingredient updated successfully
+      console.log("Ingredient updated successfully");
 
-  // Update the existing ingredient row on the page
-  const ingredientRow = document.querySelector(
-    `.ingredient[data-index="${index}"]`
-  );
-  if (ingredientRow) {
-    ingredientRow.querySelector(".ingredientName").innerText =
-      updatedIngredientData.ingredientName;
-    ingredientRow.querySelector(".quantity").innerText =
-      updatedIngredientData.quantity;
-    ingredientRow.querySelector(".unit").innerText = updatedIngredientData.unit;
-    ingredientRow.querySelector(".weight").innerText =
-      updatedIngredientData.weightInGrams;
-    ingredientRow.querySelector(".notes").innerText =
-      updatedIngredientData.notes;
+      const updatedIngredientData = await response.json();
 
-    ingredientRow.setAttribute(
-      "data-ingredient-id",
-      updatedIngredientData.ingredientId
-    );
-  } else {
-    console.log(`Could not find row!`);
+      console.log(updatedIngredientData);
+
+      const updatedRow = document.querySelector(
+        `tr[data-ingredient-id="${ingredientId}"]`
+      );
+
+      console.log(updatedRow);
+
+      // Update content of table cells in the row with new data
+      // updatedRow.cells[1].textContent = updatedIngredientData.ingredientId;
+      // updatedRow.cells[1].textContent = updatedIngredientData.ingredientName;
+      // updatedRow.cells[2].textContent = updatedIngredientData.quantity;
+      // updatedRow.cells[3].textContent = updatedIngredientData.unit;
+      // updatedRow.cells[4].textContent = updatedIngredientData.weightInGrams;
+      // updatedRow.cells[5].textContent = updatedIngredientData.notes;
+    } else {
+      // Error updating ingredient
+      console.error("Error updating ingredient:", response.statusText);
+    }
+  } catch (error) {
+    console.error("Error updating ingredient:", error);
   }
 };
 
-btnUpdateIngredient.addEventListener(`click`, () => {
-  const updatedIngredientData = {
-    // ingredientId: document
-    //   .querySelector(`.ingredient[data-index="${index}"]`)
-    //   .getAttribute("data-ingredient-id"),
-    ingredientId: parseInt(document.getElementById("id").value),
-    ingredientName: document.getElementById("ingredientName").value,
-    quantity: parseFloat(document.getElementById("quantity").value),
-    unit: document.getElementById("unit").value,
-    weightInGrams: parseFloat(document.getElementById("weight").value),
-    notes: document.getElementById("notes").value,
-  };
+document
+  .getElementById("editIngredientButton")
+  .addEventListener("click", function (event) {
+    // Gather updated ingredient data from form fields
+    const updatedIngredientData = {
+      ingredientId: document.getElementById("id").value,
+      ingredientName: document.getElementById("ingredientName").value,
+      quantity: document.getElementById("quantity").value,
+      unit: document.getElementById("unit").value,
+      weight: document.getElementById("weight").value,
+      notes: document.getElementById("notes").value,
+    };
 
-  updateIngredient(indexToUpdate, updatedIngredientData);
+    // Call updateIngredient function with updated ingredient data
+    updateIngredient(updatedIngredientData, updatedIngredientData.ingredientId);
+    closeEditIngredientModal();
+    // renderIngredient(updatedIngredientData);
+    // updateWeight();
+  });
 
-  updateWeight();
-
-  closeEditIngredientModal();
-});
-
-// /////////////////////// DELETE INGREDIENT BEFORE SUBMITTING //////////
+// /////////////////////// DELETE INGREDIENT BEFORE SUBMITTING //////
 const updateDataIndexAttributes = () => {
   const ingredientRows = document.querySelectorAll(".ingredient");
   ingredientRows.forEach((row, index) => {

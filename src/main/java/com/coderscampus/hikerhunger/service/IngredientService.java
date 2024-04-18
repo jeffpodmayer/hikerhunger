@@ -19,8 +19,9 @@ public class IngredientService {
         this.recipeService = recipeService;
     }
 
-    public void saveIngredient(Ingredient ingredient) {
+    public Ingredient saveIngredient(Ingredient ingredient) {
         ingredientRepo.save(ingredient);
+        return ingredient;
     }
 //    @Transactional
 //    public void clearRecipeIngredients(Recipe recipe) {

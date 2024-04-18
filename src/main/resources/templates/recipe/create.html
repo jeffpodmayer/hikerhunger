@@ -104,9 +104,9 @@
 
 
     <!-- EDIT INGREDIENT MODAL WINDOW -->
-    <div class="edit-ingredient-modal hidden">
+    <form id="editIngredientForm" class="edit-ingredient-modal hidden">
       <button type="button" class="close-modal">&times;</button>
-      <input id="id" type="text"/><br />
+      <input id="id" type="hidden"/><br />
       <label>Ingredient Name:</label>
       <input id="ingredientName" type="text" /><br />
       <label>Quantity:</label>
@@ -118,11 +118,9 @@
       <label>Notes:</label>
       <input id="notes" type="text" />
       <div>
-        <!-- /////////////// TURN INTO JAVA SIDE w/ THYMELEAF //////
-        /updateIngredient/{ingredientId} -->
         <input type="button" id="editIngredientButton" value="Update!" />
       </div>
-    </div>
+    </form>
     <div class="edit-overlay hidden"></div>
 
     <script src="/js/recipe.js"></script>

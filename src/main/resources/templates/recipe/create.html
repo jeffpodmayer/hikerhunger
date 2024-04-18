@@ -61,7 +61,6 @@
 
       <!-- INGREDIENTS SECTION -->
       <div id="ingredientsSection">
-        <div th:if="${#lists.size(ingredients) > 0}">
         <h2>Ingredients</h2>
         <table id="ingredientsContainer">
           <tr>
@@ -73,19 +72,6 @@
             <th>Notes</th>
             <th></th>
             <th></th>
-          </tr>
-          <div th:if="${ingredients == null or #lists.size(ingredients) == 0}">
-            You don't have any any ingredients yet!
-          </div>
-          <tr method="get" th:each="ingredient : ${ingredients}">
-            <input type="hidden" th:value="${ingredient.ingredientId}" class="ingredient-id">
-            <td th:text="${ingredient.ingredientName}"></td>
-            <td th:text="${ingredient.quantity}"></td>
-            <td th:text="${ingredient.unit}"></td>
-            <td th:text="${ingredient.weightInGrams}"></td>
-            <td th:text="${ingredient.notes}"></td>
-            <td class="trash_icon" type="button"><i class="fa-regular fa-trash-can"></i></td>
-            <td class="edit_icon" type="button"><i class="fa-solid fa-pencil"></i></td>
           </tr>
       </table>
     </div>
@@ -110,31 +96,31 @@
       <input id="weightInput" type="number"/><br />
       <label>Notes:</label>
       <input id="notesInput" type="text" />
-      
-        <!-- /////////////// TURN INTO JAVA SIDE w/ THYMELEAF ////// /saveIngredient -->
       <input type="button" id="addIngredientButton" value="Add!" />
-      
     </form>
     <div class="overlay hidden"></div>
+
+
+
 
     <!-- EDIT INGREDIENT MODAL WINDOW -->
     <div class="edit-ingredient-modal hidden">
       <button type="button" class="close-modal">&times;</button>
-      <input id="id" type="text" /><br />
+      <input id="id" type="text"/><br />
       <label>Ingredient Name:</label>
       <input id="ingredientName" type="text" /><br />
       <label>Quantity:</label>
       <input id="quantity" type="number" /><br />
       <label>Unit:</label>
-      <input id="unit" type="text" /><br />
+      <input id="unit" type="text"/><br />
       <label>Weight In Grams:</label>
       <input id="weight" type="number" /><br />
       <label>Notes:</label>
       <input id="notes" type="text" />
       <div>
-        /////////////// TURN INTO JAVA SIDE w/ THYMELEAF //////
-        /updateIngredient/{ingredientId}
-        <input type="submit" id="editIngredientButton" value="Update!" />
+        <!-- /////////////// TURN INTO JAVA SIDE w/ THYMELEAF //////
+        /updateIngredient/{ingredientId} -->
+        <input type="button" id="editIngredientButton" value="Update!" />
       </div>
     </div>
     <div class="edit-overlay hidden"></div>

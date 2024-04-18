@@ -5,6 +5,8 @@ import com.coderscampus.hikerhunger.repository.IngredientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class IngredientService {
 
@@ -39,6 +41,10 @@ public class IngredientService {
 
     public void deleteIngredientById(Long ingredientId) {
         ingredientRepo.deleteById(ingredientId);
+    }
+
+    public Optional<Ingredient> findById(Long ingredientId) {
+        return ingredientRepo.findById(ingredientId);
     }
 //    public void deleteIngredient(Ingredient ingredient) {
 //        System.out.println("Deleted ingredient");

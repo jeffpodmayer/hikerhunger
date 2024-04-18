@@ -28,14 +28,13 @@ let ingredientsList = [];
 
 ////////////////// FUNCTIONS /////////////////////////////
 // RENDER ON PAGE
-
 const renderIngredient = (ingredient) => {
   // console.log(ingredient);
   ///// RENDER INGREDIENT ON PAGE
   const tr = document.createElement("tr");
   tr.classList.add(`ingredient`);
   // tr.setAttribute("data-index", index);
-  // tr.setAttribute("data-ingredient-id", ingredient.ingredientId);
+  tr.setAttribute("data-ingredient-id", ingredient.ingredientId);
 
   const ingredientHTML = `
   <td class="id"><p>${ingredient.ingredientId}</p></td>
@@ -48,11 +47,9 @@ const renderIngredient = (ingredient) => {
   <td class="edit_icon"><i class="fa-solid fa-pencil"></i></td>
      `;
 
-  console.log(ingredientHTML);
-
-  // tr.innerHTML = ingredientHTML;
-  // const ingredientsContainer = document.getElementById("ingredientsContainer");
-  // ingredientsContainer.appendChild(tr);
+  tr.innerHTML = ingredientHTML;
+  const ingredientsContainer = document.getElementById("ingredientsContainer");
+  ingredientsContainer.appendChild(tr);
 };
 
 // UPDATE WEIGHT
@@ -90,6 +87,7 @@ const submitIngredient = async function () {
       const savedIngredient = await response.json();
       console.log("Saved:", savedIngredient);
       renderIngredient(savedIngredient);
+      clearModalInputFields();
     } else {
       throw new Error("Failed to save ingredient");
     }
@@ -97,6 +95,24 @@ const submitIngredient = async function () {
     console.error("Error saving ingredient:", error);
   }
 };
+
+// CLEAR INPUT FIELDS
+const clearModalInputFields = function () {
+  document.getElementById("ingredientNameInput").value = ``;
+  document.getElementById("quantityInput").value = ``;
+  document.getElementById("unitInput").value = ``;
+  document.getElementById("weightInput").value = ``;
+  document.getElementById("notesInput").value = ``;
+};
+
+function populateModalFields(ingredient) {
+  document.getElementById("id").value = ingredient.ingredientId;
+  document.getElementById("ingredientName").value = ingredient.ingredientName;
+  document.getElementById("quantity").value = ingredient.quantity;
+  document.getElementById("unit").value = ingredient.unit;
+  document.getElementById("weight").value = ingredient.weight;
+  document.getElementById("notes").value = ingredient.notes;
+}
 
 ///////////////////// NEW INGREDIENT POPUP ////////////////////////////
 const ingredientOverlay = document.querySelector(`.overlay`);
@@ -133,36 +149,6 @@ const addIngredient = function () {
 
 btnAddIngredient.addEventListener(`click`, addIngredient);
 
-// submitButton.addEventListener(`click`, submitRecipe);
-//GET INGREDIENT VALUES
-// const ingredientName = document.getElementById("ingredientNameInput").value;
-// const quantity = document.getElementById("quantityInput").value;
-// const unit = document.getElementById("unitInput").value;
-// const weightInGrams = document.getElementById("weightInput").value;
-// const notes = document.getElementById("notesInput").value;
-
-// // CREATE INGREDIENT OBJECT
-// const ingredient = {
-//   ingredientName: ingredientName,
-//   quantity: quantity,
-//   unit: unit,
-//   weightInGrams: weightInGrams,
-//   notes: notes,
-// };
-
-// // ADDS INGREDIENT TO ARRAY
-// // ingredientsList.push(ingredient);
-// console.log(ingredientsList);
-
-// // CLEAR INPUT FIELDS
-// document.getElementById("ingredientNameInput").value = ``;
-// document.getElementById("quantityInput").value = ``;
-// document.getElementById("unitInput").value = ``;
-// document.getElementById("weightInput").value = ``;
-// document.getElementById("notesInput").value = ``;
-
-// renderIngredient(ingredient, ingredientsList.length - 1);
-
 // ///////////////////// EDIT INGREDIENT ICON /////////////////////
 const editOverlay = document.querySelector(`.edit-overlay`);
 const btnCloseModal2 = document.querySelector(
@@ -188,23 +174,25 @@ const closeEditIngredientModal = function () {
 btnCloseModal2.addEventListener(`click`, closeEditIngredientModal);
 editOverlay.addEventListener(`click`, closeEditIngredientModal);
 
-//////////////////////// EVENT LISTENER FOR CLICKING EDIT ICON ////////////////
-let indexToUpdate;
-document.addEventListener("click", function (event) {
+/////////////////// EVENT LISTENER FOR CLICKING EDIT ICON ////////
+// let indexToUpdate;
+document.addEventListener("click", async function (event) {
   if (event.target.closest(".edit_icon")) {
     const row = event.target.closest(".ingredient");
-    indexToUpdate = Array.from(row.parentElement.children).indexOf(row) - 1;
-    const ingredient = ingredientsList[indexToUpdate];
+    const ingredientId = row.dataset.ingredientId;
 
-    openEditIngredientModal();
-
-    // POPULATE FIELDS
-    document.getElementById("id").value = ingredient.ingredientId;
-    document.getElementById("ingredientName").value = ingredient.ingredientName;
-    document.getElementById("quantity").value = ingredient.quantity;
-    document.getElementById("unit").value = ingredient.unit;
-    document.getElementById("weight").value = ingredient.weightInGrams;
-    document.getElementById("notes").value = ingredient.notes;
+    try {
+      const response = await fetch(`/getIngredient/${ingredientId}`); // Endpoint to fetch ingredient data
+      if (response.ok) {
+        const ingredient = await response.json();
+        populateModalFields(ingredient);
+        openEditIngredientModal();
+      } else {
+        throw new Error("Failed to fetch ingredient data");
+      }
+    } catch (error) {
+      console.error("Error fetching ingredient data:", error);
+    }
   }
 });
 

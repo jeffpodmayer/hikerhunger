@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,7 +30,6 @@ public class IngredientController {
 
       @PostMapping("/saveIngredient/{recipeId}")
       public ResponseEntity<Ingredient> saveIngredient(@RequestBody Ingredient ingredient, @PathVariable Long recipeId){
-//        System.out.println("Hello world!");
         Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
         Ingredient newIngredient = new Ingredient();
 
@@ -47,18 +43,27 @@ public class IngredientController {
             newIngredient.setWeightInGrams(ingredient.getWeightInGrams());
             newIngredient.setNotes(ingredient.getNotes());
             ingredientService.saveIngredient(newIngredient);
-
-            System.out.println(newIngredient);
-//            recipe.addIngredient(ingredient);
-//            recipeService.saveRecipe(recipe);
             return ResponseEntity.status(HttpStatus.CREATED).body(newIngredient);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
-}
 
-//    @PostMapping("/updateIngredients/{recipeId}")
+
+    @GetMapping("/getIngredient/{ingredientId}")
+    public ResponseEntity<Ingredient> getIngredient(@PathVariable Long ingredientId) {
+        Optional<Ingredient> optionalIngredient = ingredientService.findById(ingredientId);
+        if(optionalIngredient.isPresent()){
+            Ingredient ingredient = optionalIngredient.get();
+        return ResponseEntity.status(HttpStatus.CREATED).body(ingredient);
+    } else {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+    }
+
+    }
+
+//    @PostMapping("/updateIngredient/{recipeId}")
 //    public ResponseEntity<Recipe> updateRecipe(@RequestBody Recipe recipeData, @PathVariable Long recipeId) {
 //        Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
 //

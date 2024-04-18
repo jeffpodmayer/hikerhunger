@@ -1,17 +1,9 @@
 package com.coderscampus.hikerhunger.service;
 
 import com.coderscampus.hikerhunger.domain.Ingredient;
-import com.coderscampus.hikerhunger.domain.Recipe;
 import com.coderscampus.hikerhunger.repository.IngredientRepository;
-import jakarta.transaction.Transactional;
-import org.apache.tomcat.util.digester.ArrayStack;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 public class IngredientService {
@@ -25,9 +17,8 @@ public class IngredientService {
         this.recipeService = recipeService;
     }
 
-    public Ingredient saveIngredient(Ingredient ingredient) {
+    public void saveIngredient(Ingredient ingredient) {
         ingredientRepo.save(ingredient);
-        return ingredient;
     }
 //    @Transactional
 //    public void clearRecipeIngredients(Recipe recipe) {

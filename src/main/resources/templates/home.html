@@ -37,7 +37,7 @@
         <tr method="get" th:each="recipe : ${recipes}">
           <input type="hidden" th:value="${recipe.recipeId}" class="recipe-id">
           <td th:text="${recipe.recipeName}"></td>
-          <td th:text="${recipe.recipeType.displayValue}"></td>
+          <td th:text="${recipe.recipeType?.displayValue}"></td>
           <td th:text="${recipe.instructions}"></td>
           <td th:text="${recipe.servings}"></td>
           <td th:text="${recipe.totalWeight}"></td>

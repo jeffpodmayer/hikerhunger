@@ -2,12 +2,14 @@ package com.coderscampus.hikerhunger.web;
 
 import com.coderscampus.hikerhunger.domain.Ingredient;
 import com.coderscampus.hikerhunger.domain.Recipe;
+import com.coderscampus.hikerhunger.domain.User;
 import com.coderscampus.hikerhunger.service.IngredientService;
 import com.coderscampus.hikerhunger.service.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +30,33 @@ public class IngredientController {
         this.ingredientService = ingredientService;
         this.recipeService = recipeService;
     }
+
+      @PostMapping("/saveIngredient/{recipeId}")
+      public ResponseEntity<Ingredient> saveIngredient(@RequestBody Ingredient ingredient, @PathVariable Long recipeId){
+//        System.out.println("Hello world!");
+        Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
+        Ingredient newIngredient = new Ingredient();
+
+
+        if (optionalRecipe.isPresent()) {
+            Recipe recipe = optionalRecipe.get();
+            newIngredient.setRecipe(recipe);
+            newIngredient.setIngredientName(ingredient.getIngredientName());
+            newIngredient.setQuantity(ingredient.getQuantity());
+            newIngredient.setUnit(ingredient.getUnit());
+            newIngredient.setWeightInGrams(ingredient.getWeightInGrams());
+            newIngredient.setNotes(ingredient.getNotes());
+            ingredientService.saveIngredient(newIngredient);
+
+            System.out.println(newIngredient);
+//            recipe.addIngredient(ingredient);
+//            recipeService.saveRecipe(recipe);
+            return ResponseEntity.status(HttpStatus.CREATED).body(newIngredient);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+}
 
 //    @PostMapping("/updateIngredients/{recipeId}")
 //    public ResponseEntity<Recipe> updateRecipe(@RequestBody Recipe recipeData, @PathVariable Long recipeId) {
@@ -75,4 +104,4 @@ public class IngredientController {
 //            return ResponseEntity.notFound().build();
 //        }
 //    }
-}
+

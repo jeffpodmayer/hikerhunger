@@ -9,6 +9,12 @@ const servingsInput = document.getElementById("servings");
 const weightInGramsInput = document.getElementById("weightInGrams");
 const submitButton = document.getElementById("submitButton");
 
+const ingredientNameInput = document.getElementById("ingredientNameInput");
+const quantityInput = document.getElementById("quantityInput");
+const unitInput = document.getElementById("unitInput");
+const weightInput = document.getElementById("weightInput");
+const notesInput = document.getElementById("notesInput");
+
 const recipeId = document.getElementById("recipeIdInput").value;
 const recipeIdNumber = +recipeId;
 
@@ -21,13 +27,15 @@ const labelWeightInPounds = document.querySelector(`.weightInPounds`);
 let ingredientsList = [];
 
 ////////////////// FUNCTIONS /////////////////////////////
-const renderIngredient = (ingredient, index) => {
+// RENDER ON PAGE
+
+const renderIngredient = (ingredient) => {
   // console.log(ingredient);
   ///// RENDER INGREDIENT ON PAGE
   const tr = document.createElement("tr");
   tr.classList.add(`ingredient`);
-  tr.setAttribute("data-index", index);
-  tr.setAttribute("data-ingredient-id", ingredient.ingredientId);
+  // tr.setAttribute("data-index", index);
+  // tr.setAttribute("data-ingredient-id", ingredient.ingredientId);
 
   const ingredientHTML = `
   <td class="id"><p>${ingredient.ingredientId}</p></td>
@@ -40,12 +48,14 @@ const renderIngredient = (ingredient, index) => {
   <td class="edit_icon"><i class="fa-solid fa-pencil"></i></td>
      `;
 
-  tr.innerHTML = ingredientHTML;
-  const ingredientsContainer = document.getElementById("ingredientsContainer");
-  ingredientsContainer.appendChild(tr);
+  console.log(ingredientHTML);
+
+  // tr.innerHTML = ingredientHTML;
+  // const ingredientsContainer = document.getElementById("ingredientsContainer");
+  // ingredientsContainer.appendChild(tr);
 };
 
-///////////// CALC RECIPE WEIGHT IN GRAMS AND POUNDS //////////
+// UPDATE WEIGHT
 const updateWeight = function () {
   const gramsToPounds = 0.00220462;
   const totalWeight = ingredientsList.reduce(
@@ -56,6 +66,36 @@ const updateWeight = function () {
   labelWeightInPounds.textContent = isNaN(totalWeight * gramsToPounds)
     ? 0
     : (totalWeight * gramsToPounds).toFixed(2);
+};
+
+const submitIngredient = async function () {
+  const ingredientData = {
+    ingredientName: ingredientNameInput.value,
+    quantity: quantityInput.value,
+    unit: unitInput.value,
+    weightInGrams: weightInput.value,
+    notes: notesInput.value,
+  };
+  try {
+    // POST request to server to save ingredient data
+    const response = await fetch(`/saveIngredient/${recipeIdNumber}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(ingredientData),
+    });
+
+    if (response.ok) {
+      const savedIngredient = await response.json();
+      console.log("Saved:", savedIngredient);
+      renderIngredient(savedIngredient);
+    } else {
+      throw new Error("Failed to save ingredient");
+    }
+  } catch (error) {
+    console.error("Error saving ingredient:", error);
+  }
 };
 
 ///////////////////// NEW INGREDIENT POPUP ////////////////////////////
@@ -86,41 +126,42 @@ ingredientOverlay.addEventListener(`click`, closeNewIngredientModal);
 
 /////////////// ADD NEW INGREDIENT FUNCTION ////////////////////////
 const addIngredient = function () {
-  //GET INGREDIENT VALUES
-  const ingredientName = document.getElementById("ingredientNameInput").value;
-  const quantity = document.getElementById("quantityInput").value;
-  const unit = document.getElementById("unitInput").value;
-  const weightInGrams = document.getElementById("weightInput").value;
-  const notes = document.getElementById("notesInput").value;
-
-  // CREATE INGREDIENT OBJECT
-  const ingredient = {
-    ingredientName: ingredientName,
-    quantity: quantity,
-    unit: unit,
-    weightInGrams: weightInGrams,
-    notes: notes,
-  };
-
-  // ADDS INGREDIENT TO ARRAY
-  ingredientsList.push(ingredient);
-  console.log(ingredientsList);
-
-  // CLEAR INPUT FIELDS
-  document.getElementById("ingredientNameInput").value = ``;
-  document.getElementById("quantityInput").value = ``;
-  document.getElementById("unitInput").value = ``;
-  document.getElementById("weightInput").value = ``;
-  document.getElementById("notesInput").value = ``;
-
-  renderIngredient(ingredient, ingredientsList.length - 1);
-
+  submitIngredient();
   updateWeight();
-
   closeNewIngredientModal();
 };
 
 btnAddIngredient.addEventListener(`click`, addIngredient);
+
+// submitButton.addEventListener(`click`, submitRecipe);
+//GET INGREDIENT VALUES
+// const ingredientName = document.getElementById("ingredientNameInput").value;
+// const quantity = document.getElementById("quantityInput").value;
+// const unit = document.getElementById("unitInput").value;
+// const weightInGrams = document.getElementById("weightInput").value;
+// const notes = document.getElementById("notesInput").value;
+
+// // CREATE INGREDIENT OBJECT
+// const ingredient = {
+//   ingredientName: ingredientName,
+//   quantity: quantity,
+//   unit: unit,
+//   weightInGrams: weightInGrams,
+//   notes: notes,
+// };
+
+// // ADDS INGREDIENT TO ARRAY
+// // ingredientsList.push(ingredient);
+// console.log(ingredientsList);
+
+// // CLEAR INPUT FIELDS
+// document.getElementById("ingredientNameInput").value = ``;
+// document.getElementById("quantityInput").value = ``;
+// document.getElementById("unitInput").value = ``;
+// document.getElementById("weightInput").value = ``;
+// document.getElementById("notesInput").value = ``;
+
+// renderIngredient(ingredient, ingredientsList.length - 1);
 
 // ///////////////////// EDIT INGREDIENT ICON /////////////////////
 const editOverlay = document.querySelector(`.edit-overlay`);

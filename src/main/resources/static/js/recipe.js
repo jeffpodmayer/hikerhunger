@@ -221,12 +221,12 @@ const updateIngredient = async (updatedIngredientData, ingredientId) => {
       console.log(updatedRow);
 
       // Update content of table cells in the row with new data
-      // updatedRow.cells[1].textContent = updatedIngredientData.ingredientId;
-      // updatedRow.cells[1].textContent = updatedIngredientData.ingredientName;
-      // updatedRow.cells[2].textContent = updatedIngredientData.quantity;
-      // updatedRow.cells[3].textContent = updatedIngredientData.unit;
-      // updatedRow.cells[4].textContent = updatedIngredientData.weightInGrams;
-      // updatedRow.cells[5].textContent = updatedIngredientData.notes;
+      updatedRow.cells[1].textContent = updatedIngredientData.ingredientId;
+      updatedRow.cells[1].textContent = updatedIngredientData.ingredientName;
+      updatedRow.cells[2].textContent = updatedIngredientData.quantity;
+      updatedRow.cells[3].textContent = updatedIngredientData.unit;
+      updatedRow.cells[4].textContent = updatedIngredientData.weightInGrams;
+      updatedRow.cells[5].textContent = updatedIngredientData.notes;
     } else {
       // Error updating ingredient
       console.error("Error updating ingredient:", response.statusText);
@@ -245,7 +245,7 @@ document
       ingredientName: document.getElementById("ingredientName").value,
       quantity: document.getElementById("quantity").value,
       unit: document.getElementById("unit").value,
-      weight: document.getElementById("weight").value,
+      weightInGrams: document.getElementById("weight").value,
       notes: document.getElementById("notes").value,
     };
 

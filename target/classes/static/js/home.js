@@ -61,7 +61,7 @@ const renderRecipePopUp = function (data) {
   const markupHTML = `
     <button type="button" class="close-modal">&times;</button>
     <button class="edit_icon"><i class="fa-solid fa-pencil"></i></button>
-    <button class="trash_icon"><i class="fa-regular fa-trash-can"></i></button>
+    <button class="trash_icon"><i class="fa-regular fa-trash-can trash_icon"></i></button>
     <input type="hidden" class="recipe-id" ${data.recipeId}/>
     <h2>${data.recipeName}</h2>
     <p>Recipe Type: ${data.recipeType}</p>
@@ -95,24 +95,30 @@ const handleDeleteRecipe = () => {
 
   const recipeId = recipeIdInput.value;
 
-  fetch(`/home/deleteRecipe/${recipeId}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ recipeId }),
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      closeViewRecipePopup();
-      removeTableRow(recipeId);
-      console.log("Recipe deleted successfully");
+  const confirmed = window.confirm(
+    "Are you sure you want to delete this recipe?"
+  );
+
+  if (confirmed) {
+    fetch(`/home/deleteRecipe/${recipeId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ recipeId }),
     })
-    .catch((error) => {
-      console.error("Error deleting recipe:", error);
-    });
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        closeViewRecipePopup();
+        removeTableRow(recipeId);
+        console.log("Recipe deleted successfully");
+      })
+      .catch((error) => {
+        console.error("Error deleting recipe:", error);
+      });
+  }
 };
 const removeTableRow = (recipeId) => {
   const tableRow = document.querySelector(`tr[data-recipe-id="${recipeId}"]`);

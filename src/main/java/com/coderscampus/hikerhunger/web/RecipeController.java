@@ -86,7 +86,7 @@ public class RecipeController {
     }
 
     @PostMapping("/deleteRecipe/{recipeId}")
-    public ResponseEntity<Void> deleteRecipe(@PathVariable Long recipeId) {
+    public ResponseEntity<Void> deleteRecipeIcon(@PathVariable Long recipeId) {
         Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
         if (optionalRecipe.isPresent()) {
             Recipe recipe = optionalRecipe.get();
@@ -97,6 +97,17 @@ public class RecipeController {
         }
     }
 
+    @PostMapping("/postDeleteRecipe/{recipeId}")
+    public String postDeleteRecipe(@PathVariable Long recipeId){
+        Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
+        if (optionalRecipe.isPresent()) {
+            Recipe recipe = optionalRecipe.get();
+            recipeService.delete(recipe);
+            return "redirect:/home/" + recipe.getUser().getId();
+        } else {
+            return "Unable to Delete Recipe";
+        }
+    }
 
     @PostMapping("/updateRecipe/{recipeId}")
     public String updateRecipe(@ModelAttribute Recipe recipeData, @PathVariable Long recipeId) {
@@ -105,19 +116,14 @@ public class RecipeController {
 
             if (optionalRecipe.isPresent()) {
                 Recipe recipe = optionalRecipe.get();
-                // Update recipe information
                 recipe.setRecipeName(recipeData.getRecipeName());
                 recipe.setRecipeType(recipeData.getRecipeType());
                 recipe.setInstructions(recipeData.getInstructions());
                 recipe.setServings(recipeData.getServings());
                 recipe.setTotalWeight(recipeData.getTotalWeight());
+                recipeService.saveRecipe(recipe);
 
-                // Save the updated recipe
-                Recipe savedRecipe = recipeService.saveRecipe(recipe);
-                System.out.println("Updated Recipe: " + savedRecipe);
-
-                return "redirect: /home/" + recipe.getUser().getId();
-
+                return "redirect:/home/" + recipe.getUser().getId();
             } else {
                 // Recipe with given ID not found
                 return "Recipe not found!";
@@ -128,11 +134,9 @@ public class RecipeController {
         }
     }
 
-
-
-@GetMapping("/fetch-recipe/{recipeId}")
-@ResponseBody
-public ResponseEntity<Recipe> fetchRecipe(@PathVariable Long recipeId) {
+    @GetMapping("/fetch-recipe/{recipeId}")
+    @ResponseBody
+    public ResponseEntity<Recipe> fetchRecipe(@PathVariable Long recipeId) {
     Optional<Recipe> recipeOptional = recipeService.findById(recipeId);
     if (recipeOptional.isPresent()) {
         Recipe recipe = recipeOptional.get();
@@ -143,12 +147,14 @@ public ResponseEntity<Recipe> fetchRecipe(@PathVariable Long recipeId) {
     }
 }
 
-@GetMapping("/edit-recipe/{recipeId}")
-public String getEditRecipe(ModelMap model, @PathVariable Long recipeId) {
+    @GetMapping("/edit-recipe/{recipeId}")
+    public String getEditRecipe(ModelMap model, @PathVariable Long recipeId) {
     Optional<Recipe> recipe = recipeService.findById(recipeId);
     User user = recipe.get().getUser();
+    List<Ingredient> ingredients = recipe.get().getIngredients();
     model.put("user", user);
     model.put("recipe", recipe.get());
+    model.put("ingredients", ingredients);
     return "recipe/update";
 }
 }

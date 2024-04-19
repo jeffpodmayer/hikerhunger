@@ -10,21 +10,21 @@
   </head>
   <body>
     <h1>Edit your recipe details:</h1>
-    <input type="hidden" id="recipeIdInput" th:value="${recipeId}" />
+    <input type="hidden" id="recipeIdInput" th:field="${recipe.recipeId}" th:value="${recipe.recipeId}" />
     <input type="hidden" id="userIdInput" th:value="${user.id}" />
     <!-- RECIPE DETAILS SECTION -->
     <form
       id="recipeForm"
-      th:action="@{/home/saveRecipe/{recipeId}(recipeId=${recipe.recipeId})}"
+      th:action="@{/home/updateRecipe/{recipeId}(recipeId=${recipe.recipeId})}"
       method="post"
     >
       <div>
         <label id="recipeName">Recipe Name:</label>
-        <input type="text" th:value="${recipe.recipeName}" />
+        <input type="text" th:field="${recipe.recipeName}" th:value="${recipe.recipeName}" />
       </div>
       <div>
         <label for="mealCategory">Meal Category:</label>
-        <select id="recipeType" th:value="${recipe.recipeType}">
+        <select id="recipeType" th:field="${recipe.recipeType}" th:value="${recipe.recipeType}">
           <option value="BREAKFAST">Breakfast</option>
           <option value="LUNCH">Lunch</option>
           <option value="DINNER">Dinner</option>
@@ -39,18 +39,19 @@
           type="text"
           id="instructions"
           th:value="${recipe.instructions}"
+          th:field="${recipe.instructions}"
         />
       </div>
 
       <div>
         <label for="servings">How many people does this serve:</label>
-        <input type="number" id="servings" th:value="${recipe.servings}" />
+        <input type="number" id="servings" th:field="${recipe.servings}" th:value="${recipe.servings}" />
       </div>
       <div class="totalWeight">
         <h3>Weight</h3>
         <div>
             <p class="weight__label">Grams:</label>
-            <input th:value="${recipe.totalWeight}" class="weightInGrams" type="number" id="weightInGrams" readonly/>
+            <input th:field="${recipe.totalWeight}" th:value="${recipe.totalWeight}" class="weightInGrams" type="number" id="weightInGrams" readonly/>
         </div>
         <div>
             <p class="weight__label">Pounds:</p>
@@ -59,16 +60,49 @@
     </div>
         
       <button class="show-newIngredient-modal" type="button">Add Ingredient</button>
+      <div id="ingredientsSection">
+        <h2>Ingredients</h2>
+        <table id="ingredientsContainer">
+          <tr>
+            <th>ID</th>
+            <th>Ingredient Name</th>
+            <th>Quantity</th>
+            <th>Unit</th>
+            <th>Grams</th>
+            <th>Notes</th>
+            <th></th>
+            <th></th>
+          </tr>
+          <tr class="ingredient" th:each ="ingredient : ${ingredients}" th:attr=" data-ingredient-id=${ingredient.ingredientId}">
+            <td class="id" type="" th:text="${ingredient.ingredientId}"></td>
+            <td class="ingredientName" th:text="${ingredient.ingredientName}"></td>
+            <td class="quantity" th:text="${ingredient.quantity}"></td>
+            <td class="unit" th:text="${ingredient.unit}"></td>
+            <td class="weight"><p class="weightInput" th:text="${ingredient.weightInGrams}"></td>
+            <td class="notes" th:text="${ingredient.notes}"></td>
+            <td class="trash_icon"><i class="fa-regular fa-trash-can"></i></td>
+            <td class="edit_icon"><i class="fa-solid fa-pencil"></i></td>
+          </tr>
+      </table>
+    </div>
       <div>
         <input id="updateButton" type="submit" value="Update Recipe" />
       </div>
-      <div>
-        <input id="deleteButton" type="button" value="Delete Recipe" />
-      </div>
     </form>
+    <div>
+      <form
+      id="recipeForm"
+      th:action="@{/home/postDeleteRecipe/{recipeId}(recipeId=${recipe.recipeId})}"
+      method="post"
+    >
+        <input id="deleteButton" type="submit" value="Delete Recipe" />
+      </form>
+    </div>
+
+
 
     <!-- NEW INGREDIENT MODAL WINDOW -->
-    <!-- <div class="new-ingredient-modal hidden">
+    <div class="new-ingredient-modal hidden">
       <button type="button" class="close-modal">&times;</button>
       <h3>Add an Ingredient</h3>
       <label>Ingredient Name:</label>
@@ -85,10 +119,10 @@
         <input type="button" id="addIngredientButton" value="Add!" />
       </div>
     </div>
-    <div class="overlay hidden"></div> -->
+    <div class="overlay hidden"></div>
 
     <!-- EDIT INGREDIENT MODAL WINDOW -->
-    <!-- <div class="edit-ingredient-modal hidden">
+    <div class="edit-ingredient-modal hidden">
       <button type="button" class="close-modal">&times;</button>
       <input id="id" type="text" /><br />
       <label>Ingredient Name:</label>
@@ -105,7 +139,7 @@
         <input type="button" id="editIngredientButton" value="Update!" />
       </div>
     </div>
-    <div class="edit-overlay hidden"></div> -->
+    <div class="edit-overlay hidden"></div>
 
 
     <script src="/js/recipe.js"></script>

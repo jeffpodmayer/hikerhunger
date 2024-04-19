@@ -34,10 +34,10 @@
           <th>Serves</th>
           <th>Weight</th>
         </tr>
-        <tr method="get" th:each="recipe : ${recipes}">
-          <input type="hidden" th:value="${recipe.recipeId}" class="recipe-id">
+        <tr method="get" th:each="recipe : ${recipes}" th:attr=" data-recipe-id=${recipe.recipeId}">
+          <input type="hidden" th:value="${recipe.recipeId}" class="recipe-id"/>
           <td th:text="${recipe.recipeName}"></td>
-          <td th:text="${recipe.recipeType.displayValue}"></td>
+          <td th:text="${recipe.recipeType?.displayValue}"></td>
           <td th:text="${recipe.instructions}"></td>
           <td th:text="${recipe.servings}"></td>
           <td th:text="${recipe.totalWeight}"></td>
@@ -65,6 +65,6 @@
       </p>
     <![endif]-->
 
-    <script src="/js/home.js"></script>
+    <script type="module" src="/js/home.js"></script>
   </body>
 </html>

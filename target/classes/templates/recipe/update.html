@@ -10,46 +10,57 @@
   </head>
   <body>
     <h1>Edit your recipe details:</h1>
-    <input type="hidden" id="recipeIdInput" th:value="${recipeId}" />
+    <input type="hidden" id="recipeIdInput" th:field="${recipe.recipeId}" th:value="${recipe.recipeId}" />
     <input type="hidden" id="userIdInput" th:value="${user.id}" />
-
-<form id="recipeForm">
-    <div>
-        <label for="recipeName">Recipe Name:</label>
-        <input type="text" id="recipeName" />
-    </div>
-    <div>
+    <!-- RECIPE DETAILS SECTION -->
+    <form
+      id="recipeForm"
+      th:action="@{/home/updateRecipe/{recipeId}(recipeId=${recipe.recipeId})}"
+      method="post"
+    >
+      <div>
+        <label id="recipeName">Recipe Name:</label>
+        <input type="text" th:field="${recipe.recipeName}" th:value="${recipe.recipeName}" />
+      </div>
+      <div>
         <label for="mealCategory">Meal Category:</label>
-        <select id="recipeType">
-            <option value="BREAKFAST">Breakfast</option>
-            <option value="LUNCH">Lunch</option>
-            <option value="DINNER">Dinner</option>
-            <option value="SNACK">Snack</option>
-            <option value="EXTRA">Extra</option>
+        <select id="recipeType" th:field="${recipe.recipeType}" th:value="${recipe.recipeType}">
+          <option value="BREAKFAST">Breakfast</option>
+          <option value="LUNCH">Lunch</option>
+          <option value="DINNER">Dinner</option>
+          <option value="SNACK">Snack</option>
+          <option value="EXTRA">Extra</option>
         </select>
-    </div>
-    <div>
+      </div>
+
+      <div>
         <label for="instructions">Instructions:</label>
-        <input type="text" id="instructions" />
-    </div>
-    <div>
+        <input
+          type="text"
+          id="instructions"
+          th:value="${recipe.instructions}"
+          th:field="${recipe.instructions}"
+        />
+      </div>
+
+      <div>
         <label for="servings">How many people does this serve:</label>
-        <input type="number" id="servings" />
-    </div>
-    <div class="totalWeight">
+        <input type="number" id="servings" th:field="${recipe.servings}" th:value="${recipe.servings}" />
+      </div>
+      <div class="totalWeight">
         <h3>Weight</h3>
         <div>
             <p class="weight__label">Grams:</label>
-            <input class="weightInGrams" type="number" id="weightInGrams" readonly/>
+            <input th:field="${recipe.totalWeight}" th:value="${recipe.totalWeight}" class="weightInGrams" type="number" id="weightInGrams" readonly/>
         </div>
         <div>
             <p class="weight__label">Pounds:</p>
             <p class="weightInPounds">0</p>
         </div>
     </div>
-
-    <!-- INGREDIENTS SECTION -->
-    <div id="ingredientsSection">
+        
+      <button class="show-newIngredient-modal" type="button">Add Ingredient</button>
+      <div id="ingredientsSection">
         <h2>Ingredients</h2>
         <table id="ingredientsContainer">
           <tr>
@@ -62,17 +73,33 @@
             <th></th>
             <th></th>
           </tr>
-        </table>
+          <tr class="ingredient" th:each ="ingredient : ${ingredients}" th:attr=" data-ingredient-id=${ingredient.ingredientId}">
+            <td class="id" type="" th:text="${ingredient.ingredientId}"></td>
+            <td class="ingredientName" th:text="${ingredient.ingredientName}"></td>
+            <td class="quantity" th:text="${ingredient.quantity}"></td>
+            <td class="unit" th:text="${ingredient.unit}"></td>
+            <td class="weight"><p class="weightInput" th:text="${ingredient.weightInGrams}"></td>
+            <td class="notes" th:text="${ingredient.notes}"></td>
+            <td class="trash_icon"><i class="fa-regular fa-trash-can"></i></td>
+            <td class="edit_icon"><i class="fa-solid fa-pencil"></i></td>
+          </tr>
+      </table>
     </div>
-        
-      <button class="show-newIngredient-modal" type="button">Add Ingredient</button>
       <div>
-        <input id="updateButton" type="button" value="Update Recipe" />
-      </div>
-      <div>
-        <input id="deleteButton" type="button" value="Delete Recipe" />
+        <input id="updateButton" type="submit" value="Update Recipe" />
       </div>
     </form>
+    <div>
+      <form
+      id="recipeForm"
+      th:action="@{/home/postDeleteRecipe/{recipeId}(recipeId=${recipe.recipeId})}"
+      method="post"
+    >
+        <input id="deleteButton" type="submit" value="Delete Recipe" />
+      </form>
+    </div>
+
+
 
     <!-- NEW INGREDIENT MODAL WINDOW -->
     <div class="new-ingredient-modal hidden">
@@ -116,6 +143,6 @@
 
 
     <script src="/js/recipe.js"></script>
-    <script src="/js/update.js"></script>
+    <!-- <script src="/js/update.js"></script> -->
   </body>
 </html>

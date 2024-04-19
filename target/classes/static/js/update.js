@@ -1,4 +1,4 @@
-console.log(userId);
+"use strict";
 
 const editRecipePage = async () => {
   const recipeId = window.location.pathname.split("/").pop();
@@ -87,34 +87,34 @@ const updateRecipe = async function () {
 const updateButton = document.getElementById("updateButton");
 updateButton.addEventListener(`click`, updateRecipe);
 
-//////////////// DELETE BUTTON /////////////////////////////
-const deleteButton = document.getElementById("deleteButton");
+// //////////////// DELETE BUTTON /////////////////////////////
+// const deleteButton = document.getElementById("deleteButton");
 
-// Event listener for the delete button click
-deleteButton.addEventListener("click", function () {
-  const recipeId = window.location.pathname.split("/").pop();
+// // Event listener for the delete button click
+// deleteButton.addEventListener("click", function () {
+//   const recipeId = window.location.pathname.split("/").pop();
 
-  const requestData = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ recipeId }), // Send only the recipe ID
-  };
+//   const requestData = {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify({ recipeId }), // Send only the recipe ID
+//   };
 
-  fetch(`/home/deleteRecipe/${recipeId}`, requestData)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response;
-    })
-    .then((data) => {
-      console.log("Recipe deleted successfully:", data);
-      // Redirect to the home page
-      window.location.href = `/home/${userId}`;
-    })
-    .catch((error) => {
-      console.error("Error deleting recipe:", error);
-    });
-});
+//   fetch(`/home/deleteRecipe/${recipeId}`, requestData)
+//     .then((response) => {
+//       if (!response.ok) {
+//         throw new Error("Network response was not ok");
+//       }
+//       return response;
+//     })
+//     .then((data) => {
+//       console.log("Recipe deleted successfully:", data);
+//       // Redirect to the home page
+//       window.location.href = `/home/${userId}`;
+//     })
+//     .catch((error) => {
+//       console.error("Error deleting recipe:", error);
+//     });
+// });

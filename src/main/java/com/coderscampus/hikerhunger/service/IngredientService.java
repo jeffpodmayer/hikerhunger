@@ -1,16 +1,10 @@
 package com.coderscampus.hikerhunger.service;
 
 import com.coderscampus.hikerhunger.domain.Ingredient;
-import com.coderscampus.hikerhunger.domain.Recipe;
 import com.coderscampus.hikerhunger.repository.IngredientRepository;
-import jakarta.transaction.Transactional;
-import org.apache.tomcat.util.digester.ArrayStack;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -48,6 +42,10 @@ public class IngredientService {
 
     public void deleteIngredientById(Long ingredientId) {
         ingredientRepo.deleteById(ingredientId);
+    }
+
+    public Optional<Ingredient> findById(Long ingredientId) {
+        return ingredientRepo.findById(ingredientId);
     }
 //    public void deleteIngredient(Ingredient ingredient) {
 //        System.out.println("Deleted ingredient");

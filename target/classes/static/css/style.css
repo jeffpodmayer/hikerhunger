@@ -7,6 +7,31 @@ table tr {
   border-radius: 2px;
 }
 
+button {
+  background-color: #4caf50; /* Green */
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+/* Hover effect */
+button:hover {
+  background-color: #45a049; /* Darker green */
+}
+
+/* Active/focus effect */
+button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.2); /* Add a subtle box shadow */
+}
+
 /* .close-modal {
   position: absolute;
   top: 1.2rem;

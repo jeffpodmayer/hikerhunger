@@ -11,15 +11,15 @@
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" type="text/css" href="/css/style.css" />
-    <script src="https://kit.fontawesome.com/783d090aa0.js" crossorigin="anonymous"></script>
+    <script
+      src="https://kit.fontawesome.com/783d090aa0.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
     <h1>Hey [[${user.firstName}]]! Start cooking!</h1>
-    <form
-      th:action="@{/home/{userId}/recipe(userId=${user.id})}"
-      method="post"
-    >
-      <input type="submit" value="Add New Recipe"></input>
+    <form th:action="@{/home/{userId}/recipe(userId=${user.id})}" method="post">
+      <button type="submit" value="Add New Recipe"></button>
     </form>
     <div th:if="${recipes == null or #lists.size(recipes) == 0}">
       You don't have any recipes yet!
@@ -34,8 +34,16 @@
           <th>Serves</th>
           <th>Weight</th>
         </tr>
-        <tr method="get" th:each="recipe : ${recipes}" th:attr=" data-recipe-id=${recipe.recipeId}">
-          <input type="hidden" th:value="${recipe.recipeId}" class="recipe-id"/>
+        <tr
+          method="get"
+          th:each="recipe : ${recipes}"
+          th:attr=" data-recipe-id=${recipe.recipeId}"
+        >
+          <input
+            type="hidden"
+            th:value="${recipe.recipeId}"
+            class="recipe-id"
+          />
           <td th:text="${recipe.recipeName}"></td>
           <td th:text="${recipe.recipeType?.displayValue}"></td>
           <td th:text="${recipe.instructions}"></td>
@@ -46,14 +54,11 @@
     </div>
 
     <!-- ////////////// RECIPE POP_UP WINDOW //////////////////////// -->
-    <div class="recipeViewPopup hidden">
-    </div>
+    <div class="recipeViewPopup hidden"></div>
     <div class="overlay hidden"></div>
-
     <form>
       <button type="submit">Build A Trip</button>
     </form>
-
     <form th:action="@{/landing}" method="get">
       <button type="submit">Logout</button>
     </form>
@@ -65,6 +70,6 @@
       </p>
     <![endif]-->
 
-    <script type="module" src="/js/home.js"></script>
+    <script src="/js/home.js"></script>
   </body>
 </html>

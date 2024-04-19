@@ -1,4 +1,4 @@
-console.log(userId);
+"use strict";
 
 const editRecipePage = async () => {
   const recipeId = window.location.pathname.split("/").pop();

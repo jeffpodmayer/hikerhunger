@@ -65,14 +65,13 @@ public class IngredientController {
 
         if (optionalIngredient.isPresent()) {
             Ingredient existingIngredient = optionalIngredient.get();
-            // Update the existing ingredient with the new data
+
             existingIngredient.setIngredientName(updatedIngredientData.getIngredientName());
             existingIngredient.setQuantity(updatedIngredientData.getQuantity());
             existingIngredient.setUnit(updatedIngredientData.getUnit());
             existingIngredient.setWeightInGrams(updatedIngredientData.getWeightInGrams());
             existingIngredient.setNotes(updatedIngredientData.getNotes());
 
-            // Save the updated ingredient to the database
             Ingredient updatedIngredient = ingredientService.saveIngredient(existingIngredient);
 
             return ResponseEntity.ok(updatedIngredient);

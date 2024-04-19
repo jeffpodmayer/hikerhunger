@@ -47,7 +47,7 @@ public class RecipeController {
     public String getCreateRecipe(ModelMap model, @PathVariable Integer userId, @PathVariable Long recipeId) {
         User user = userService.findById(userId);
         Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
-        if(optionalRecipe.isPresent()){
+        if (optionalRecipe.isPresent()) {
             Recipe recipe = optionalRecipe.get();
             List<Ingredient> ingredients = recipe.getIngredients();
             Ingredient ingredient = new Ingredient();
@@ -84,6 +84,7 @@ public class RecipeController {
             return "error";
         }
     }
+
     @PostMapping("/deleteRecipe/{recipeId}")
     public ResponseEntity<Void> deleteRecipe(@PathVariable Long recipeId) {
         Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
@@ -97,14 +98,13 @@ public class RecipeController {
     }
 
 
+    @PostMapping("/updateRecipe/{recipeId}")
+    public String updateRecipe(@ModelAttribute Recipe recipeData, @PathVariable Long recipeId) {
+        try {
+            Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
 
-    @PutMapping("/updateRecipe/{recipeId}")
-    public ResponseEntity<Recipe> updateRecipe(@RequestBody Recipe recipeData, @PathVariable Long recipeId) {
-        Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
-
-        if (optionalRecipe.isPresent()) {
-            Recipe recipe = optionalRecipe.get();
-            try {
+            if (optionalRecipe.isPresent()) {
+                Recipe recipe = optionalRecipe.get();
                 // Update recipe information
                 recipe.setRecipeName(recipeData.getRecipeName());
                 recipe.setRecipeType(recipeData.getRecipeType());
@@ -112,111 +112,43 @@ public class RecipeController {
                 recipe.setServings(recipeData.getServings());
                 recipe.setTotalWeight(recipeData.getTotalWeight());
 
-                // Get existing ingredients associated with the recipe
-                List<Ingredient> existingIngredients = recipe.getIngredients();
-                // EXTRACT INTO INGREDIENT SERVICE!! // DELETE INGREDIENTS THAT DON'T EXIST ANYMORE
-                // Get the IDs of existing ingredients
-                List<Long> existingIngredientIds = existingIngredients.stream()
-                        .map(Ingredient::getIngredientId)
-                        .toList();
-
-                System.out.println("Current ingredient id's:" + existingIngredientIds);
-
-                // Get the IDs of ingredients in the updated recipe
-                List<Long> updatedIngredientIds = recipeData.getIngredients().stream()
-                        .map(Ingredient::getIngredientId)
-                        .toList();
-
-                System.out.println("From client side:" + updatedIngredientIds);
-
-                // Find the IDs of ingredients to remove
-                List<Long> ingredientIdsToRemove = existingIngredientIds.stream()
-                        .filter(existingId -> !updatedIngredientIds.contains(existingId))
-                        .toList();
-
-                System.out.println("Id's to remove: " + ingredientIdsToRemove);
-
-                // Delete ingredients from the database based on their IDs
-                for (Long ingredientId : ingredientIdsToRemove) {
-                    ingredientService.deleteIngredientById(ingredientId);
-                    System.out.println("Deleted:" + ingredientId);
-                }
-
-                System.out.println("Should be empty:" + ingredientIdsToRemove);
-
-                // UPDATE OR ADD INGREDIENTS
-                for (Ingredient ingredient : recipeData.getIngredients()) {
-                    if (ingredient.getIngredientId() != null) {
-                        if (updatedIngredientIds.contains(ingredient.getIngredientId())) {
-                            Optional<Ingredient> optionalExistingIngredient = existingIngredients.stream()
-                                    .filter(i -> i.getIngredientId().equals(ingredient.getIngredientId()))
-                                    .findFirst();
-                            if (optionalExistingIngredient.isPresent()) {
-                                Ingredient existingIngredient = optionalExistingIngredient.get();
-                                existingIngredient.setIngredientName(ingredient.getIngredientName());
-                                existingIngredient.setQuantity(ingredient.getQuantity());
-                                existingIngredient.setUnit(ingredient.getUnit());
-                                existingIngredient.setWeightInGrams(ingredient.getWeightInGrams());
-                                existingIngredient.setNotes(ingredient.getNotes());
-                            } else {
-                                // If the ingredient doesn't exist in the existingIngredients list, add it
-                                existingIngredients.add(ingredient);
-                            }
-                        }
-                    } else {
-                        // If the ingredient doesn't have an ID, it's a new ingredient
-                        // Set the recipe for the new ingredient and add it to the list of existing ingredients
-                        ingredient.setRecipe(recipe);
-                        existingIngredients.add(ingredient);
-                    }
-                }
-
                 // Save the updated recipe
                 Recipe savedRecipe = recipeService.saveRecipe(recipe);
                 System.out.println("Updated Recipe: " + savedRecipe);
 
-                return ResponseEntity.ok().body(recipe);
-            } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+                return "redirect: /home/" + recipe.getUser().getId();
+
+            } else {
+                // Recipe with given ID not found
+                return "Recipe not found!";
             }
-        } else {
-            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            // Internal server error
+            return "Error updating recipe: " + e.getMessage();
         }
     }
 
 
-    @GetMapping("/fetch-recipe/{recipeId}")
-    @ResponseBody
-    public ResponseEntity<Recipe> fetchRecipe(@PathVariable Long recipeId) {
-        Optional<Recipe> recipeOptional = recipeService.findById(recipeId);
-        if (recipeOptional.isPresent()) {
-            Recipe recipe = recipeOptional.get();
-            System.out.println("Retrieved recipe: " + recipe);
-            return ResponseEntity.ok().body(recipe);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+
+@GetMapping("/fetch-recipe/{recipeId}")
+@ResponseBody
+public ResponseEntity<Recipe> fetchRecipe(@PathVariable Long recipeId) {
+    Optional<Recipe> recipeOptional = recipeService.findById(recipeId);
+    if (recipeOptional.isPresent()) {
+        Recipe recipe = recipeOptional.get();
+        System.out.println("Retrieved recipe: " + recipe);
+        return ResponseEntity.ok().body(recipe);
+    } else {
+        return ResponseEntity.notFound().build();
     }
+}
 
-    @GetMapping("/edit-recipe/{recipeId}")
-    public String getEditRecipe(ModelMap model, @PathVariable Long recipeId) {
-        Optional<Recipe> recipe = recipeService.findById(recipeId);
-        User user = recipe.get().getUser();
-        model.put("user", user);
-        model.put("recipe", recipe.get());
-        return "recipe/update";
-    }
-
-//    @GetMapping("/edit-recipe/{recipeId}/ingredients")
-//    @ResponseBody
-//    public List<Ingredient> getIngredientsForRecipe(@PathVariable Long recipeId) {
-//        Optional<Recipe> recipe = recipeService.findById(recipeId);
-//        if (recipe.isPresent()) {
-//            return recipe.get().getIngredients();
-//        } else {
-//            return Collections.emptyList();
-//        }
-//    }
-
-
+@GetMapping("/edit-recipe/{recipeId}")
+public String getEditRecipe(ModelMap model, @PathVariable Long recipeId) {
+    Optional<Recipe> recipe = recipeService.findById(recipeId);
+    User user = recipe.get().getUser();
+    model.put("user", user);
+    model.put("recipe", recipe.get());
+    return "recipe/update";
+}
 }

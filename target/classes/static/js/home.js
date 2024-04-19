@@ -1,8 +1,10 @@
 "use strict";
+//////////////////// GLOBAL VARIABLES //////////////////////////
 const recipeTable = document.getElementById(`homeRecipesTable`);
 const recipePopup = document.querySelector(`.recipeViewPopup`);
 const viewRecipeOverlay = document.querySelector(`.overlay`);
 
+/////////////////////// FUNCTIONS ///////////////////////////////
 const handleRecipeTableRowClick = (event) => {
   const clickedRow = event.target.closest(`tr`);
   if (!clickedRow) return; // Exit if the click is not on a table row
@@ -141,13 +143,15 @@ const closeViewRecipePopup = function () {
   recipePopup.classList.add(`hidden`);
   viewRecipeOverlay.classList.add(`hidden`);
 };
-////// EVENT LISTENERS
+
+///////////////////// EVENT LISTENERS //////////////////////////
 document.addEventListener(`keydown`, function (event) {
   if (event.key === `Escape`) {
     !recipePopup.classList.contains(`hidden`);
     closeViewRecipePopup();
   }
 });
+
 if (recipeTable) {
   recipeTable.addEventListener("click", handleRecipeTableRowClick);
 }

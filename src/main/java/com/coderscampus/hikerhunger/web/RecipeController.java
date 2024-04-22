@@ -39,11 +39,10 @@ public class RecipeController {
     public String postCreateRecipe(@PathVariable Integer userId, @ModelAttribute("recipe") Recipe recipe) {
         User user = userService.findById(userId);
         Recipe newRecipe = recipeService.createRecipe(recipe, user);
-//        System.out.println("Created new recipe:" + newRecipe);
         return "redirect:/home/" + userId + "/recipe/" + newRecipe.getRecipeId();
     }
 
-    @GetMapping("/{userId}/recipe/{recipeId}")
+    @GetMapping("/{userId}/recipe/{recipeId}") // REFACTOR
     public String getCreateRecipe(ModelMap model, @PathVariable Integer userId, @PathVariable Long recipeId) {
         User user = userService.findById(userId);
         Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
@@ -59,7 +58,7 @@ public class RecipeController {
         return "recipe/create";
     }
 
-    @PostMapping("/saveRecipe/{recipeId}")
+    @PostMapping("/saveRecipe/{recipeId}") // REFACTOR!
     public String saveRecipe(@ModelAttribute Recipe recipeData, @PathVariable Long recipeId) {
         Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
 
@@ -85,15 +84,15 @@ public class RecipeController {
         }
     }
 
-    @PostMapping("/deleteRecipe/{recipeId}")
+    @PostMapping("/deleteRecipe/{recipeId}") // REFACTOR BODY OF THIS METHOD AND NEXT POST MAPPING BELOW
     public ResponseEntity<Void> deleteRecipeIcon(@PathVariable Long recipeId) {
         Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
         if (optionalRecipe.isPresent()) {
             Recipe recipe = optionalRecipe.get();
             recipeService.delete(recipe);
-            return ResponseEntity.noContent().build(); // Return 204 No Content for successful deletion
+            return ResponseEntity.noContent().build();
         } else {
-            return ResponseEntity.notFound().build(); // Return 404 Not Found if recipe with the given ID doesn't exist
+            return ResponseEntity.notFound().build();
         }
     }
 

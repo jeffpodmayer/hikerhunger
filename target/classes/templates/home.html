@@ -19,7 +19,7 @@
   <body>
     <h1>Hey [[${user.firstName}]]! Start cooking!</h1>
     <form th:action="@{/home/{userId}/recipe(userId=${user.id})}" method="post">
-      <button type="submit" value="Add New Recipe"></button>
+      <button type="submit" value="">Add New Recipe</button>
     </form>
     <div th:if="${recipes == null or #lists.size(recipes) == 0}">
       You don't have any recipes yet!

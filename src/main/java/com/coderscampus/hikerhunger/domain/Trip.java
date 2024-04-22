@@ -17,6 +17,9 @@ public class Trip {
     private String tripName;
     private Float numOfDays;
     private Integer numOfPeople;
+
+    private String tripDetails;
+
     private Float poundsPerPersonPerDay;
 
     @JsonIgnoreProperties("recipes")
@@ -27,6 +30,14 @@ public class Trip {
             inverseJoinColumns = @JoinColumn(name = "recipe_id")
     )
     private List<Recipe> recipes = new ArrayList<>();
+
+    public String getTripDetails() {
+        return tripDetails;
+    }
+
+    public void setTripDetails(String tripDetails) {
+        this.tripDetails = tripDetails;
+    }
 
     public List<Recipe> getRecipes() {
         return recipes;

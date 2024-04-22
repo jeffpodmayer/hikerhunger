@@ -56,9 +56,36 @@
     <!-- ////////////// RECIPE POP_UP WINDOW //////////////////////// -->
     <div class="recipeViewPopup hidden"></div>
     <div class="overlay hidden"></div>
-    <form>
+
+    <!-- ///////////////////// SHOW ALL USER TRIPS ///////////////// -->
+    <form th:action="@{/home/{userId}/trip(userId=${user.id})}" method="post">
       <button type="submit">Build A Trip</button>
     </form>
+    <div th:if="${trips == null or #lists.size(trips) == 0}">
+      You don't have any trips yet!
+    </div>
+    <div th:if="${#lists.size(trips) > 0}">
+      <h2>Your Trips</h2>
+      <table id="homeTripsTable">
+        <tr>
+          <th>Trip Name</th>
+          <th>Number Of Days</th>
+          <th>Number of People</th>
+          <th>Weight Per Person/Per Day</th>
+        </tr>
+        <tr
+          method="get"
+          th:each="trip : ${trips}"
+          th:attr=" data-trip-id=${trip.tripId}"
+        >
+          <input type="hidden" th:value="${trip.tripId}" class="trip-id" />
+          <td th:text="${trip.tripName}"></td>
+          <td th:text="${trip.numOfDays}"></td>
+          <td th:text="${trip.numOfPeople}"></td>
+          <td th:text="${trip.poundsPerPersonPerDay}"></td>
+        </tr>
+      </table>
+    </div>
     <form th:action="@{/landing}" method="get">
       <button type="submit">Logout</button>
     </form>

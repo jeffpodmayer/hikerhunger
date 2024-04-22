@@ -26,13 +26,11 @@ public class RecipeController {
 
     private UserService userService;
     private RecipeService recipeService;
-    private IngredientService ingredientService;
 
     @Autowired
     public RecipeController(UserService userService, RecipeService recipeService, IngredientService ingredientService) {
         this.userService = userService;
         this.recipeService = recipeService;
-        this.ingredientService = ingredientService;
     }
 
     @PostMapping("/{userId}/recipe")

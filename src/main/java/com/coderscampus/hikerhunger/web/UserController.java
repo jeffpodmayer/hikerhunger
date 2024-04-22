@@ -1,6 +1,7 @@
 package com.coderscampus.hikerhunger.web;
 
 import com.coderscampus.hikerhunger.domain.Recipe;
+import com.coderscampus.hikerhunger.domain.Trip;
 import com.coderscampus.hikerhunger.domain.User;
 import com.coderscampus.hikerhunger.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,11 @@ public class UserController {
             return "redirect:/landing";
         }
         List<Recipe> recipes = user.getRecipes();
-        model.put("recipes", recipes);
+        List<Trip> trips = user.getTrips();
         model.put("user", user);
+        model.put("recipes", recipes);
+        model.put("trips", trips);
+
         return "home";
     }
 

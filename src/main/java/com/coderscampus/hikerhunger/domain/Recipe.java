@@ -23,6 +23,9 @@ public class Recipe {
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("recipe")
     private List<Ingredient> ingredients = new ArrayList<>();
+    @JsonIgnoreProperties("recipes")
+    @ManyToMany(mappedBy = "recipes")
+    private List<Trip> trips = new ArrayList<>();
 
     @Override
     public String toString() {
@@ -62,6 +65,14 @@ public Recipe(){}
         public String getDisplayValue() {
             return displayValue;
         }
+    }
+
+    public List<Trip> getTrips() {
+        return trips;
+    }
+
+    public void setTrips(List<Trip> trips) {
+        this.trips = trips;
     }
 
     public Long getRecipeId() {

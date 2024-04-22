@@ -1,16 +1,40 @@
 package com.coderscampus.hikerhunger.domain;
 
-import jakarta.persistence.Entity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Trip {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long tripId;
+    @ManyToOne
+    @JoinColumn(name = "userId")
     private User user;
     private String tripName;
     private Float numOfDays;
     private Integer numOfPeople;
     private Float poundsPerPersonPerDay;
 
+    @JsonIgnoreProperties("recipes")
+    @ManyToMany
+    @JoinTable(
+            name = "TripRecipes",
+            joinColumns = @JoinColumn(name = "trip_id"),
+            inverseJoinColumns = @JoinColumn(name = "recipe_id")
+    )
+    private List<Recipe> recipes = new ArrayList<>();
+
+    public List<Recipe> getRecipes() {
+        return recipes;
+    }
+
+    public void setRecipes(List<Recipe> recipes) {
+        this.recipes = recipes;
+    }
     public Float getPoundsPerPersonPerDay() {
         return poundsPerPersonPerDay;
     }

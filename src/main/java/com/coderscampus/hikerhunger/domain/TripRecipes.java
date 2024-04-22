@@ -1,12 +1,36 @@
 package com.coderscampus.hikerhunger.domain;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 
 @Entity
 public class TripRecipes {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long tripRecipesId;
-    private Long tripId;
-    private Long recipeId;
+
+    @ManyToOne
+    @JoinColumn(name = "trip_id")
+    private Trip trip;
+
+    @ManyToOne
+    @JoinColumn(name = "recipe_id")
+    private Recipe recipe;
+
+    public Trip getTrip() {
+        return trip;
+    }
+
+    public void setTrip(Trip trip) {
+        this.trip = trip;
+    }
+
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
+    }
 
     public Long getTripRecipesId() {
         return tripRecipesId;
@@ -16,19 +40,5 @@ public class TripRecipes {
         this.tripRecipesId = tripRecipesId;
     }
 
-    public Long getTripId() {
-        return tripId;
-    }
 
-    public void setTripId(Long tripId) {
-        this.tripId = tripId;
-    }
-
-    public Long getRecipeId() {
-        return recipeId;
-    }
-
-    public void setRecipeId(Long recipeId) {
-        this.recipeId = recipeId;
-    }
 }

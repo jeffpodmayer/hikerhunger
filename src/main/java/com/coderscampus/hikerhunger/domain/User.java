@@ -25,6 +25,10 @@ public class User implements UserDetails {
     @JsonIgnoreProperties("user")
     private List<Recipe> recipes = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("user")
+    private List<Trip> trips = new ArrayList<>();
+
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnoreProperties("user")
     private List<Authority> authorities = new ArrayList<>();
@@ -150,4 +154,11 @@ public class User implements UserDetails {
         this.recipes = recipes;
     }
 
+    public List<Trip> getTrips() {
+        return trips;
+    }
+
+    public void setTrips(List<Trip> trips) {
+        this.trips = trips;
+    }
 }

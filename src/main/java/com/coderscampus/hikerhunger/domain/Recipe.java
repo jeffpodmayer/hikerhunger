@@ -25,26 +25,27 @@ public class Recipe {
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("recipe")
     private List<Ingredient> ingredients = new ArrayList<>();
-    @JsonIgnoreProperties("recipe")
-    @ManyToOne
-    @JoinColumn(name = "trip_id")
-    private Trip trip;
+    @ManyToMany(mappedBy = "recipes", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("recipes")
+    private List<Trip> trips = new ArrayList<>();
 
-    @Override
-    public String toString() {
-        return "Recipe{" +
-                "recipeId=" + recipeId +
-                ", user=" + user +
-                ", recipeName='" + recipeName + '\'' +
-                ", recipeType=" + recipeType +
-                ", instructions='" + instructions + '\'' +
-                ", servings=" + servings +
-                ", totalWeight=" + totalWeight +
-                ", ingredients=" + ingredients +
-                '}';
-    }
-public Recipe(){}
-    public Recipe(Long recipeId, User user, String recipeName, RecipeType recipeType, String instructions, Integer servings, Float totalWeight, List<Ingredient> ingredients) {
+
+//    @Override
+//    public String toString() {
+//        return "Recipe{" +
+//                "recipeId=" + recipeId +
+//                ", user=" + user +
+//                ", recipeName='" + recipeName + '\'' +
+//                ", recipeType=" + recipeType +
+//                ", instructions='" + instructions + '\'' +
+//                ", servings=" + servings +
+//                ", totalWeight=" + totalWeight +
+//                ", ingredients=" + ingredients +
+//                '}';
+//    }
+    public Recipe(){}
+
+    public Recipe(Long recipeId, User user, String recipeName, RecipeType recipeType, String instructions, Integer servings, Float totalWeight, List<Ingredient> ingredients, List<Trip> trips) {
         this.recipeId = recipeId;
         this.user = user;
         this.recipeName = recipeName;
@@ -53,6 +54,7 @@ public Recipe(){}
         this.servings = servings;
         this.totalWeight = totalWeight;
         this.ingredients = ingredients;
+        this.trips = trips;
     }
 
     public enum RecipeType {
@@ -70,14 +72,12 @@ public Recipe(){}
         }
     }
 
-    public Trip getTrip() {
-        return trip;
+    public List<Trip> getTrips() {
+        return trips;
     }
-
-    public void setTrip(Trip trip) {
-        this.trip = trip;
+    public void setTrips(List<Trip> trips) {
+        this.trips = trips;
     }
-
     public Long getRecipeId() {
         return recipeId;
     }

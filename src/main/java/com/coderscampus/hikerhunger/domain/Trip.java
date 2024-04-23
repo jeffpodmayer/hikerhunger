@@ -19,14 +19,28 @@ public class Trip {
     private String tripName;
     private Float numOfDays;
     private Integer numOfPeople;
-
     private String tripDetails;
-
     private Float poundsPerPersonPerDay;
-
-    @JsonIgnoreProperties("trip")
-    @OneToMany(mappedBy = "trip")
+    @ManyToMany
+    @JsonIgnoreProperties("trips")
+    @JoinTable(
+            name = "trip_recipe",
+            joinColumns = @JoinColumn(name = "trip_id"),
+            inverseJoinColumns = @JoinColumn(name = "recipe_id")
+    )
     private List<Recipe> recipes = new ArrayList<>();
+
+//    @Override
+//    public String toString() {
+//        return "Trip{" +
+//                "tripId=" + tripId +
+//                ", user=" + user +
+//                ", tripName='" + tripName + '\'' +
+//                ", numOfDays=" + numOfDays +
+//                ", poundsPersonPerDay=" + poundsPerPersonPerDay +
+//                '}';
+//    }
+
 
     public List<Recipe> getRecipes() {
         return recipes;
@@ -92,16 +106,7 @@ public class Trip {
         this.numOfPeople = numOfPeople;
     }
 
-        @Override
-    public String toString() {
-        return "Trip{" +
-                "tripId=" + tripId +
-                ", user=" + user +
-                ", tripName='" + tripName + '\'' +
-                ", numOfDays=" + numOfDays +
-                ", poundsPersonPerDay=" + poundsPerPersonPerDay +
-                '}';
-    }
+
 
 
 }

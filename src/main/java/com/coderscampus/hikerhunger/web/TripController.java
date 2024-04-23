@@ -1,10 +1,10 @@
 package com.coderscampus.hikerhunger.web;
 
 import com.coderscampus.hikerhunger.domain.*;
-import com.coderscampus.hikerhunger.service.IngredientService;
 import com.coderscampus.hikerhunger.service.RecipeService;
 import com.coderscampus.hikerhunger.service.TripService;
 import com.coderscampus.hikerhunger.service.UserService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -90,20 +90,29 @@ public class TripController {
         }
     }
 
-    @PostMapping("/saveRecipeToTrip/{tripId}/{recipeId}")
-    public ResponseEntity<Trip> saveRecipeToTrip(@PathVariable Long recipeId, @PathVariable Long tripId){
+    @PostMapping("/saveRecipe/{recipeId}/ToTrip/{tripId}")
+    @Transactional
+    public ResponseEntity<Recipe> saveRecipeToTrip(@PathVariable Long recipeId, @PathVariable Long tripId) {
         Optional<Trip> optionalTrip = tripService.findById(tripId);
         Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
 
         if (optionalTrip.isPresent() && optionalRecipe.isPresent()) {
-                Trip trip = optionalTrip.get();
-                Recipe recipe = optionalRecipe.get();
-                trip.getRecipes().add(recipe);
-                tripService.saveTrip(trip);
-                System.out.println(trip.getRecipes().toString());
+            Trip trip = optionalTrip.get();
+            Recipe recipe = optionalRecipe.get();
+            System.out.println("Recipe ID: " + recipe.getRecipeId());
+            System.out.println("Recipe Name: " + recipe.getRecipeName());
+            System.out.println("Recipe Type: " + recipe.getRecipeType());
+            System.out.println("Recipe Instructions: " + recipe.getInstructions());
+            System.out.println("Recipe Servings: " + recipe.getServings());
+            System.out.println("Recipe Weight: " + recipe.getTotalWeight());
+            System.out.println("Recipe Ingredients: " + recipe.getIngredients());
+            // Add the recipe to the trip without checking for existing association
+            trip.getRecipes().add(recipe);
+            tripService.saveTrip(trip);
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(trip);
+            return ResponseEntity.status(HttpStatus.CREATED).body(recipe);
         } else {
+            // Trip or recipe not found
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }

@@ -16,19 +16,20 @@ recipeTable.addEventListener("change", function (event) {
 });
 
 function saveRecipeToTrip(recipeId) {
-  fetch(`/home/saveRecipeToTrip/${tripId}/${recipeId}`, {
+  fetch(`/home/saveRecipe/${recipeId}/ToTrip/${tripId}`, {
     method: "POST",
   })
     .then((response) => {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
+      console.log(response);
       return response.json();
     })
-    .then((data) => {
-      console.log(data);
-      console.log("Saving recipe with ID " + recipeId + " to trip...");
-    })
+    // .then((data) => {
+    //   console.log(data);
+    //   console.log("Saving recipe with ID " + recipeId + " to trip " + tripId);
+    // })
     .catch((error) => {
       console.error("Error saving recipe to Trip:", error);
     });

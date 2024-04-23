@@ -26,10 +26,10 @@ function saveRecipeToTrip(recipeId) {
       console.log(response);
       return response.json();
     })
-    // .then((data) => {
-    //   console.log(data);
-    //   console.log("Saving recipe with ID " + recipeId + " to trip " + tripId);
-    // })
+    .then((data) => {
+      console.log(data);
+      console.log("Saving recipe with ID " + recipeId + " to trip " + tripId);
+    })
     .catch((error) => {
       console.error("Error saving recipe to Trip:", error);
     });

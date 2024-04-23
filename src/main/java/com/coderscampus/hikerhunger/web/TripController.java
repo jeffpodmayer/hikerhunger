@@ -1,6 +1,7 @@
 package com.coderscampus.hikerhunger.web;
 
 import com.coderscampus.hikerhunger.domain.*;
+import com.coderscampus.hikerhunger.dto.RecipeDTO;
 import com.coderscampus.hikerhunger.service.RecipeService;
 import com.coderscampus.hikerhunger.service.TripService;
 import com.coderscampus.hikerhunger.service.UserService;
@@ -92,25 +93,22 @@ public class TripController {
 
     @PostMapping("/saveRecipe/{recipeId}/ToTrip/{tripId}")
     @Transactional
-    public ResponseEntity<Recipe> saveRecipeToTrip(@PathVariable Long recipeId, @PathVariable Long tripId) {
+    public ResponseEntity<RecipeDTO> saveRecipeToTrip(@PathVariable Long recipeId, @PathVariable Long tripId) {
         Optional<Trip> optionalTrip = tripService.findById(tripId);
         Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
 
         if (optionalTrip.isPresent() && optionalRecipe.isPresent()) {
             Trip trip = optionalTrip.get();
             Recipe recipe = optionalRecipe.get();
-            System.out.println("Recipe ID: " + recipe.getRecipeId());
-            System.out.println("Recipe Name: " + recipe.getRecipeName());
-            System.out.println("Recipe Type: " + recipe.getRecipeType());
-            System.out.println("Recipe Instructions: " + recipe.getInstructions());
-            System.out.println("Recipe Servings: " + recipe.getServings());
-            System.out.println("Recipe Weight: " + recipe.getTotalWeight());
-            System.out.println("Recipe Ingredients: " + recipe.getIngredients());
+
             // Add the recipe to the trip without checking for existing association
             trip.getRecipes().add(recipe);
             tripService.saveTrip(trip);
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(recipe);
+            // Map the Recipe entity to RecipeDTO
+            RecipeDTO recipeDTO = tripService.mapToRecipeDTO(recipe);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(recipeDTO);
         } else {
             // Trip or recipe not found
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

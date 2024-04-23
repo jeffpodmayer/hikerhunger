@@ -90,7 +90,7 @@ public class TripController {
         }
     }
 
-    @PostMapping("/saveRecipeToTrip/{tripId}/{recipeId")
+    @PostMapping("/saveRecipeToTrip/{tripId}/{recipeId}")
     public ResponseEntity<Trip> saveRecipeToTrip(@PathVariable Long recipeId, @PathVariable Long tripId){
         Optional<Trip> optionalTrip = tripService.findById(tripId);
         Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
@@ -98,17 +98,9 @@ public class TripController {
         if (optionalTrip.isPresent() && optionalRecipe.isPresent()) {
                 Trip trip = optionalTrip.get();
                 Recipe recipe = optionalRecipe.get();
-
-                // Create a new TripRecipes object
-                TripRecipes tripRecipe = new TripRecipes();
-                tripRecipe.setTrip(trip);
-                tripRecipe.setRecipe(recipe);
-
-                // Add the tripRecipe to the trip
-                trip.addTripRecipe(tripRecipe);
-
-                // Save the updated trip
+                trip.getRecipes().add(recipe);
                 tripService.saveTrip(trip);
+                System.out.println(trip.getRecipes().toString());
 
             return ResponseEntity.status(HttpStatus.CREATED).body(trip);
         } else {

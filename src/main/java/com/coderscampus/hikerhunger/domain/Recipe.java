@@ -26,8 +26,9 @@ public class Recipe {
     @JsonIgnoreProperties("recipe")
     private List<Ingredient> ingredients = new ArrayList<>();
     @JsonIgnoreProperties("recipe")
-    @OneToMany(mappedBy = "recipe")
-    private Set<TripRecipes> tripRecipes = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "trip_id")
+    private Trip trip;
 
     @Override
     public String toString() {
@@ -69,12 +70,12 @@ public Recipe(){}
         }
     }
 
-    public Set<TripRecipes> getTripRecipes() {
-        return tripRecipes;
+    public Trip getTrip() {
+        return trip;
     }
 
-    public void setTripRecipes(Set<TripRecipes> tripRecipes) {
-        this.tripRecipes = tripRecipes;
+    public void setTrip(Trip trip) {
+        this.trip = trip;
     }
 
     public Long getRecipeId() {

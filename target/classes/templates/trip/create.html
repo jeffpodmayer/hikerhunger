@@ -13,6 +13,7 @@
       th:action="@{/home/saveTrip/{tripId}(tripId=${trip.tripId})}"
       method="post"
     >
+     <input type="hidden" id="tripId" th:field="${trip.tripId}" />
       <div>
         <label id="tripName">Trip Name:</label>
         <input type="text" th:field="${trip.tripName}" />

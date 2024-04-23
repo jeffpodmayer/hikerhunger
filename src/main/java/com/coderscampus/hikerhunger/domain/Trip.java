@@ -26,14 +26,14 @@ public class Trip {
 
     @JsonIgnoreProperties("trip")
     @OneToMany(mappedBy = "trip")
-    private Set<TripRecipes> tripRecipes = new HashSet<>();
+    private List<Recipe> recipes = new ArrayList<>();
 
-    public Set<TripRecipes> getTripRecipes() {
-        return tripRecipes;
+    public List<Recipe> getRecipes() {
+        return recipes;
     }
 
-    public void setTripRecipes(Set<TripRecipes> tripRecipes) {
-        this.tripRecipes = tripRecipes;
+    public void setRecipes(List<Recipe> recipes) {
+        this.recipes = recipes;
     }
 
     public String getTripDetails() {
@@ -92,16 +92,16 @@ public class Trip {
         this.numOfPeople = numOfPeople;
     }
 
-    //    @Override
-//    public String toString() {
-//        return "Trip{" +
-//                "tripId=" + tripId +
-//                ", user=" + user +
-//                ", tripName='" + tripName + '\'' +
-//                ", numOfDays=" + numOfDays +
-//                ", poundsPersonPerDay=" + poundsPersonPerDay +
-//                '}';
-//    }
+        @Override
+    public String toString() {
+        return "Trip{" +
+                "tripId=" + tripId +
+                ", user=" + user +
+                ", tripName='" + tripName + '\'' +
+                ", numOfDays=" + numOfDays +
+                ", poundsPersonPerDay=" + poundsPerPersonPerDay +
+                '}';
+    }
 
 
 }

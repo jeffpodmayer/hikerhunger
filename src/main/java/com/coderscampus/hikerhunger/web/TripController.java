@@ -1,14 +1,13 @@
 package com.coderscampus.hikerhunger.web;
 
-import com.coderscampus.hikerhunger.domain.Ingredient;
-import com.coderscampus.hikerhunger.domain.Recipe;
-import com.coderscampus.hikerhunger.domain.Trip;
-import com.coderscampus.hikerhunger.domain.User;
+import com.coderscampus.hikerhunger.domain.*;
 import com.coderscampus.hikerhunger.service.IngredientService;
 import com.coderscampus.hikerhunger.service.RecipeService;
 import com.coderscampus.hikerhunger.service.TripService;
 import com.coderscampus.hikerhunger.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -22,11 +21,13 @@ public class TripController {
 
     private UserService userService;
     private TripService tripService;
+    private RecipeService recipeService;
 
     @Autowired
-    public TripController(UserService userService, TripService tripService) {
+    public TripController(UserService userService, TripService tripService, RecipeService recipeService) {
         this.userService = userService;
         this.tripService = tripService;
+        this.recipeService = recipeService;
     }
 
     @PostMapping("/{userId}/trip")
@@ -61,6 +62,7 @@ public class TripController {
                 trip.setTripName(tripData.getTripName());
                 trip.setNumOfPeople(tripData.getNumOfPeople());
                 trip.setNumOfDays(tripData.getNumOfDays());
+                trip.setTripDetails(tripData.getTripDetails());
                 trip.setPoundsPerPersonPerDay(tripData.getPoundsPerPersonPerDay());
 
                 Trip savedTrip = tripService.saveTrip(trip);
@@ -85,6 +87,32 @@ public class TripController {
             return "redirect:/home/" + trip.getUser().getId();
         } else {
             return "Unable to Delete Recipe";
+        }
+    }
+
+    @PostMapping("/saveRecipeToTrip/{tripId}/{recipeId")
+    public ResponseEntity<Trip> saveRecipeToTrip(@PathVariable Long recipeId, @PathVariable Long tripId){
+        Optional<Trip> optionalTrip = tripService.findById(tripId);
+        Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
+
+        if (optionalTrip.isPresent() && optionalRecipe.isPresent()) {
+                Trip trip = optionalTrip.get();
+                Recipe recipe = optionalRecipe.get();
+
+                // Create a new TripRecipes object
+                TripRecipes tripRecipe = new TripRecipes();
+                tripRecipe.setTrip(trip);
+                tripRecipe.setRecipe(recipe);
+
+                // Add the tripRecipe to the trip
+                trip.addTripRecipe(tripRecipe);
+
+                // Save the updated trip
+                tripService.saveTrip(trip);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(trip);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 

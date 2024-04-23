@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Trip {
@@ -22,14 +24,17 @@ public class Trip {
 
     private Float poundsPerPersonPerDay;
 
-    @JsonIgnoreProperties("recipes")
-    @ManyToMany
-    @JoinTable(
-            name = "TripRecipes",
-            joinColumns = @JoinColumn(name = "trip_id"),
-            inverseJoinColumns = @JoinColumn(name = "recipe_id")
-    )
-    private List<Recipe> recipes = new ArrayList<>();
+    @JsonIgnoreProperties("trip")
+    @OneToMany(mappedBy = "trip")
+    private Set<TripRecipes> tripRecipes = new HashSet<>();
+
+    public Set<TripRecipes> getTripRecipes() {
+        return tripRecipes;
+    }
+
+    public void setTripRecipes(Set<TripRecipes> tripRecipes) {
+        this.tripRecipes = tripRecipes;
+    }
 
     public String getTripDetails() {
         return tripDetails;
@@ -39,13 +44,6 @@ public class Trip {
         this.tripDetails = tripDetails;
     }
 
-    public List<Recipe> getRecipes() {
-        return recipes;
-    }
-
-    public void setRecipes(List<Recipe> recipes) {
-        this.recipes = recipes;
-    }
     public Float getPoundsPerPersonPerDay() {
         return poundsPerPersonPerDay;
     }

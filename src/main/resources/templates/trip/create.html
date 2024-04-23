@@ -47,6 +47,8 @@
         <button type="submit" id="discardTripButton">Discard Trip</button>
     </form>
 
+    <hr/>
+
     <div id="recipeSection">
         <h2>Chosen Recipes for Your Trip:</h2>
         <table id="recipeContainer">
@@ -62,12 +64,14 @@
         </table>
       </div>
 
+      <hr/>
+
     <h3>Your Recipe Book</h3>
     <div th:if="${recipes == null or #lists.size(recipes) == 0}">
         You don't have any recipes yet!
       </div>
       <div th:if="${#lists.size(recipes) > 0}">
-        <table id="tripRecipesTable">
+        <table id="recipeTable">
           <tr>
             <th>Add</th>
             <th>Recipe Name</th>
@@ -82,7 +86,7 @@
             th:attr=" data-recipe-id=${recipe.recipeId}"
           >
           <td>
-            <input type="checkbox" name="selectedRecipeIds" th:value="${recipe.recipeId}">
+            <input type="checkbox" id="recipeCheckbox" class="recipeCheckbox" th:value="${recipe.recipeId}">
           </td>
             <td th:text="${recipe.recipeName}"></td>
             <td th:text="${recipe.recipeType?.displayValue}"></td>
@@ -91,5 +95,6 @@
             <td th:text="${recipe.totalWeight}"></td>
           </tr>
         </table>
+        <script src="/js/trip.js"></script>
   </body>
 </html>

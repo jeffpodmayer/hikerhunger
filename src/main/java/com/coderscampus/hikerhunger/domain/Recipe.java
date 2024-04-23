@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Recipe {
@@ -23,9 +25,9 @@ public class Recipe {
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("recipe")
     private List<Ingredient> ingredients = new ArrayList<>();
-    @JsonIgnoreProperties("recipes")
-    @ManyToMany(mappedBy = "recipes")
-    private List<Trip> trips = new ArrayList<>();
+    @JsonIgnoreProperties("recipe")
+    @OneToMany(mappedBy = "recipe")
+    private Set<TripRecipes> tripRecipes = new HashSet<>();
 
     @Override
     public String toString() {
@@ -67,12 +69,12 @@ public Recipe(){}
         }
     }
 
-    public List<Trip> getTrips() {
-        return trips;
+    public Set<TripRecipes> getTripRecipes() {
+        return tripRecipes;
     }
 
-    public void setTrips(List<Trip> trips) {
-        this.trips = trips;
+    public void setTripRecipes(Set<TripRecipes> tripRecipes) {
+        this.tripRecipes = tripRecipes;
     }
 
     public Long getRecipeId() {

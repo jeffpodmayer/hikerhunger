@@ -1,7 +1,6 @@
 package com.coderscampus.hikerhunger.web;
 
 import com.coderscampus.hikerhunger.domain.*;
-import com.coderscampus.hikerhunger.service.IngredientService;
 import com.coderscampus.hikerhunger.service.RecipeService;
 import com.coderscampus.hikerhunger.service.TripService;
 import com.coderscampus.hikerhunger.service.UserService;
@@ -100,12 +99,12 @@ public class TripController {
                 Recipe recipe = optionalRecipe.get();
 
                 // Create a new TripRecipes object
-                TripRecipes tripRecipe = new TripRecipes();
+                TripRecipe tripRecipe = new TripRecipe();
                 tripRecipe.setTrip(trip);
                 tripRecipe.setRecipe(recipe);
 
                 // Add the tripRecipe to the trip
-                trip.addTripRecipe(tripRecipe);
+//                trip.addTripRecipe(tripRecipe);
 
                 // Save the updated trip
                 tripService.saveTrip(trip);

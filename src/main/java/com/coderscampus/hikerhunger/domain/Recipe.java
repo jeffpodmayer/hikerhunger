@@ -27,7 +27,18 @@ public class Recipe {
     private List<Ingredient> ingredients = new ArrayList<>();
     @JsonIgnoreProperties("recipe")
     @OneToMany(mappedBy = "recipe")
-    private Set<TripRecipes> tripRecipes = new HashSet<>();
+    private Set<TripRecipe> tripRecipe = new HashSet<>();
+
+    public Recipe(Long recipeId, User user, String recipeName, RecipeType recipeType, String instructions, Integer servings, Float totalWeight, List<Ingredient> ingredients, Set<TripRecipe> tripRecipes) {
+        this.recipeId = recipeId;
+        this.user = user;
+        this.recipeName = recipeName;
+        this.recipeType = recipeType;
+        this.instructions = instructions;
+        this.servings = servings;
+        this.totalWeight = totalWeight;
+        this.ingredients = ingredients;
+    }
 
     @Override
     public String toString() {
@@ -40,18 +51,8 @@ public class Recipe {
                 ", servings=" + servings +
                 ", totalWeight=" + totalWeight +
                 ", ingredients=" + ingredients +
+                ", tripRecipes=" + tripRecipe +
                 '}';
-    }
-public Recipe(){}
-    public Recipe(Long recipeId, User user, String recipeName, RecipeType recipeType, String instructions, Integer servings, Float totalWeight, List<Ingredient> ingredients) {
-        this.recipeId = recipeId;
-        this.user = user;
-        this.recipeName = recipeName;
-        this.recipeType = recipeType;
-        this.instructions = instructions;
-        this.servings = servings;
-        this.totalWeight = totalWeight;
-        this.ingredients = ingredients;
     }
 
     public enum RecipeType {
@@ -69,12 +70,12 @@ public Recipe(){}
         }
     }
 
-    public Set<TripRecipes> getTripRecipes() {
-        return tripRecipes;
+    public Set<TripRecipe> getTripRecipe() {
+        return tripRecipe;
     }
 
-    public void setTripRecipes(Set<TripRecipes> tripRecipes) {
-        this.tripRecipes = tripRecipes;
+    public void setTripRecipe(Set<TripRecipe> tripRecipe) {
+        this.tripRecipe = tripRecipe;
     }
 
     public Long getRecipeId() {

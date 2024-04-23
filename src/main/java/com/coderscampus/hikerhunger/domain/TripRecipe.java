@@ -3,10 +3,11 @@ package com.coderscampus.hikerhunger.domain;
 import jakarta.persistence.*;
 
 @Entity
-public class TripRecipes {
+@Table(name = "trip_recipe")
+public class TripRecipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long tripRecipesId;
+    private Long tripRecipeId;
 
     @ManyToOne
     @JoinColumn(name = "trip_id")
@@ -32,13 +33,11 @@ public class TripRecipes {
         this.recipe = recipe;
     }
 
-    public Long getTripRecipesId() {
-        return tripRecipesId;
+    public Long getTripRecipeId() {
+        return tripRecipeId;
     }
 
-    public void setTripRecipesId(Long tripRecipesId) {
-        this.tripRecipesId = tripRecipesId;
+    public void setTripRecipeId(Long tripRecipeId) {
+        this.tripRecipeId = tripRecipeId;
     }
-
-
 }

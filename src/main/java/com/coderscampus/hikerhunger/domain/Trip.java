@@ -3,9 +3,7 @@ package com.coderscampus.hikerhunger.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -26,14 +24,14 @@ public class Trip {
 
     @JsonIgnoreProperties("trip")
     @OneToMany(mappedBy = "trip")
-    private Set<TripRecipes> tripRecipes = new HashSet<>();
+    private Set<TripRecipe> tripRecipe = new HashSet<>();
 
-    public Set<TripRecipes> getTripRecipes() {
-        return tripRecipes;
+    public Set<TripRecipe> getTripRecipe() {
+        return tripRecipe;
     }
 
-    public void setTripRecipes(Set<TripRecipes> tripRecipes) {
-        this.tripRecipes = tripRecipes;
+    public void setTripRecipe(Set<TripRecipe> tripRecipe) {
+        this.tripRecipe = tripRecipe;
     }
 
     public String getTripDetails() {

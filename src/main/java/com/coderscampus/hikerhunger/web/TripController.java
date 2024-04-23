@@ -2,6 +2,7 @@ package com.coderscampus.hikerhunger.web;
 
 import com.coderscampus.hikerhunger.domain.*;
 import com.coderscampus.hikerhunger.service.RecipeService;
+import com.coderscampus.hikerhunger.service.TripRecipeService;
 import com.coderscampus.hikerhunger.service.TripService;
 import com.coderscampus.hikerhunger.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +22,14 @@ public class TripController {
     private UserService userService;
     private TripService tripService;
     private RecipeService recipeService;
+    private TripRecipeService tripRecipeService;
 
     @Autowired
-    public TripController(UserService userService, TripService tripService, RecipeService recipeService) {
+    public TripController(UserService userService, TripService tripService, RecipeService recipeService, TripRecipeService tripRecipeService) {
         this.userService = userService;
         this.tripService = tripService;
         this.recipeService = recipeService;
+        this.tripRecipeService = tripRecipeService;
     }
 
     @PostMapping("/{userId}/trip")
@@ -89,7 +92,7 @@ public class TripController {
         }
     }
 
-    @PostMapping("/saveRecipeToTrip/{tripId}/{recipeId")
+    @PostMapping("/saveRecipe/{recipeId}/ToTrip/{tripId}")
     public ResponseEntity<Trip> saveRecipeToTrip(@PathVariable Long recipeId, @PathVariable Long tripId){
         Optional<Trip> optionalTrip = tripService.findById(tripId);
         Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
@@ -103,11 +106,10 @@ public class TripController {
                 tripRecipe.setTrip(trip);
                 tripRecipe.setRecipe(recipe);
 
-                // Add the tripRecipe to the trip
-//                trip.addTripRecipe(tripRecipe);
-
-                // Save the updated trip
-                tripService.saveTrip(trip);
+                trip.getTripRecipe().add(tripRecipe);
+                System.out.println(trip.getTripRecipe());
+                // Save the updated tripRecipe
+                tripRecipeService.save(tripRecipe);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(trip);
         } else {

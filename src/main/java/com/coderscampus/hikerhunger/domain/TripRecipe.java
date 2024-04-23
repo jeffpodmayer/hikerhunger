@@ -1,5 +1,7 @@
 package com.coderscampus.hikerhunger.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,11 +13,22 @@ public class TripRecipe {
 
     @ManyToOne
     @JoinColumn(name = "trip_id")
+    @JsonIgnoreProperties("tripRecipes")
     private Trip trip;
 
     @ManyToOne
     @JoinColumn(name = "recipe_id")
+    @JsonIgnoreProperties("tripRecipes")
     private Recipe recipe;
+
+//    @Override
+//    public String toString() {
+//        return "TripRecipe{" +
+//                "tripRecipeId=" + tripRecipeId +
+//                ", trip=" + trip +
+//                ", recipe=" + recipe +
+//                '}';
+//    }
 
     public Trip getTrip() {
         return trip;

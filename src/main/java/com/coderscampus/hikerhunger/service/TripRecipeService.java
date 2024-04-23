@@ -8,17 +8,21 @@ import org.springframework.stereotype.Service;
 @Service
 public class TripRecipeService {
 
-    private TripRecipeRepository tripRecipesRepo;
+    private TripRecipeRepository tripRecipeRepo;
     @Autowired
     public TripRecipeService(TripRecipeRepository tripRecipesRepo) {
-        this.tripRecipesRepo = tripRecipesRepo;
+        this.tripRecipeRepo = tripRecipesRepo;
     }
 
     public void addTripRecipe(TripRecipe tripRecipe) {
-        tripRecipesRepo.save(tripRecipe);
+        tripRecipeRepo.save(tripRecipe);
     }
 
     public void removeTripRecipe(TripRecipe tripRecipe) {
-        tripRecipesRepo.delete(tripRecipe);
+        tripRecipeRepo.delete(tripRecipe);
+    }
+
+    public void save(TripRecipe tripRecipe) {
+        tripRecipeRepo.save(tripRecipe);
     }
 }

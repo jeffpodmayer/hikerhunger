@@ -8,6 +8,7 @@
   <body>
     <h1>Let's Plan a Trip!</h1>
     <!-- TRIP DETAILS SECTION -->
+    <input type="hidden" id="tripId" th:value="${trip.tripId}" />
     <form
       id="tripForm"
       th:action="@{/home/saveTrip/{tripId}(tripId=${trip.tripId})}"

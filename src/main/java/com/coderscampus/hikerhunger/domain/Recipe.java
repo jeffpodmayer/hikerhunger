@@ -25,20 +25,21 @@ public class Recipe {
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("recipe")
     private List<Ingredient> ingredients = new ArrayList<>();
-    @JsonIgnoreProperties("recipe")
-    @OneToMany(mappedBy = "recipe")
-    private Set<TripRecipe> tripRecipe = new HashSet<>();
 
-    public Recipe(Long recipeId, User user, String recipeName, RecipeType recipeType, String instructions, Integer servings, Float totalWeight, List<Ingredient> ingredients, Set<TripRecipe> tripRecipes) {
-        this.recipeId = recipeId;
-        this.user = user;
-        this.recipeName = recipeName;
-        this.recipeType = recipeType;
-        this.instructions = instructions;
-        this.servings = servings;
-        this.totalWeight = totalWeight;
-        this.ingredients = ingredients;
-    }
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("recipe")
+    private Set<TripRecipe> tripRecipes = new HashSet<>();
+
+//    public Recipe(Long recipeId, User user, String recipeName, RecipeType recipeType, String instructions, Integer servings, Float totalWeight, List<Ingredient> ingredients, Set<TripRecipe> tripRecipes) {
+//        this.recipeId = recipeId;
+//        this.user = user;
+//        this.recipeName = recipeName;
+//        this.recipeType = recipeType;
+//        this.instructions = instructions;
+//        this.servings = servings;
+//        this.totalWeight = totalWeight;
+//        this.ingredients = ingredients;
+//    }
 
     @Override
     public String toString() {
@@ -51,7 +52,7 @@ public class Recipe {
                 ", servings=" + servings +
                 ", totalWeight=" + totalWeight +
                 ", ingredients=" + ingredients +
-                ", tripRecipes=" + tripRecipe +
+                ", tripRecipes=" + tripRecipes +
                 '}';
     }
 
@@ -71,11 +72,11 @@ public class Recipe {
     }
 
     public Set<TripRecipe> getTripRecipe() {
-        return tripRecipe;
+        return tripRecipes;
     }
 
     public void setTripRecipe(Set<TripRecipe> tripRecipe) {
-        this.tripRecipe = tripRecipe;
+        this.tripRecipes = tripRecipe;
     }
 
     public Long getRecipeId() {

@@ -22,16 +22,16 @@ public class Trip {
 
     private Float poundsPerPersonPerDay;
 
+    @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("trip")
-    @OneToMany(mappedBy = "trip")
-    private Set<TripRecipe> tripRecipe = new HashSet<>();
+    private Set<TripRecipe> tripRecipes = new HashSet<>();
 
     public Set<TripRecipe> getTripRecipe() {
-        return tripRecipe;
+        return tripRecipes;
     }
 
     public void setTripRecipe(Set<TripRecipe> tripRecipe) {
-        this.tripRecipe = tripRecipe;
+        this.tripRecipes = tripRecipe;
     }
 
     public String getTripDetails() {
@@ -90,16 +90,17 @@ public class Trip {
         this.numOfPeople = numOfPeople;
     }
 
-    //    @Override
+//    @Override
 //    public String toString() {
 //        return "Trip{" +
 //                "tripId=" + tripId +
 //                ", user=" + user +
 //                ", tripName='" + tripName + '\'' +
 //                ", numOfDays=" + numOfDays +
-//                ", poundsPersonPerDay=" + poundsPersonPerDay +
+//                ", numOfPeople=" + numOfPeople +
+//                ", tripDetails='" + tripDetails + '\'' +
+//                ", poundsPerPersonPerDay=" + poundsPerPersonPerDay +
+//                ", tripRecipes=" + tripRecipes +
 //                '}';
 //    }
-
-
 }

@@ -1,4 +1,6 @@
 const recipeTable = document.getElementById("recipeTable");
+const tripId = document.getElementById("tripId").value;
+console.log("Trip Id:" + tripId);
 
 recipeTable.addEventListener("change", function (event) {
   if (event.target.classList.contains("recipeCheckbox")) {
@@ -14,9 +16,26 @@ recipeTable.addEventListener("change", function (event) {
 });
 
 function saveRecipeToTrip(recipeId) {
-  // Here you can implement the logic to save the recipe to the specific trip
-  console.log("Saving recipe with ID " + recipeId + " to trip...");
-  // Example AJAX request or other logic to save the recipe
+  console.log("Saving recipe with ID " + recipeId + " to trip" + tripId);
+  fetch(`/home/saveRecipe/${recipeId}/ToTrip/${tripId}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error("Failed to save recipe to trip");
+      }
+    })
+    .then((data) => {
+      console.log("Trip:", data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 }
 
 //// BROUGHT FROM REFICPE.JS

@@ -16,6 +16,7 @@ public class Recipe {
     private Long recipeId;
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnoreProperties("recipes")
     private User user;
     private String recipeName;
     private RecipeType recipeType;

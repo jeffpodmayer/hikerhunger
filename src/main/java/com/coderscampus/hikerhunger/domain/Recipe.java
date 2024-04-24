@@ -27,7 +27,7 @@ public class Recipe {
     @JsonIgnoreProperties("recipe")
     private List<Ingredient> ingredients = new ArrayList<>();
     @ManyToMany(mappedBy = "recipes")
-    private Set<Trip> trips = new HashSet<>();
+    private List<Trip> trips = new ArrayList<>();
 
     public enum RecipeType {
         BREAKFAST("Breakfast"),
@@ -44,11 +44,11 @@ public class Recipe {
         }
     }
 
-    public Set<Trip> getTrips() {
+    public List<Trip> getTrips() {
         return trips;
     }
 
-    public void setTrips(Set<Trip> trips) {
+    public void setTrips(List<Trip> trips) {
         this.trips = trips;
     }
 

@@ -114,18 +114,16 @@ public class TripController {
 
         if (optionalTrip.isPresent()) {
             Trip trip = optionalTrip.get();
-            Set<Recipe> recipes = trip.getRecipes();
-
-            // Iterate through the recipes associated with the trip
+            List<Recipe> recipes = trip.getRecipes();
+            
             Iterator<Recipe> iterator = recipes.iterator();
             while (iterator.hasNext()) {
                 Recipe recipe = iterator.next();
                 if (recipe.getRecipeId().equals(recipeId)) {
-                    iterator.remove(); // Remove the recipe if its recipeId matches the passed-in recipeId
+                    // If the recipe ID matches the specified recipeId, remove it from the trip's list of recipes
+                    iterator.remove();
                 }
             }
-
-            // Save the updated trip to reflect the changes in the database
             tripService.save(trip);
 
             return ResponseEntity.noContent().build();

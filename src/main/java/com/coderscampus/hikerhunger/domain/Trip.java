@@ -1,7 +1,10 @@
 package com.coderscampus.hikerhunger.domain;
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -24,13 +27,15 @@ public class Trip {
             joinColumns = @JoinColumn(name = "trip_id"),
             inverseJoinColumns = @JoinColumn(name = "recipe_id")
     )
-    private Set<Recipe> recipes = new HashSet<>();
-    public Set<Recipe> getRecipes() {
+    private List<Recipe> recipes = new ArrayList<>();
+
+    public List<Recipe> getRecipes() {
         return recipes;
     }
-    public void setRecipes(Set<Recipe> recipes) {
+    public void setRecipes(List<Recipe> recipes) {
         this.recipes = recipes;
     }
+
     public String getTripDetails() {
         return tripDetails;
     }

@@ -28,14 +28,13 @@ public class TripService {
         return tripRepo.findById(tripId);
     }
 
-    public Trip saveTrip(Trip trip) {
-        tripRepo.save(trip);
-        return trip;
-    }
 
     public void delete(Trip trip) {
         tripRepo.delete(trip);
     }
 
 
+    public void save(Trip trip) {
+        tripRepo.save(trip);
+    }
 }

@@ -1,12 +1,15 @@
 package com.coderscampus.hikerhunger.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "tripId")
 public class Trip {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,16 +22,22 @@ public class Trip {
     private Integer numOfPeople;
     private String tripDetails;
     private Float poundsPerPersonPerDay;
-    @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("trip")
-    private Set<TripRecipe> tripRecipes = new HashSet<>();
 
-    public Set<TripRecipe> getTripRecipe() {
-        return tripRecipes;
+//  @JsonIgnoreProperties("trip")
+    @ManyToMany
+    @JoinTable(
+            name = "trip_recipe",
+            joinColumns = @JoinColumn(name = "trip_id"),
+            inverseJoinColumns = @JoinColumn(name = "recipe_id")
+    )
+    private Set<Recipe> recipes = new HashSet<>();
+
+    public Set<Recipe> getRecipes() {
+        return recipes;
     }
 
-    public void setTripRecipe(Set<TripRecipe> tripRecipe) {
-        this.tripRecipes = tripRecipe;
+    public void setRecipes(Set<Recipe> recipes) {
+        this.recipes = recipes;
     }
 
     public String getTripDetails() {

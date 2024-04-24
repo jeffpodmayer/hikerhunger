@@ -2,7 +2,6 @@ package com.coderscampus.hikerhunger.web;
 
 import com.coderscampus.hikerhunger.domain.*;
 import com.coderscampus.hikerhunger.service.RecipeService;
-import com.coderscampus.hikerhunger.service.TripRecipeService;
 import com.coderscampus.hikerhunger.service.TripService;
 import com.coderscampus.hikerhunger.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +21,14 @@ public class TripController {
     private UserService userService;
     private TripService tripService;
     private RecipeService recipeService;
-    private TripRecipeService tripRecipeService;
+//    private TripRecipeService tripRecipeService;
 
     @Autowired
-    public TripController(UserService userService, TripService tripService, RecipeService recipeService, TripRecipeService tripRecipeService) {
+    public TripController(UserService userService, TripService tripService, RecipeService recipeService) {
         this.userService = userService;
         this.tripService = tripService;
         this.recipeService = recipeService;
-        this.tripRecipeService = tripRecipeService;
+//        this.tripRecipeService = tripRecipeService;
     }
 
     @PostMapping("/{userId}/trip")
@@ -67,9 +66,8 @@ public class TripController {
                 trip.setTripDetails(tripData.getTripDetails());
                 trip.setPoundsPerPersonPerDay(tripData.getPoundsPerPersonPerDay());
 
-                Trip savedTrip = tripService.saveTrip(trip);
-                System.out.println("Sent from createTrip page:" + savedTrip);
-
+                tripService.save(trip);
+                System.out.println("Saved trip: " + trip);
                 return "redirect:/home/" + trip.getUser().getId();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -100,18 +98,9 @@ public class TripController {
         if (optionalTrip.isPresent() && optionalRecipe.isPresent()) {
                 Trip trip = optionalTrip.get();
                 Recipe recipe = optionalRecipe.get();
-
-                // Create a new TripRecipes object
-                TripRecipe tripRecipe = new TripRecipe();
-                tripRecipe.setTrip(trip);
-                tripRecipe.setRecipe(recipe);
-
-                trip.getTripRecipe().add(tripRecipe);
-                System.out.println(trip.getTripRecipe());
-                // Save the updated tripRecipe
-                tripRecipeService.save(tripRecipe);
-
-            return ResponseEntity.status(HttpStatus.CREATED).body(tripRecipe.getRecipe());
+                trip.getRecipes().add(recipe);
+                tripService.save(trip);
+            return ResponseEntity.status(HttpStatus.CREATED).body(recipe);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }

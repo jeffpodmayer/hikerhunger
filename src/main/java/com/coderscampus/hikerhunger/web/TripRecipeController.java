@@ -1,7 +1,7 @@
-package com.coderscampus.hikerhunger.web;
-
-import org.springframework.stereotype.Controller;
-
-@Controller
-public class TripRecipeController {
-}
+//package com.coderscampus.hikerhunger.web;
+//
+//import org.springframework.stereotype.Controller;
+//
+//@Controller
+//public class TripRecipeController {
+//}

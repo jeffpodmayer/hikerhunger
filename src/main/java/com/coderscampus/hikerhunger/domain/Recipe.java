@@ -1,14 +1,16 @@
 package com.coderscampus.hikerhunger.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+
+import java.util.*;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "recipeId")
 public class Recipe {
 
     @Id
@@ -26,9 +28,10 @@ public class Recipe {
     @JsonIgnoreProperties("recipe")
     private List<Ingredient> ingredients = new ArrayList<>();
 
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("recipe")
-    private Set<TripRecipe> tripRecipes = new HashSet<>();
+
+//   @JsonIgnoreProperties("recipe")
+    @ManyToMany(mappedBy = "recipes")
+    private Set<Trip> trips = new HashSet<>();
 
 //    public Recipe(Long recipeId, User user, String recipeName, RecipeType recipeType, String instructions, Integer servings, Float totalWeight, List<Ingredient> ingredients, Set<TripRecipe> tripRecipes) {
 //        this.recipeId = recipeId;
@@ -41,20 +44,20 @@ public class Recipe {
 //        this.ingredients = ingredients;
 //    }
 
-    @Override
-    public String toString() {
-        return "Recipe{" +
-                "recipeId=" + recipeId +
-                ", user=" + user +
-                ", recipeName='" + recipeName + '\'' +
-                ", recipeType=" + recipeType +
-                ", instructions='" + instructions + '\'' +
-                ", servings=" + servings +
-                ", totalWeight=" + totalWeight +
-                ", ingredients=" + ingredients +
-                ", tripRecipes=" + tripRecipes +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "Recipe{" +
+//                "recipeId=" + recipeId +
+//                ", user=" + user +
+//                ", recipeName='" + recipeName + '\'' +
+//                ", recipeType=" + recipeType +
+//                ", instructions='" + instructions + '\'' +
+//                ", servings=" + servings +
+//                ", totalWeight=" + totalWeight +
+//                ", ingredients=" + ingredients +
+//                ", tripRecipes=" + tripRecipes +
+//                '}';
+//    }
 
     public enum RecipeType {
         BREAKFAST("Breakfast"),
@@ -71,12 +74,12 @@ public class Recipe {
         }
     }
 
-    public Set<TripRecipe> getTripRecipe() {
-        return tripRecipes;
+    public Set<Trip> getTrips() {
+        return trips;
     }
 
-    public void setTripRecipe(Set<TripRecipe> tripRecipe) {
-        this.tripRecipes = tripRecipe;
+    public void setTrips(Set<Trip> trips) {
+        this.trips = trips;
     }
 
     public Long getRecipeId() {

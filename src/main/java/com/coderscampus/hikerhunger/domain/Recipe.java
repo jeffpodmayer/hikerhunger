@@ -12,7 +12,6 @@ import java.util.*;
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "recipeId")
 public class Recipe {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long recipeId;
@@ -27,37 +26,8 @@ public class Recipe {
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("recipe")
     private List<Ingredient> ingredients = new ArrayList<>();
-
-
-//   @JsonIgnoreProperties("recipe")
     @ManyToMany(mappedBy = "recipes")
     private Set<Trip> trips = new HashSet<>();
-
-//    public Recipe(Long recipeId, User user, String recipeName, RecipeType recipeType, String instructions, Integer servings, Float totalWeight, List<Ingredient> ingredients, Set<TripRecipe> tripRecipes) {
-//        this.recipeId = recipeId;
-//        this.user = user;
-//        this.recipeName = recipeName;
-//        this.recipeType = recipeType;
-//        this.instructions = instructions;
-//        this.servings = servings;
-//        this.totalWeight = totalWeight;
-//        this.ingredients = ingredients;
-//    }
-
-//    @Override
-//    public String toString() {
-//        return "Recipe{" +
-//                "recipeId=" + recipeId +
-//                ", user=" + user +
-//                ", recipeName='" + recipeName + '\'' +
-//                ", recipeType=" + recipeType +
-//                ", instructions='" + instructions + '\'' +
-//                ", servings=" + servings +
-//                ", totalWeight=" + totalWeight +
-//                ", ingredients=" + ingredients +
-//                ", tripRecipes=" + tripRecipes +
-//                '}';
-//    }
 
     public enum RecipeType {
         BREAKFAST("Breakfast"),
@@ -145,4 +115,30 @@ public class Recipe {
     public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
+
+    //    public Recipe(Long recipeId, User user, String recipeName, RecipeType recipeType, String instructions, Integer servings, Float totalWeight, List<Ingredient> ingredients, Set<TripRecipe> tripRecipes) {
+//        this.recipeId = recipeId;
+//        this.user = user;
+//        this.recipeName = recipeName;
+//        this.recipeType = recipeType;
+//        this.instructions = instructions;
+//        this.servings = servings;
+//        this.totalWeight = totalWeight;
+//        this.ingredients = ingredients;
+//    }
+
+//    @Override
+//    public String toString() {
+//        return "Recipe{" +
+//                "recipeId=" + recipeId +
+//                ", user=" + user +
+//                ", recipeName='" + recipeName + '\'' +
+//                ", recipeType=" + recipeType +
+//                ", instructions='" + instructions + '\'' +
+//                ", servings=" + servings +
+//                ", totalWeight=" + totalWeight +
+//                ", ingredients=" + ingredients +
+//                ", tripRecipes=" + tripRecipes +
+//                '}';
+//    }
 }

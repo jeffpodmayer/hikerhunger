@@ -2,6 +2,50 @@ const recipeTable = document.getElementById("recipeTable");
 const tripId = document.getElementById("tripId").value;
 console.log("Trip Id:" + tripId);
 
+const renderRecipe = (recipe) => {
+  const tr = document.createElement("tr");
+  tr.classList.add(`tripRecipe`);
+  tr.setAttribute("data-recipe-id", recipe.recipeId);
+
+  const recipeHTML = `
+  <td><i class="fa-solid fa-minus"></i><input type="number" class="" id="recipeCounter" min="1" step="1" value="1"><i class="fa-solid fa-plus"></i></td>
+  <td class="recipeName"><p>${recipe.recipeName}</p></td>
+  <td class="type"><p>${recipe.recipeType}</p></td>
+  <td class="instructions"><p>${recipe.instructions}</p></td>
+  <td class="servings"><p>${recipe.servings}</p></td>
+  <td class="weight"><p class="weightInput">${recipe.totalWeight}</p></td>
+  <td class="trash_icon"><i class="fa-regular fa-trash-can"></i></td>
+     `;
+
+  tr.innerHTML = recipeHTML;
+  const recipeContainer = document.getElementById("recipeContainer");
+  recipeContainer.appendChild(tr);
+};
+
+function deleteRecipeId(recipeId) {
+  console.log(recipeId);
+  fetch(`/home/deleteAllRecipes/${recipeId}/${tripId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      if (response.ok) {
+        console.log(
+          "Good response..insert function to remove associated table row."
+        );
+      } else {
+        throw new Error("Failed to save recipe to trip");
+      }
+    })
+    // .then((data) => {
+    // })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
+
 recipeTable.addEventListener("change", function (event) {
   if (event.target.classList.contains("recipeCheckbox")) {
     const recipeId =
@@ -10,13 +54,13 @@ recipeTable.addEventListener("change", function (event) {
       console.log("Recipe ID" + recipeId + "checked");
       saveRecipeToTrip(recipeId);
     } else {
+      deleteRecipeId(recipeId);
       console.log("Removed all instances of this recipe from this trip.");
     }
   }
 });
 
 function saveRecipeToTrip(recipeId) {
-  console.log("Saving recipe with ID " + recipeId + " to trip" + tripId);
   fetch(`/home/saveRecipe/${recipeId}/ToTrip/${tripId}`, {
     method: "POST",
     headers: {
@@ -25,14 +69,14 @@ function saveRecipeToTrip(recipeId) {
   })
     .then((response) => {
       if (response.ok) {
-        console.log(response);
         return response.json();
       } else {
         throw new Error("Failed to save recipe to trip");
       }
     })
     .then((data) => {
-      console.log("Trip:", data);
+      renderRecipe(data);
+      console.log("Recipe:", data);
     })
     .catch((error) => {
       console.error("Error:", error);

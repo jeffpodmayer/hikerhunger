@@ -11,8 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/home")
@@ -103,6 +105,32 @@ public class TripController {
             return ResponseEntity.status(HttpStatus.CREATED).body(recipe);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @DeleteMapping("/deleteAllRecipes/{recipeId}/{tripId}")
+    public ResponseEntity<Void> deleteAllRecipes(@PathVariable Long recipeId, @PathVariable Long tripId) {
+        Optional<Trip> optionalTrip = tripService.findById(tripId);
+
+        if (optionalTrip.isPresent()) {
+            Trip trip = optionalTrip.get();
+            Set<Recipe> recipes = trip.getRecipes();
+
+            // Iterate through the recipes associated with the trip
+            Iterator<Recipe> iterator = recipes.iterator();
+            while (iterator.hasNext()) {
+                Recipe recipe = iterator.next();
+                if (recipe.getRecipeId().equals(recipeId)) {
+                    iterator.remove(); // Remove the recipe if its recipeId matches the passed-in recipeId
+                }
+            }
+
+            // Save the updated trip to reflect the changes in the database
+            tripService.save(trip);
+
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 

@@ -3,6 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://kit.fontawesome.com/783d090aa0.js"
+      crossorigin="anonymous"
+    ></script>
     <title>Plan a Trip!</title>
   </head>
   <body>
@@ -30,6 +34,9 @@
         <label id="tripDetails">Trip Details:</label>
         <textarea th:field="${trip.tripDetails}" rows="4" cols="50"></textarea>
       </div>
+
+      <hr/>
+
       <div class="totalWeight">
         <h3>Weight Per Person/Per Day</h3>
         <div>
@@ -41,6 +48,8 @@
             <p class="weightInPounds">0</p>
         </div>
     </div>
+
+    <hr/>
     <button type="submit" id="saveTripButton">Save Trip</button>
     </form>
     <form  th:action="@{/home/postDeleteTrip/{tripId}(tripId=${trip.tripId})}"

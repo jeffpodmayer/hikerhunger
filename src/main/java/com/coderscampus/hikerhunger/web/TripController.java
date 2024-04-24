@@ -23,14 +23,12 @@ public class TripController {
     private UserService userService;
     private TripService tripService;
     private RecipeService recipeService;
-//    private TripRecipeService tripRecipeService;
 
     @Autowired
     public TripController(UserService userService, TripService tripService, RecipeService recipeService) {
         this.userService = userService;
         this.tripService = tripService;
         this.recipeService = recipeService;
-//        this.tripRecipeService = tripRecipeService;
     }
 
     @PostMapping("/{userId}/trip")
@@ -69,7 +67,6 @@ public class TripController {
                 trip.setPoundsPerPersonPerDay(tripData.getPoundsPerPersonPerDay());
 
                 tripService.save(trip);
-                System.out.println("Saved trip: " + trip);
                 return "redirect:/home/" + trip.getUser().getId();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -111,25 +108,42 @@ public class TripController {
     @DeleteMapping("/deleteAllRecipes/{recipeId}/{tripId}")
     public ResponseEntity<Void> deleteAllRecipes(@PathVariable Long recipeId, @PathVariable Long tripId) {
         Optional<Trip> optionalTrip = tripService.findById(tripId);
-
         if (optionalTrip.isPresent()) {
             Trip trip = optionalTrip.get();
             List<Recipe> recipes = trip.getRecipes();
-            
+
             Iterator<Recipe> iterator = recipes.iterator();
             while (iterator.hasNext()) {
                 Recipe recipe = iterator.next();
                 if (recipe.getRecipeId().equals(recipeId)) {
-                    // If the recipe ID matches the specified recipeId, remove it from the trip's list of recipes
                     iterator.remove();
                 }
             }
             tripService.save(trip);
-
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
+    @DeleteMapping("/deleteRecipe/{recipeId}/{tripId}")
+    public ResponseEntity<Void> deleteRecipeFromTrip(@PathVariable Long recipeId, @PathVariable Long tripId) {
+        Optional<Trip> optionalTrip = tripService.findById(tripId);
+
+        if (optionalTrip.isPresent()) {
+            Trip trip = optionalTrip.get();
+            List<Recipe> recipes = trip.getRecipes();
+            for (Recipe recipe : recipes) {
+                if (recipe.getRecipeId().equals(recipeId)) {
+                    recipes.remove(recipe);
+                    tripService.save(trip);
+                    return ResponseEntity.noContent().build();
+                }
+            }
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
+

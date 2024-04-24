@@ -25,7 +25,8 @@ const renderRecipe = (recipe) => {
   tr.innerHTML = recipeHTML;
   tripRecipeTable.appendChild(tr);
 };
-function deleteRecipeId(recipeId) {
+
+function deleteAllRecipesWithRecipeId(recipeId) {
   fetch(`/home/deleteAllRecipes/${recipeId}/${tripId}`, {
     method: "DELETE",
     headers: {
@@ -43,6 +44,7 @@ function deleteRecipeId(recipeId) {
       console.error("Error:", error);
     });
 }
+
 function saveRecipeToTrip(recipeId) {
   return fetch(`/home/saveRecipe/${recipeId}/ToTrip/${tripId}`, {
     method: "POST",
@@ -61,6 +63,7 @@ function saveRecipeToTrip(recipeId) {
       console.error("Error:", error);
     });
 }
+
 function removeRecipeRow(recipeId) {
   var table = document.getElementById("tripRecipeTable");
   if (table) {
@@ -70,6 +73,7 @@ function removeRecipeRow(recipeId) {
     }
   }
 }
+
 function uncheckCheckboxInRecipeTable(recipeId) {
   // Find the checkbox corresponding to the recipeId in the other table
   const row = document.querySelector(
@@ -83,23 +87,26 @@ function uncheckCheckboxInRecipeTable(recipeId) {
     }
   }
 }
+
 function deleteOneRecipeFromTrip(recipeId) {
   fetch(`/home/deleteRecipe/${recipeId}/${tripId}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
     },
-  })
-    .then((response) => {
-      if (response.ok) {
-      } else {
-        throw new Error("Failed to delete recipe from trip");
-      }
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+  });
+  console.log("One recipe deleted.");
+  // .then((response) => {
+  //   if (response.ok) {
+  //   } else {
+  //     throw new Error("Failed to delete recipe from trip");
+  //   }
+  // })
+  // .catch((error) => {
+  //   console.error("Error:", error);
+  // });
 }
+
 function handlePlusMinusIconClick(event) {
   const minusIcon = event.target.closest(".minus_icon");
   const plusIcon = event.target.closest(".plus_icon");
@@ -120,6 +127,7 @@ function handlePlusMinusIconClick(event) {
         let recipeCount = parseInt(recipeCountInput.value, 10);
         if (!isNaN(recipeCount)) {
           if (minusIcon && recipeCount > 1) {
+            deleteOneRecipeFromTrip(recipeId);
             recipeCount--;
           } else if (plusIcon) {
             saveRecipeToTrip(recipeId);
@@ -148,7 +156,7 @@ recipeTable.addEventListener("change", function (event) {
           console.error("Error:", error);
         });
     } else {
-      deleteRecipeId(recipeId);
+      deleteAllRecipesWithRecipeId(recipeId);
     }
   }
 });
@@ -156,7 +164,7 @@ tripRecipeTable.addEventListener("click", function (event) {
   if (event.target.closest(".trash_icon")) {
     const recipeId = event.target.closest("tr").getAttribute("data-recipe-id");
     uncheckCheckboxInRecipeTable(recipeId);
-    deleteRecipeId(recipeId);
+    deleteAllRecipesWithRecipeId(recipeId);
   }
 });
 

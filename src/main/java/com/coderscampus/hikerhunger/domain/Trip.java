@@ -17,11 +17,8 @@ public class Trip {
     private String tripName;
     private Float numOfDays;
     private Integer numOfPeople;
-
     private String tripDetails;
-
     private Float poundsPerPersonPerDay;
-
     @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("trip")
     private Set<TripRecipe> tripRecipes = new HashSet<>();

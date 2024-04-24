@@ -93,7 +93,7 @@ public class TripController {
     }
 
     @PostMapping("/saveRecipe/{recipeId}/ToTrip/{tripId}")
-    public ResponseEntity<Trip> saveRecipeToTrip(@PathVariable Long recipeId, @PathVariable Long tripId){
+    public ResponseEntity<Recipe> saveRecipeToTrip(@PathVariable Long recipeId, @PathVariable Long tripId){
         Optional<Trip> optionalTrip = tripService.findById(tripId);
         Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
 
@@ -111,7 +111,7 @@ public class TripController {
                 // Save the updated tripRecipe
                 tripRecipeService.save(tripRecipe);
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(trip);
+            return ResponseEntity.status(HttpStatus.CREATED).body(tripRecipe.getRecipe());
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }

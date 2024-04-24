@@ -25,6 +25,7 @@ function saveRecipeToTrip(recipeId) {
   })
     .then((response) => {
       if (response.ok) {
+        console.log(response);
         return response.json();
       } else {
         throw new Error("Failed to save recipe to trip");

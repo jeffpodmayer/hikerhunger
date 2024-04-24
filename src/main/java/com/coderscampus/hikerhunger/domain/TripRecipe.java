@@ -13,12 +13,10 @@ public class TripRecipe {
 
     @ManyToOne
     @JoinColumn(name = "trip_id")
-    @JsonIgnoreProperties("tripRecipes")
     private Trip trip;
 
     @ManyToOne
     @JoinColumn(name = "recipe_id")
-    @JsonIgnoreProperties("tripRecipes")
     private Recipe recipe;
 
 //    @Override

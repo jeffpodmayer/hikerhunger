@@ -45,7 +45,7 @@
 
       <div>
         <label for="servings">How many people does this serve:</label>
-        <input type="number" id="servings" th:field="${recipe.servings}" />
+        <input type="number" min="1" id="servings" th:field="${recipe.servings}" />
       </div>
       <div class="totalWeight">
         <h3>Weight</h3>
@@ -89,11 +89,11 @@
       <label>Ingredient Name:</label>
       <input id="ingredientNameInput" type="text" /><br />
       <label>Quantity:</label>
-      <input id="quantityInput" type="number"/><br />
+      <input id="quantityInput" value="0" min="0" type="number"/><br />
       <label>Unit:</label>
       <input id="unitInput" type="text"/><br />
       <label>Weight In Grams:</label>
-      <input id="weightInput" type="number"/><br />
+      <input id="weightInput" value="0" min="0" type="number"/><br />
       <label>Notes:</label>
       <input id="notesInput" type="text" />
       <input type="button" id="addIngredientButton" value="Add!" />

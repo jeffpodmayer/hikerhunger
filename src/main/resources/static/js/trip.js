@@ -2,9 +2,10 @@
 const recipeTable = document.getElementById("recipeTable");
 const tripRecipeTable = document.getElementById("tripRecipeTable");
 const tripId = document.getElementById("tripId").value;
-const trashIcon = document.querySelector("trash_icon");
-const minusIcon = document.querySelector("minus_icon");
-const plusIcon = document.querySelector("plus_icon");
+let weightInGrams = document.getElementById("weightInGrams");
+let weightInPounds = document.getElementById("weightInPounds");
+let numOfDays = document.getElementById("numOfDays");
+let numOfPeople = document.getElementById("numOfPeople");
 
 //// FUNCTIONS
 const renderRecipe = (recipe) => {
@@ -24,6 +25,7 @@ const renderRecipe = (recipe) => {
 
   tr.innerHTML = recipeHTML;
   tripRecipeTable.appendChild(tr);
+  calculateWeightPerPersonPerDay(recipe.totalWeight);
 };
 
 function deleteAllRecipesWithRecipeId(recipeId) {
@@ -140,6 +142,28 @@ function handlePlusMinusIconClick(event) {
   }
 }
 
+const calculateWeightPerPersonPerDay = (newRecipeWeight) => {
+  console.log("Initial weightInGrams:", weightInGrams.value);
+  console.log("New recipe weight:", newRecipeWeight);
+
+  let totalWeight = weightInGrams.value;
+
+  totalWeight += newRecipeWeight;
+  console.log("Updated totalWeight:", totalWeight);
+
+  console.log(numOfDays.value);
+  console.log(numOfPeople.value);
+
+  const foodPerPersonPerDay =
+    parseFloat(totalWeight) /
+    (parseFloat(numOfDays.value) * parseFloat(numOfPeople.value));
+
+  console.log("Food per person per day:", foodPerPersonPerDay);
+
+  weightInGrams.value = foodPerPersonPerDay;
+  weightInPounds.textContent = (foodPerPersonPerDay * 0.00220462).toFixed(2);
+};
+
 //////// EVENT LISTENERS
 recipeTable.addEventListener("change", function (event) {
   if (event.target.classList.contains("recipeCheckbox")) {
@@ -160,6 +184,7 @@ recipeTable.addEventListener("change", function (event) {
     }
   }
 });
+
 tripRecipeTable.addEventListener("click", function (event) {
   if (event.target.closest(".trash_icon")) {
     const recipeId = event.target.closest("tr").getAttribute("data-recipe-id");
@@ -168,42 +193,4 @@ tripRecipeTable.addEventListener("click", function (event) {
   }
 });
 
-//COMBINE INTO ONE ELEMENT
 tripRecipeTable.addEventListener("click", handlePlusMinusIconClick);
-
-// const recipeId = minusIcon.closest("tr").getAttribute("data-recipe-id");
-// deleteOneRecipeFromTrip(recipeId);
-// }
-
-//// BROUGHT FROM REFICPE.JS
-/// UPDATE WEIGHT DYNAMICALLY ON PAGE
-// document.addEventListener("input", function (event) {
-//   if (event.target.classList.contains("weightInput")) {
-//     const newWeight = parseInt(event.target.value);
-//     const parentRow = event.target.closest(".ingredient");
-//     const index = parentRow.getAttribute("data-index");
-//     addedIngredients[index].weightInGrams = newWeight;
-//     // Update the total weight display
-//     updateWeight();
-//   }
-// });
-
-// ////// UPDATE INPUT FILEDS ON PAGE /////////////////
-// document.addEventListener("input", function (event) {
-//   // Check if the target element is an input field related to ingredients
-//   const target = event.target;
-//   // Check if the target element is an input field related to ingredients
-//   if (target.classList.contains("ingredientInput")) {
-//     // Find the data index of the parent row (tr) of the input element
-//     const index = target.closest(".ingredient").getAttribute("data-index");
-
-//     // Get the property to update from the data-property attribute
-//     const propertyName = target.dataset.property;
-
-//     // Update the corresponding property of the ingredient object in the addedIngredients array
-//     addedIngredients[index][propertyName] = target.value;
-
-//     // Optionally, you can also trigger the updateWeight function here
-//     // updateWeight();
-//   }
-// });

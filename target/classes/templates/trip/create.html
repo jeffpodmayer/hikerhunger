@@ -23,12 +23,12 @@
         <input type="text" th:field="${trip.tripName}" />
       </div>
       <div>
-        <label id="numOfDays">Number of Days:</label>
-        <input type="number" th:field="${trip.numOfDays}"/>
+        <label>Number of Days:</label>
+        <input id="numOfDays" type="number" min="0" value="1" th:field="${trip.numOfDays}"/>
       </div>
       <div>
-        <label id="numOfPeople">Number of People:</label>
-        <input type="number" th:field="${trip.numOfPeople}" />
+        <label>Number of People:</label>
+        <input id="numOfPeople" type="number" min="1" value="1" th:field="${trip.numOfPeople}" />
       </div>
       <div>
         <label id="tripDetails">Trip Details:</label>
@@ -40,12 +40,12 @@
       <div class="totalWeight">
         <h3>Weight Per Person/Per Day</h3>
         <div>
-            <p class="weight__label">Grams:</label>
-            <input th:field="${trip.poundsPerPersonPerDay}" class="weightInGrams" type="number" id="weightInGrams" readonly/>
+            <p class="weight__label">Grams:</p>
+            <input th:field="${trip.poundsPerPersonPerDay}" class="weightInGrams" type="number" min="0" value="0" id="weightInGrams" readonly/>
         </div>
         <div>
             <p class="weight__label">Pounds:</p>
-            <p class="weightInPounds">0</p>
+            <p id="weightInPounds" class="weightInPounds">0</p>
         </div>
     </div>
 

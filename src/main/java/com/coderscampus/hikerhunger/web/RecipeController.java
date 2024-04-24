@@ -46,6 +46,8 @@ public class RecipeController {
         Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
         if (optionalRecipe.isPresent()) {
             Recipe recipe = optionalRecipe.get();
+            recipe.setServings(1);
+            recipe.setTotalWeight(0F);
             List<Ingredient> ingredients = recipe.getIngredients();
             Ingredient ingredient = new Ingredient();
             model.put("user", user);

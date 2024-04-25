@@ -6,6 +6,7 @@ let weightInGrams = document.getElementById("weightInGrams");
 let weightInPounds = document.getElementById("weightInPounds");
 let numOfDays = document.getElementById("numOfDays");
 let numOfPeople = document.getElementById("numOfPeople");
+console.log(numOfPeople.value);
 
 //// FUNCTIONS
 const renderRecipe = (recipe) => {
@@ -19,13 +20,13 @@ const renderRecipe = (recipe) => {
   <td class="type"><p>${recipe.recipeType}</p></td>
   <td class="instructions"><p>${recipe.instructions}</p></td>
   <td class="servings"><p>${recipe.servings}</p></td>
-  <td class="weight"><p class="weightInput">${recipe.totalWeight}</p></td>
+  <td class="weight"><p>${recipe.totalWeight}</p></td>
   <td class="trash_icon"><i class="fa-regular fa-trash-can"></i></td>
      `;
 
   tr.innerHTML = recipeHTML;
   tripRecipeTable.appendChild(tr);
-  calculateWeightPerPersonPerDay(recipe.totalWeight);
+  calculateWeightPerPersonPerDay();
 };
 
 function deleteAllRecipesWithRecipeId(recipeId) {
@@ -38,6 +39,7 @@ function deleteAllRecipesWithRecipeId(recipeId) {
     .then((response) => {
       if (response.ok) {
         removeRecipeRow(recipeId);
+        calculateWeightPerPersonPerDay();
       } else {
         throw new Error("Failed to delete recipe from trip");
       }
@@ -56,6 +58,7 @@ function saveRecipeToTrip(recipeId) {
   })
     .then((response) => {
       if (response.ok) {
+        calculateWeightPerPersonPerDay();
         return response.json();
       } else {
         throw new Error("Failed to save recipe to trip");
@@ -97,6 +100,7 @@ function deleteOneRecipeFromTrip(recipeId) {
       "Content-Type": "application/json",
     },
   });
+  calculateWeightPerPersonPerDay();
   console.log("One recipe deleted.");
   // .then((response) => {
   //   if (response.ok) {
@@ -142,27 +146,67 @@ function handlePlusMinusIconClick(event) {
   }
 }
 
-const calculateWeightPerPersonPerDay = (newRecipeWeight) => {
-  console.log("Initial weightInGrams:", weightInGrams.value);
-  console.log("New recipe weight:", newRecipeWeight);
+const calculateWeightPerPersonPerDay = () => {
+  const tableRows = document.querySelectorAll(".tripRecipe");
+  const gramsToPounds = 0.00220462;
 
-  let totalWeight = weightInGrams.value;
+  // Use reduce to sum up the weight values of all rows
+  const totalWeight = Array.from(tableRows).reduce((acc, row) => {
+    const gramsCell = row.querySelector(".weight"); // Assuming the weight cell has a class "weight"
+    const weightInGrams = parseFloat(gramsCell.textContent.trim());
+    return acc + weightInGrams;
+  }, 0);
 
-  totalWeight += newRecipeWeight;
-  console.log("Updated totalWeight:", totalWeight);
+  // Update the total weight in grams input element
+  weightInGrams.value = totalWeight;
 
-  console.log(numOfDays.value);
-  console.log(numOfPeople.value);
-
-  const foodPerPersonPerDay =
-    parseFloat(totalWeight) /
-    (parseFloat(numOfDays.value) * parseFloat(numOfPeople.value));
-
-  console.log("Food per person per day:", foodPerPersonPerDay);
-
-  weightInGrams.value = foodPerPersonPerDay;
-  weightInPounds.textContent = (foodPerPersonPerDay * 0.00220462).toFixed(2);
+  // Calculate weight in pounds and update the corresponding element
+  weightInPounds.textContent = isNaN(totalWeight * gramsToPounds)
+    ? 0
+    : (totalWeight * gramsToPounds).toFixed(2);
 };
+
+// Function to update servings and weights based on the number of people
+function updateRecipeServings(recipe, numberOfPeople) {
+  // Initial number of servings and total weight of the recipe
+  const initialServings = recipe.servings; //1
+  const initialTotalWeight = recipe.totalWeight;
+
+  // Calculate new number of servings
+  const newServings = initialServings * (numberOfPeople / recipe.servings); // 1*(2/1)=2
+
+  // Update servings in the recipe object
+  recipe.servings = newServings; //2
+
+  // Adjust weights of ingredients
+  recipe.ingredients.forEach((ingredient) => {
+    ingredient.weightInGrams *= newServings / initialServings;
+    ingredient.quantity *= newServings / initialServings;
+  });
+
+  console.log(recipe.ingredients);
+  // Recalculate total weight of the recipe
+  recipe.totalWeight = recipe.ingredients.reduce(
+    (total, ingredient) => total + ingredient.weightInGrams,
+    0
+  );
+
+  // Update the DOM elements displaying servings and total weight
+  updateDOMRecipeServings(newServings);
+  updateDOMRecipeTotalWeight(recipe.totalWeight);
+}
+
+// Function to update DOM elements for servings
+function updateDOMRecipeServings(servings) {
+  const servingsCell = document.querySelector(".servings");
+  servingsCell.innerText = servings;
+}
+
+// Function to update DOM elements for total weight
+function updateDOMRecipeTotalWeight(totalWeight) {
+  const totalWeightElement = document.querySelector(".weight");
+  totalWeightElement.innerText = totalWeight;
+}
 
 //////// EVENT LISTENERS
 recipeTable.addEventListener("change", function (event) {
@@ -173,7 +217,10 @@ recipeTable.addEventListener("change", function (event) {
       saveRecipeToTrip(recipeId)
         .then((recipeData) => {
           if (recipeData) {
+            console.log(recipeData);
+            console.log(numOfPeople.value);
             renderRecipe(recipeData);
+            updateRecipeServings(recipeData, numOfPeople.value);
           }
         })
         .catch((error) => {

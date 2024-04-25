@@ -14,15 +14,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/home")
 public class TripController {
 
-    private UserService userService;
-    private TripService tripService;
-    private RecipeService recipeService;
+    private final UserService userService;
+    private final TripService tripService;
+    private final RecipeService recipeService;
 
     @Autowired
     public TripController(UserService userService, TripService tripService, RecipeService recipeService) {
@@ -115,13 +114,7 @@ public class TripController {
             Trip trip = optionalTrip.get();
             List<Recipe> recipes = trip.getRecipes();
 
-            Iterator<Recipe> iterator = recipes.iterator();
-            while (iterator.hasNext()) {
-                Recipe recipe = iterator.next();
-                if (recipe.getRecipeId().equals(recipeId)) {
-                    iterator.remove();
-                }
-            }
+            recipes.removeIf(recipe -> recipe.getRecipeId().equals(recipeId));
             tripService.save(trip);
             return ResponseEntity.noContent().build();
         } else {
@@ -143,10 +136,8 @@ public class TripController {
                     return ResponseEntity.noContent().build();
                 }
             }
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.notFound().build();
     }
 }
 

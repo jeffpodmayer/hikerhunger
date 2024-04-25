@@ -1,6 +1,5 @@
 package com.coderscampus.hikerhunger.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -36,7 +35,7 @@ public class Recipe {
         SNACK("Snack"),
         EXTRA("Extra");
         private final String displayValue;
-        private RecipeType(String displayValue) {
+        RecipeType(String displayValue) {
             this.displayValue = displayValue;
         }
         public String getDisplayValue() {
@@ -116,29 +115,4 @@ public class Recipe {
         this.ingredients = ingredients;
     }
 
-    //    public Recipe(Long recipeId, User user, String recipeName, RecipeType recipeType, String instructions, Integer servings, Float totalWeight, List<Ingredient> ingredients, Set<TripRecipe> tripRecipes) {
-//        this.recipeId = recipeId;
-//        this.user = user;
-//        this.recipeName = recipeName;
-//        this.recipeType = recipeType;
-//        this.instructions = instructions;
-//        this.servings = servings;
-//        this.totalWeight = totalWeight;
-//        this.ingredients = ingredients;
-//    }
-
-//    @Override
-//    public String toString() {
-//        return "Recipe{" +
-//                "recipeId=" + recipeId +
-//                ", user=" + user +
-//                ", recipeName='" + recipeName + '\'' +
-//                ", recipeType=" + recipeType +
-//                ", instructions='" + instructions + '\'' +
-//                ", servings=" + servings +
-//                ", totalWeight=" + totalWeight +
-//                ", ingredients=" + ingredients +
-//                ", tripRecipes=" + tripRecipes +
-//                '}';
-//    }
 }

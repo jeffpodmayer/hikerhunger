@@ -24,8 +24,8 @@ import static java.util.spi.ToolProvider.findFirst;
 @Controller
 public class RecipeController {
 
-    private UserService userService;
-    private RecipeService recipeService;
+    private final UserService userService;
+    private final RecipeService recipeService;
 
     @Autowired
     public RecipeController(UserService userService, RecipeService recipeService, IngredientService ingredientService) {
@@ -72,7 +72,6 @@ public class RecipeController {
                 recipe.setTotalWeight(recipeData.getTotalWeight());
 
                 Recipe savedRecipe = recipeService.saveRecipe(recipe);
-                System.out.println("Sent from createRecipe page:" + savedRecipe);
 
                 return "redirect:/home/" + recipe.getUser().getId();
             } catch (Exception e) {

@@ -1,18 +1,18 @@
 package com.coderscampus.hikerhunger.domain;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
+    @Serial
     private static final long serialVersionUID = 2025389852147750927L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,10 +34,9 @@ public class User implements UserDetails {
     private List<Authority> authorities = new ArrayList<>();
     
     /*
-     * enable if you want to have the confirm password to be checked in the back end + their corresponding getters and setters
+     * enable if you want to have the confirmation password to be checked in the back end + their corresponding getters and setters
      * private String confirmPassword;
      */
-    
     
     @Override
     public Collection<Authority> getAuthorities() {

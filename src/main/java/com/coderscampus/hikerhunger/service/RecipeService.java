@@ -12,14 +12,11 @@ import java.util.Optional;
 @Service
 public class RecipeService {
 
-    private RecipeRepository recipeRepo;
-
-    private UserServiceImpl userService;
+    private final RecipeRepository recipeRepo;
 
     @Autowired
-    public RecipeService(RecipeRepository recipeRepo, UserServiceImpl userService) {
+    public RecipeService(RecipeRepository recipeRepo) {
         this.recipeRepo = recipeRepo;
-        this.userService = userService;
     }
 
     public Recipe saveRecipe(Recipe recipe){
@@ -33,11 +30,9 @@ public class RecipeService {
         return recipeRepo.save(recipe);
     }
 
-
     public Optional<Recipe> findById(Long recipeId) {
         return recipeRepo.findById(recipeId);
     }
-
 
     public void delete(Recipe recipe) {
         recipeRepo.delete(recipe);

@@ -15,9 +15,9 @@ import java.util.Optional;
 @Controller
 public class IngredientController {
 
-    private IngredientService ingredientService;
+    private final IngredientService ingredientService;
 
-    private RecipeService recipeService;
+    private final RecipeService recipeService;
 
     @Autowired
     public IngredientController(IngredientService ingredientService, RecipeService recipeService) {
@@ -60,7 +60,6 @@ public class IngredientController {
 
     @PutMapping("/updateIngredient/{ingredientId}")
     public ResponseEntity<Ingredient> updateIngredient(@RequestBody Ingredient updatedIngredientData, @PathVariable Long ingredientId) {
-        // Find the ingredient in the database by its ID
         Optional<Ingredient> optionalIngredient = ingredientService.findById(ingredientId);
 
         if (optionalIngredient.isPresent()) {
@@ -93,6 +92,6 @@ public class IngredientController {
         }
     }
 
-    }
+}
 
 

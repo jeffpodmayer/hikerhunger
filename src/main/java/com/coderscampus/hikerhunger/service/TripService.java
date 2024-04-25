@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 public class TripService {
 
-    private TripRepository tripRepo;
+    private final TripRepository tripRepo;
 
     @Autowired
     public TripService(TripRepository tripRepo) {
@@ -28,11 +28,9 @@ public class TripService {
         return tripRepo.findById(tripId);
     }
 
-
     public void delete(Trip trip) {
         tripRepo.delete(trip);
     }
-
 
     public void save(Trip trip) {
         tripRepo.save(trip);

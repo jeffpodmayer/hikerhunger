@@ -167,7 +167,7 @@ const calculateWeightPerPersonPerDay = () => {
 };
 
 // Function to update servings and weights based on the number of people
-function updateRecipeServings(recipe, numberOfPeople) {
+function updateRecipeRow(recipeId, recipe, numberOfPeople) {
   // Initial number of servings and total weight of the recipe
   const initialServings = recipe.servings; //1
   const initialTotalWeight = recipe.totalWeight;
@@ -220,7 +220,7 @@ recipeTable.addEventListener("change", function (event) {
             console.log(recipeData);
             console.log(numOfPeople.value);
             renderRecipe(recipeData);
-            updateRecipeServings(recipeData, numOfPeople.value);
+            updateRecipeRow(recipeData, numOfPeople.value);
           }
         })
         .catch((error) => {

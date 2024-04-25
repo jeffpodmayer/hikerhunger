@@ -168,6 +168,11 @@ const calculateWeightPerPersonPerDay = () => {
 
 // Function to update servings and weights based on the number of people
 function updateRecipeRow(recipeId, recipe, numberOfPeople) {
+  const row = document.querySelector(`[data-recipe-id="${recipeId}"]`);
+  if (!row) {
+    console.error(`Row with recipe ID ${recipeId} not found.`);
+    return;
+  }
   // Initial number of servings and total weight of the recipe
   const initialServings = recipe.servings; //1
   const initialTotalWeight = recipe.totalWeight;
@@ -191,21 +196,16 @@ function updateRecipeRow(recipeId, recipe, numberOfPeople) {
     0
   );
 
-  // Update the DOM elements displaying servings and total weight
-  updateDOMRecipeServings(newServings);
-  updateDOMRecipeTotalWeight(recipe.totalWeight);
+  updateDOMRecipeRow(row, newServings, recipe.totalWeight);
 }
 
-// Function to update DOM elements for servings
-function updateDOMRecipeServings(servings) {
-  const servingsCell = document.querySelector(".servings");
-  servingsCell.innerText = servings;
-}
+function updateDOMRecipeRow(row, servings, totalWeight) {
+  // Update the DOM elements within the specific row displaying servings and total weight
+  const servingsElement = row.querySelector(".servings");
+  const totalWeightElement = row.querySelector(".weight");
 
-// Function to update DOM elements for total weight
-function updateDOMRecipeTotalWeight(totalWeight) {
-  const totalWeightElement = document.querySelector(".weight");
-  totalWeightElement.innerText = totalWeight;
+  servingsElement.textContent = servings;
+  totalWeightElement.textContent = totalWeight;
 }
 
 //////// EVENT LISTENERS
@@ -220,7 +220,7 @@ recipeTable.addEventListener("change", function (event) {
             console.log(recipeData);
             console.log(numOfPeople.value);
             renderRecipe(recipeData);
-            updateRecipeRow(recipeData, numOfPeople.value);
+            updateRecipeRow(recipeId, recipeData, numOfPeople.value);
           }
         })
         .catch((error) => {

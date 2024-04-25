@@ -43,6 +43,21 @@ public class Recipe {
         }
     }
 
+    @Override
+    public String toString() {
+        return "Recipe{" +
+                "recipeId=" + recipeId +
+                ", user=" + user +
+                ", recipeName='" + recipeName + '\'' +
+                ", recipeType=" + recipeType +
+                ", instructions='" + instructions + '\'' +
+                ", servings=" + servings +
+                ", totalWeight=" + totalWeight +
+                ", ingredients=" + ingredients +
+                ", trips=" + trips +
+                '}';
+    }
+
     public List<Trip> getTrips() {
         return trips;
     }

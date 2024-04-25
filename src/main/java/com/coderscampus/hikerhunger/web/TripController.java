@@ -101,6 +101,7 @@ public class TripController {
                 Recipe recipe = optionalRecipe.get();
                 trip.getRecipes().add(recipe);
                 tripService.save(trip);
+                System.out.println(trip.getRecipes());
             return ResponseEntity.status(HttpStatus.CREATED).body(recipe);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

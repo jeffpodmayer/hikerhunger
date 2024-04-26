@@ -208,8 +208,7 @@ async function saveRecipeToTrip(recipeId, recipe) {
 }
 async function updateRecipeRow(tripId, recipeId, recipe, numberOfPeople) {
   const row = document.querySelector(`[data-recipe-id="${recipeId}"]`);
-  console.log(row);
-  // if (!row) return;
+  if (!row) return;
 
   const newServings = calculateNewServingsAndWeight(recipe, numberOfPeople);
   console.log("New Servings:" + newServings);
@@ -240,16 +239,14 @@ async function updateRecipeRow(tripId, recipeId, recipe, numberOfPeople) {
 
 function calculateNewServingsAndWeight(recipe, numberOfPeople) {
   const initialServings = recipe.servings;
-  console.log("Initial Servings:" + initialServings);
   const newServings = initialServings * (numberOfPeople / recipe.servings);
-  console.log("New Servings:" + newServings);
-
   const ratio = newServings / initialServings;
-  recipe.servings = newServings;
+
   recipe.ingredients.forEach((ingredient) => {
     ingredient.weightInGrams *= ratio;
     ingredient.quantity *= ratio;
   });
+  return (recipe.servings = newServings);
 }
 
 function calculateTotalWeight(recipe) {

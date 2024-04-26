@@ -12,7 +12,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/home")
@@ -140,8 +143,9 @@ public class TripController {
     }
 
     @PutMapping("/trip/{tripId}/updateRecipe/{recipeId}")
-    public ResponseEntity<Recipe> updateTripRecipe(@RequestBody Recipe updatedRecipe, @PathVariable Long tripId, @PathVariable Long recipeId) {
+    public void updateTripRecipe(@RequestBody Recipe recipe, @PathVariable Long tripId, @PathVariable Long recipeId) {
         Optional<Trip> optionalTrip = tripService.findById(tripId);
+        System.out.println(optionalTrip);
 
         if (optionalTrip.isPresent()) {
             Trip trip = optionalTrip.get();
@@ -149,25 +153,29 @@ public class TripController {
 
             for (Recipe existingRecipe : recipes) {
                 if (existingRecipe.getRecipeId().equals(recipeId)) {
-                    existingRecipe.setServings(updatedRecipe.getServings());
-                    existingRecipe.setTotalWeight(updatedRecipe.getTotalWeight());
+                    existingRecipe.setServings(recipe.getServings());
+                    existingRecipe.setTotalWeight(recipe.getTotalWeight());
 
                     List<Ingredient> existingIngredients = existingRecipe.getIngredients();
-                    List<Ingredient> updatedIngredients = updatedRecipe.getIngredients();
+                    List<Ingredient> updatedIngredients = recipe.getIngredients();
 
-                    for (int i = 0; i < existingIngredients.size(); i++) {
-                        Ingredient existingIngredient = existingIngredients.get(i);
-                        Ingredient updatedIngredient = updatedIngredients.get(i);
-                        existingIngredient.setQuantity(updatedIngredient.getQuantity());
-                        existingIngredient.setWeightInGrams(updatedIngredient.getWeightInGrams());
+                    Map<Long, Ingredient> existingIngredientMap = existingIngredients.stream()
+                            .collect(Collectors.toMap(Ingredient::getIngredientId, Function.identity()));
+
+                    for (Ingredient updatedIngredient : updatedIngredients) {
+                        Long ingredientId = updatedIngredient.getIngredientId();
+                        if (existingIngredientMap.containsKey(ingredientId)) {
+                            Ingredient existingIngredient = existingIngredientMap.get(ingredientId);
+                            existingIngredient.setQuantity(updatedIngredient.getQuantity());
+                            existingIngredient.setWeightInGrams(updatedIngredient.getWeightInGrams());
+                        }
                     }
-                    System.out.println(trip.getRecipes());
-                    tripService.save(trip);
-                    return ResponseEntity.status(HttpStatus.CREATED).body(existingRecipe);
+                System.out.println(trip.getRecipes());
+                tripService.save(trip);
+                return; // Exit the method after updating the recipe
                 }
             }
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 }
 

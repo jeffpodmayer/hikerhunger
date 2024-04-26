@@ -5,8 +5,8 @@ const tripId = document.getElementById("tripId").value;
 let weightInGrams = document.getElementById("weightInGrams");
 let weightInPounds = document.getElementById("weightInPounds");
 let numOfDays = document.getElementById("numOfDays");
-let numOfPeople = document.getElementById("numOfPeople");
-console.log(numOfPeople.value);
+let numberOfPeople = document.getElementById("numOfPeople");
+console.log(numberOfPeople.value);
 
 //// FUNCTIONS
 const renderRecipe = (recipe) => {
@@ -26,7 +26,6 @@ const renderRecipe = (recipe) => {
 
   tr.innerHTML = recipeHTML;
   tripRecipeTable.appendChild(tr);
-  calculateWeightPerPersonPerDay();
 };
 
 function deleteAllRecipesWithRecipeId(recipeId) {
@@ -42,26 +41,6 @@ function deleteAllRecipesWithRecipeId(recipeId) {
         calculateWeightPerPersonPerDay();
       } else {
         throw new Error("Failed to delete recipe from trip");
-      }
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-}
-
-function saveRecipeToTrip(recipeId) {
-  return fetch(`/home/saveRecipe/${recipeId}/ToTrip/${tripId}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => {
-      if (response.ok) {
-        calculateWeightPerPersonPerDay();
-        return response.json();
-      } else {
-        throw new Error("Failed to save recipe to trip");
       }
     })
     .catch((error) => {
@@ -176,81 +155,22 @@ tripRecipeTable.addEventListener("click", function (event) {
 
 tripRecipeTable.addEventListener("click", handlePlusMinusIconClick);
 
-// Helper function to update the recipe row in the DOM
-function updateRecipeRowUI(recipeRow, servings, totalWeight) {
-  const servingsElement = recipeRow.querySelector(".servings");
-  const totalWeightElement = recipeRow.querySelector(".weight");
-  servingsElement.textContent = servings.toFixed(2);
-  totalWeightElement.textContent = totalWeight.toFixed(2);
-}
-
-// Function to update the recipe in the database
-async function updateRecipe(tripId, recipeId, updatedRecipe) {
-  try {
-    const response = await fetch(
-      `/home/trip/${tripId}/updateRecipe/${recipeId}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedRecipe),
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error("Failed to update recipe in the database");
-    }
-
-    const updatedRecipeData = await response.json();
-    return updatedRecipeData;
-  } catch (error) {
-    console.error("Error updating recipe in the database:", error);
-    throw error;
-  }
-}
-
-// Function to update the recipe row
-async function handleRecipeRowUpdate(tripId, recipeId, updatedRecipe) {
-  const recipeRow = document.querySelector(`[data-recipe-id="${recipeId}"]`);
-
-  if (!recipeRow) {
-    console.error(`Row with recipe ID ${recipeId} not found.`);
-    return;
-  }
-
-  try {
-    const updatedRecipeData = await updateRecipe(
-      tripId,
-      recipeId,
-      updatedRecipe
-    );
-    updateRecipeRowUI(
-      recipeRow,
-      updatedRecipeData.servings,
-      updatedRecipeData.totalWeight
-    );
-  } catch (error) {
-    console.error("Error updating recipe row:", error);
-  }
-}
-
-// Event listener for recipe checkboxes
-recipeTable.addEventListener("change", async (event) => {
+///// HANDLE CHECKBOX CLICK
+recipeTable.addEventListener("change", async function (event) {
   if (event.target.classList.contains("recipeCheckbox")) {
-    const recipeRow = event.target.closest("[data-recipe-id]");
-    const recipeId = recipeRow.getAttribute("data-recipe-id");
-
+    const recipeId = event.target.closest("tr").getAttribute("data-recipe-id");
     if (event.target.checked) {
       try {
-        const recipeData = await saveRecipeToTrip(recipeId);
-        if (recipeData) {
-          renderRecipe(recipeData);
-          const updatedRecipe = calculateUpdatedRecipe(
-            recipeData,
-            numOfPeople.value
+        const updatedRecipe = await saveRecipeToTrip(recipeId, tripId); //assigns recipe in response to variable
+        console.log(updatedRecipe);
+        if (updatedRecipe) {
+          renderRecipe(updatedRecipe); //renders on page with variable
+          updateRecipeRow(
+            tripId,
+            recipeId,
+            updatedRecipe,
+            numberOfPeople.value
           );
-          handleRecipeRowUpdate(tripId, recipeId, updatedRecipe);
         }
       } catch (error) {
         console.error("Error:", error);
@@ -261,105 +181,91 @@ recipeTable.addEventListener("change", async (event) => {
   }
 });
 
-// Function to calculate the updated recipe data
-function calculateUpdatedRecipe(recipeData, numOfPeople) {
-  const initialServings = recipeData.servings;
-  const newServings = initialServings * (numOfPeople / recipeData.servings);
-  const updatedRecipe = {
-    ...recipeData,
-    servings: newServings,
-    ingredients: recipeData.ingredients.map((ingredient) => ({
-      ...ingredient,
-      weightInGrams: ingredient.weightInGrams * (newServings / initialServings),
-      quantity: ingredient.quantity * (newServings / initialServings),
-    })),
-    totalWeight: recipeData.ingredients.reduce(
-      (total, ingredient) =>
-        total + ingredient.weightInGrams * (newServings / initialServings),
-      0
-    ),
-  };
-  return updatedRecipe;
+async function saveRecipeToTrip(recipeId, recipe) {
+  try {
+    const response = await fetch(
+      `/home/saveRecipe/${recipeId}/ToTrip/${tripId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(recipe),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to save recipe to trip");
+    }
+    const updatedRecipe = await response.json();
+
+    console.log("Recipe saved to trip!");
+    return updatedRecipe; // Return the updated recipe object
+  } catch (error) {
+    console.error("Error saving:", error);
+    return null; // Return null if an error occurs
+  }
+}
+async function updateRecipeRow(tripId, recipeId, recipe, numberOfPeople) {
+  const row = document.querySelector(`[data-recipe-id="${recipeId}"]`);
+  console.log(row);
+  // if (!row) return;
+
+  const newServings = calculateNewServingsAndWeight(recipe, numberOfPeople);
+  console.log("New Servings:" + newServings);
+  const totalWeight = calculateTotalWeight(recipe);
+  console.log("Total Weight:" + totalWeight);
+  updateDOMRecipeRow(row, newServings, totalWeight);
+  console.log(recipe);
+
+  // try {
+  //   const response = await fetch(
+  //     `/home/trip/${tripId}/updateRecipe/${recipeId}`,
+  //     {
+  //       method: "PUT",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(recipe),
+  //     }
+  //   );
+  //   if (!response.ok) {
+  //     throw new Error("Failed to update recipe row in database");
+  //   }
+  //   console.log("Recipe updated successfully in the database");
+  // } catch (error) {
+  //   console.error("Error updating recipe in database:", error);
+  // }
 }
 
+function calculateNewServingsAndWeight(recipe, numberOfPeople) {
+  const initialServings = recipe.servings;
+  console.log("Initial Servings:" + initialServings);
+  const newServings = initialServings * (numberOfPeople / recipe.servings);
+  console.log("New Servings:" + newServings);
+
+  const ratio = newServings / initialServings;
+  recipe.servings = newServings;
+  recipe.ingredients.forEach((ingredient) => {
+    ingredient.weightInGrams *= ratio;
+    ingredient.quantity *= ratio;
+  });
+}
+
+function calculateTotalWeight(recipe) {
+  return recipe.ingredients.reduce(
+    (total, ingredient) => total + ingredient.weightInGrams,
+    0
+  );
+}
+
+function updateDOMRecipeRow(row, servings, totalWeight) {
+  const servingsElement = row.querySelector(".servings");
+  const totalWeightElement = row.querySelector(".weight");
+
+  servingsElement.textContent = servings;
+  totalWeightElement.textContent = totalWeight;
+}
 // Function to update servings and weights based on the number of people
-// async function updateRecipeRow(tripId, recipeId, recipe, numberOfPeople) {
-//   const row = document.querySelector(`[data-recipe-id="${recipeId}"]`);
-//   if (!row) {
-//     console.error(`Row with recipe ID ${recipeId} not found.`);
-//     return;
-//   }
 
-//   const initialServings = recipe.servings;
-
-//   const newServings = initialServings * (numberOfPeople / recipe.servings);
-
-//   recipe.servings = newServings;
-
-//   // Adjust weights of ingredients
-//   recipe.ingredients.forEach((ingredient) => {
-//     ingredient.weightInGrams *= newServings / initialServings;
-//     ingredient.quantity *= newServings / initialServings;
-//   });
-
-//   console.log(recipe.ingredients);
-//   // Recalculate total weight of the recipe
-//   recipe.totalWeight = recipe.ingredients.reduce(
-//     (total, ingredient) => total + ingredient.weightInGrams,
-//     0
-//   );
-
-//   updateDOMRecipeRow(row, newServings, recipe.totalWeight);
-
-//   try {
-//     const response = await fetch(
-//       `/home/trip/${tripId}/updateRecipe/${recipeId}`,
-//       {
-//         method: "PUT",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify(recipe),
-//       }
-//     );
-
-//     if (!response.ok) {
-//       throw new Error("Failed to update recipe row in database");
-//     }
-
-//     console.log("Recipe updated successfully in the database");
-//   } catch (error) {
-//     console.error("Error updating recipe in database:", error);
-//   }
-// }
-
-// function updateDOMRecipeRow(row, servings, totalWeight) {
-//   // Update the DOM elements within the specific row displaying servings and total weight
-//   const servingsElement = row.querySelector(".servings");
-//   const totalWeightElement = row.querySelector(".weight");
-
-//   servingsElement.textContent = servings;
-//   totalWeightElement.textContent = totalWeight;
-// }
-
-// //////// EVENT LISTENERS
-// recipeTable.addEventListener("change", function (event) {
-//   if (event.target.classList.contains("recipeCheckbox")) {
-//     const recipeId =
-//       event.target.parentElement.parentElement.getAttribute("data-recipe-id");
-//     if (event.target.checked) {
-//       saveRecipeToTrip(recipeId)
-//         .then((updatedRecipe) => {
-//           if (updatedRecipe) {
-//             renderRecipe(updatedRecipe);
-//             updateRecipeRow(tripId, recipeId, updatedRecipe, numOfPeople.value);
-//           }
-//         })
-//         .catch((error) => {
-//           console.error("Error:", error);
-//         });
-//     } else {
-//       deleteAllRecipesWithRecipeId(recipeId);
-//     }
-//   }
-// });
+//////// EVENT LISTENERS

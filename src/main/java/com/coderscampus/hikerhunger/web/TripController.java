@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -80,7 +79,7 @@ public class TripController {
     }
 
     @PostMapping("/postDeleteTrip/{tripId}")
-    public String postDeleteTrip(@PathVariable Long tripId){
+    public String postDeleteTrip(@PathVariable Long tripId) {
         Optional<Trip> optionalTrip = tripService.findById(tripId);
         if (optionalTrip.isPresent()) {
             Trip trip = optionalTrip.get();
@@ -92,16 +91,15 @@ public class TripController {
     }
 
     @PostMapping("/saveRecipe/{recipeId}/ToTrip/{tripId}")
-    public ResponseEntity<Recipe> saveRecipeToTrip(@PathVariable Long recipeId, @PathVariable Long tripId){
+    public ResponseEntity<Recipe> saveRecipeToTrip(@PathVariable Long recipeId, @PathVariable Long tripId) {
         Optional<Trip> optionalTrip = tripService.findById(tripId);
         Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
 
         if (optionalTrip.isPresent() && optionalRecipe.isPresent()) {
-                Trip trip = optionalTrip.get();
-                Recipe recipe = optionalRecipe.get();
-                trip.getRecipes().add(recipe);
-                tripService.save(trip);
-                System.out.println(trip.getRecipes());
+            Trip trip = optionalTrip.get();
+            Recipe recipe = optionalRecipe.get();
+            trip.getRecipes().add(recipe);
+            tripService.save(trip);
             return ResponseEntity.status(HttpStatus.CREATED).body(recipe);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -140,5 +138,39 @@ public class TripController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    @PutMapping("/trip/{tripId}/updateRecipe/{recipeId}")
+    public ResponseEntity<Recipe> updateTripRecipe(@RequestBody Recipe updatedRecipe, @PathVariable Long tripId, @PathVariable Long recipeId) {
+        Optional<Trip> optionalTrip = tripService.findById(tripId);
+
+        if (optionalTrip.isPresent()) {
+            Trip trip = optionalTrip.get();
+            List<Recipe> recipes = trip.getRecipes();
+
+            for (Recipe existingRecipe : recipes) {
+                if (existingRecipe.getRecipeId().equals(recipeId)) {
+                    existingRecipe.setServings(updatedRecipe.getServings());
+                    existingRecipe.setTotalWeight(updatedRecipe.getTotalWeight());
+
+                    List<Ingredient> existingIngredients = existingRecipe.getIngredients();
+                    List<Ingredient> updatedIngredients = updatedRecipe.getIngredients();
+
+                    for (int i = 0; i < existingIngredients.size(); i++) {
+                        Ingredient existingIngredient = existingIngredients.get(i);
+                        Ingredient updatedIngredient = updatedIngredients.get(i);
+                        existingIngredient.setQuantity(updatedIngredient.getQuantity());
+                        existingIngredient.setWeightInGrams(updatedIngredient.getWeightInGrams());
+                    }
+                    System.out.println(trip.getRecipes());
+                    tripService.save(trip);
+                    return ResponseEntity.status(HttpStatus.CREATED).body(existingRecipe);
+                }
+            }
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
 }
+
+
+
 

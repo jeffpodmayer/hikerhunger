@@ -103,6 +103,7 @@ public class TripController {
             Recipe recipe = optionalRecipe.get();
             trip.getRecipes().add(recipe);
             tripService.save(trip);
+            System.out.println(recipe);
             return ResponseEntity.status(HttpStatus.CREATED).body(recipe);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -143,7 +144,7 @@ public class TripController {
     }
 
     @PutMapping("/trip/{tripId}/updateRecipe/{recipeId}")
-    public void updateTripRecipe(@RequestBody Recipe recipe, @PathVariable Long tripId, @PathVariable Long recipeId) {
+    public void updateTripRecipe(@RequestBody Recipe updatedRecipe, @PathVariable Long tripId, @PathVariable Long recipeId) {
         Optional<Trip> optionalTrip = tripService.findById(tripId);
         System.out.println(optionalTrip);
 
@@ -153,11 +154,11 @@ public class TripController {
 
             for (Recipe existingRecipe : recipes) {
                 if (existingRecipe.getRecipeId().equals(recipeId)) {
-                    existingRecipe.setServings(recipe.getServings());
-                    existingRecipe.setTotalWeight(recipe.getTotalWeight());
+                    existingRecipe.setServings(updatedRecipe.getServings());
+                    existingRecipe.setTotalWeight(updatedRecipe.getTotalWeight());
 
                     List<Ingredient> existingIngredients = existingRecipe.getIngredients();
-                    List<Ingredient> updatedIngredients = recipe.getIngredients();
+                    List<Ingredient> updatedIngredients = updatedRecipe.getIngredients();
 
                     Map<Long, Ingredient> existingIngredientMap = existingIngredients.stream()
                             .collect(Collectors.toMap(Ingredient::getIngredientId, Function.identity()));

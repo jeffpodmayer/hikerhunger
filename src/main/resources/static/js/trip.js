@@ -220,11 +220,8 @@ async function updateRecipeRow(tripId, recipeId, recipe, numberOfPeople) {
   try {
     const updatedRecipe = {
       recipeId: recipe.recipeId,
-      recipeName: recipe.recipeName,
-      recipeType: recipe.recipeType,
       servings: recipe.servings,
       totalWeight: recipe.totalWeight,
-      instructions: recipe.instructions,
       ingredients: recipe.ingredients.map((ingredient) => ({
         ingredientId: ingredient.ingredientId,
         quantity: ingredient.quantity,

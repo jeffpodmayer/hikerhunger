@@ -2,6 +2,7 @@ package com.coderscampus.hikerhunger.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
@@ -25,7 +26,8 @@ public class Recipe {
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("recipe")
     private List<Ingredient> ingredients = new ArrayList<>();
-    @ManyToMany(mappedBy = "recipes")
+
+    @ManyToMany(mappedBy = "recipes", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Trip> trips = new ArrayList<>();
 
     public enum RecipeType {

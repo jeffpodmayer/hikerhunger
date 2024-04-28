@@ -217,39 +217,36 @@ async function updateRecipeRow(tripId, recipeId, recipe, numberOfPeople) {
   console.log("Total Weight:" + totalWeight);
   updateDOMRecipeRow(row, newServings, totalWeight);
 
-  try {
-    const updatedRecipe = {
-      recipeId: recipe.recipeId,
-      recipeName: recipe.recipeName,
-      recipeType: recipe.recipeType,
-      servings: recipe.servings,
-      totalWeight: recipe.totalWeight,
-      instructions: recipe.instructions,
-      ingredients: recipe.ingredients.map((ingredient) => ({
-        ingredientId: ingredient.ingredientId,
-        quantity: ingredient.quantity,
-        weightInGrams: ingredient.weightInGrams,
-      })),
-    };
-    console.log(JSON.stringify(updatedRecipe));
+  // try {
+  //   const updatedRecipe = {
+  //     recipeId: recipe.recipeId,
+  //     servings: recipe.servings,
+  //     totalWeight: recipe.totalWeight,
+  //     ingredients: recipe.ingredients.map((ingredient) => ({
+  //       ingredientId: ingredient.ingredientId,
+  //       quantity: ingredient.quantity,
+  //       weightInGrams: ingredient.weightInGrams,
+  //     })),
+  //   };
+  //   console.log(JSON.stringify(updatedRecipe));
 
-    const response = await fetch(
-      `/home/trip/${tripId}/updateRecipe/${recipeId}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedRecipe),
-      }
-    );
-    if (!response.ok) {
-      throw new Error("Failed to update recipe row in database");
-    }
-    console.log("Recipe updated successfully in the database");
-  } catch (error) {
-    console.error("Error updating recipe in database:", error);
-  }
+  //   const response = await fetch(
+  //     `/home/trip/${tripId}/updateRecipe/${recipeId}`,
+  //     {
+  //       method: "PUT",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(updatedRecipe),
+  //     }
+  //   );
+  //   if (!response.ok) {
+  //     throw new Error("Failed to update recipe row in database");
+  //   }
+  //   console.log("Recipe updated successfully in the database");
+  // } catch (error) {
+  //   console.error("Error updating recipe in database:", error);
+  // }
 }
 
 function calculateNewServingsAndWeight(recipe, numberOfPeople) {

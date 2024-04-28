@@ -101,8 +101,8 @@
             <td th:text="${recipe.recipeName}"></td>
             <td th:text="${recipe.recipeType?.displayValue}"></td>
             <td th:text="${recipe.instructions}"></td>
-            <td th:text="${recipe.servings}"></td>
-            <td th:text="${recipe.totalWeight}"></td>
+            <td class="recipeServings" th:text="${recipe.servings}"></td>
+            <td class="recipeWeight"th:text="${recipe.totalWeight}"></td>
           </tr>
         </table>
         <script src="/js/trip.js"></script>

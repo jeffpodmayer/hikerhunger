@@ -194,10 +194,10 @@ async function saveRecipeToTrip(recipeId, recipe) {
     if (!response.ok) {
       throw new Error("Failed to save recipe to trip");
     }
-    const updatedRecipe = await response.json();
+    const recipe = await response.json();
 
     console.log("Recipe saved to trip.");
-    return updatedRecipe; // Return the updated recipe object
+    return recipe; // Return the recipe object
   } catch (error) {
     console.error("Error saving:", error);
     return null;

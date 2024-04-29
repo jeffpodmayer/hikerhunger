@@ -1,5 +1,4 @@
 //// GLOBAL VARIABLES
-const userId = document.getElementById("userId").value;
 const recipeTable = document.getElementById("recipeTable");
 const tripRecipeTable = document.getElementById("tripRecipeTable");
 const tripId = document.getElementById("tripId").value;
@@ -119,8 +118,10 @@ function handlePlusMinusIconClick(event) {
       : plusIcon.closest(".tripRecipe");
 
     if (recipeRow) {
-      const recipeId = recipeRow.getAttribute("data-recipe-id");
-
+      const recipeId = +recipeRow.getAttribute("data-recipe-id");
+      console.log(recipeId);
+      const recipe = allRecipes.find((recipe) => recipe.recipeId === recipeId);
+      console.log(recipe);
       const recipeCountInput = minusIcon
         ? minusIcon.parentElement.querySelector(".recipeCountInput")
         : plusIcon.parentElement.querySelector(".recipeCountInput");
@@ -132,8 +133,9 @@ function handlePlusMinusIconClick(event) {
             deleteOneRecipeFromTrip(recipeId);
             recipeCount--;
           } else if (plusIcon) {
-            saveRecipeToTrip(recipeId);
+            saveRecipeToTrip(recipeId, recipe, tripId);
             recipeCount++;
+            calculateWeightPerPersonPerDay();
           }
           recipeCountInput.value = recipeCount;
         }
@@ -143,23 +145,33 @@ function handlePlusMinusIconClick(event) {
 }
 
 const calculateWeightPerPersonPerDay = () => {
-  const tableRows = document.querySelectorAll(".tripRecipe");
+  const recipeRows = document.querySelectorAll(".tripRecipe");
   const gramsToPounds = 0.00220462;
 
-  // Use reduce to sum up the weight values of all rows
-  const totalWeight = Array.from(tableRows).reduce((acc, row) => {
-    const gramsCell = row.querySelector(".weight"); // Assuming the weight cell has a class "weight"
+  let totalWeight = 0;
+
+  recipeRows.forEach((recipeRow) => {
+    // Get the recipe count from the row
+    const recipeCountInput = recipeRow.getElementById("recipeCounter");
+    const recipeCount = parseInt(recipeCountInput.value) || 1;
+
+    // Get the weight of the recipe from the row
+    const gramsCell = recipeRow.querySelector(".weight");
     const weightInGrams = parseFloat(gramsCell.textContent.trim());
-    return acc + weightInGrams;
-  }, 0);
 
-  // Update the total weight in grams input element
-  weightInGrams.value = totalWeight;
+    // Update total weight by multiplying recipe weight by recipe count
+    totalWeight += weightInGrams * recipeCount;
+  });
 
-  // Calculate weight in pounds and update the corresponding element
-  weightInPounds.textContent = isNaN(totalWeight * gramsToPounds)
+  // Calculate weight per person per day
+  const recipeCount = parseInt(recipeCountInput.value) || 1;
+  const weightPerPersonPerDay =
+    (totalWeight * recipeCount) / (numberOfPeople.value * numOfDays.value);
+
+  weightInGrams.value = weightPerPersonPerDay;
+  weightInPounds.textContent = isNaN(weightPerPersonPerDay * gramsToPounds)
     ? 0
-    : (totalWeight * gramsToPounds).toFixed(2);
+    : (weightPerPersonPerDay * gramsToPounds).toFixed(2);
 };
 
 tripRecipeTable.addEventListener("click", function (event) {
@@ -179,19 +191,18 @@ recipeTable.addEventListener("change", async function (event) {
       event.target.closest("tr").getAttribute("data-recipe-id"),
       10
     );
-    console.log(recipeId);
     if (event.target.checked) {
       try {
         const recipeToUpdate = allRecipes.find(
           (recipe) => recipe.recipeId === recipeId
         );
-        console.log(recipeToUpdate);
         updateRecipeBasedOnNumberOfPeople(
           recipeId,
           recipeToUpdate,
           numberOfPeople.value
         );
         renderRecipe(recipeToUpdate);
+        calculateWeightPerPersonPerDay();
         // calculate and update the new recipe
         // .filter method to filter recipes related to that trip
         await saveRecipeToTrip(recipeId, recipeToUpdate, tripId);
@@ -218,14 +229,12 @@ async function saveRecipeToTrip(recipeId, recipeData, tripId) {
         body: JSON.stringify(recipeData),
       }
     );
-
     if (!response.ok) {
       throw new Error("Failed to save recipe to trip");
     }
     const savedRecipe = await response.json();
-
     console.log("Recipe saved to trip.");
-    return savedRecipe; // Return the recipe object
+    return savedRecipe;
   } catch (error) {
     console.error("Error saving:", error);
     return null;
@@ -245,24 +254,6 @@ async function updateRecipeBasedOnNumberOfPeople(
   recipe.totalWeight = totalWeight;
   // console.log("Total Weight:" + totalWeight);
   // updateDOMRecipeRow(row, newServings, totalWeight);
-}
-
-async function updateRecipe(tripId, recipeId, recipe) {
-  const response = await fetch(
-    `/home/trip/${tripId}/updateRecipe/${recipeId}`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(recipe),
-    }
-  );
-  console.log(JSON.stringify(recipe));
-  if (!response.ok) {
-    throw new Error("Failed to update recipe row in database");
-  }
-  console.log("Recipe updated successfully in the database");
 }
 
 function calculateNewServingsAndWeight(recipe, numberOfPeople) {
@@ -290,4 +281,22 @@ function updateDOMRecipeRow(row, servings, totalWeight) {
 
   servingsElement.textContent = servings;
   totalWeightElement.textContent = totalWeight;
+}
+
+async function updateRecipe(tripId, recipeId, recipe) {
+  const response = await fetch(
+    `/home/trip/${tripId}/updateRecipe/${recipeId}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(recipe),
+    }
+  );
+  console.log(JSON.stringify(recipe));
+  if (!response.ok) {
+    throw new Error("Failed to update recipe row in database");
+  }
+  console.log("Recipe updated successfully in the database");
 }

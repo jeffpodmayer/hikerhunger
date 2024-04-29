@@ -13,7 +13,6 @@
     <h1>Let's Plan a Trip!</h1>
     <!-- TRIP DETAILS SECTION -->
     <input type="hidden" id="tripId" th:value="${trip.tripId}" />
-    <input type="hidden" id="userId" th:value="${user.id}" />
     <form
       id="tripForm"
       th:action="@{/home/saveTrip/{tripId}(tripId=${trip.tripId})}"
@@ -25,7 +24,7 @@
       </div>
       <div>
         <label>Number of Days:</label>
-        <input id="numOfDays" type="number" min="0" value="1" th:field="${trip.numOfDays}"/>
+        <input id="numOfDays" type="number" min="1" value="1" th:field="${trip.numOfDays}"/>
       </div>
       <div>
         <label>Number of People:</label>

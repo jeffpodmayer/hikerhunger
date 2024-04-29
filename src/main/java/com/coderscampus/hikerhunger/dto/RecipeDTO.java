@@ -19,6 +19,16 @@ public class RecipeDTO {
     private Float totalWeight;
     private List<IngredientDTO> ingredients;
 
+    public RecipeDTO(Long recipeId, String recipeName, Recipe.RecipeType recipeType, String instructions, Integer servings, Float totalWeight, List<IngredientDTO> ingredients) {
+        this.recipeId = recipeId;
+        this.recipeName = recipeName;
+        this.recipeType = recipeType;
+        this.instructions = instructions;
+        this.servings = servings;
+        this.totalWeight = totalWeight;
+        this.ingredients = ingredients;
+    }
+
     public RecipeDTO(Recipe recipe) {
         this.recipeId = recipe.getRecipeId();
         this.recipeName = recipe.getRecipeName();

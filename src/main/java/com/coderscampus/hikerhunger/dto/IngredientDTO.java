@@ -10,6 +10,15 @@ public class IngredientDTO {
     private Float weightInGrams;
     private String notes;
 
+    public IngredientDTO(Long ingredientId, String ingredientName, Float quantity, String unit, Float weightInGrams, String notes) {
+        this.ingredientId = ingredientId;
+        this.ingredientName = ingredientName;
+        this.quantity = quantity;
+        this.unit = unit;
+        this.weightInGrams = weightInGrams;
+        this.notes = notes;
+    }
+
     public IngredientDTO(Ingredient ingredient) {
         this.ingredientId = ingredient.getIngredientId();
         this.ingredientName = ingredient.getIngredientName();

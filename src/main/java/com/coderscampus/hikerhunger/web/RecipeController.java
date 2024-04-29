@@ -158,7 +158,7 @@ public class RecipeController {
     }
 
     @GetMapping("/fetchAllRecipes")
-    public ResponseEntity<List<RecipeDTO>> fetchAllRecipes(@PathVariable Integer userId) {
+    public ResponseEntity<List<RecipeDTO>> fetchAllRecipes() {
         List<Recipe> allRecipes = recipeService.findAll();
         List<RecipeDTO> recipeDTOs = allRecipes.stream()
                 .map(RecipeDTO::new) // Convert Recipe entities to DTOs

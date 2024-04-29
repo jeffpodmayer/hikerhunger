@@ -103,6 +103,7 @@ public class TripController {
             Recipe recipe = optionalRecipe.get();
             trip.getRecipes().add(recipe);
             tripService.save(trip);
+            // print out the updated recipe
             System.out.println(recipe);
             return ResponseEntity.status(HttpStatus.CREATED).body(recipe);
         } else {

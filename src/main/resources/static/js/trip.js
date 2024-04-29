@@ -161,6 +161,9 @@ recipeTable.addEventListener("change", async function (event) {
     const recipeId = event.target.closest("tr").getAttribute("data-recipe-id");
     if (event.target.checked) {
       try {
+        //calculate and update the new recipe
+        // create an array of all recipes using DOM Content loaded to create a fetch GET request and add the response
+        // .filter method to filter recipes related to that trip
         const recipe = await saveRecipeToTrip(recipeId, tripId);
         console.log(recipe);
         if (recipe) {

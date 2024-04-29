@@ -20,6 +20,7 @@ public class TripService {
 
     public Trip createTrip(Trip trip, User user) {
         trip.setUser(user);
+        trip.setNumOfPeople(1);
         user.getTrips().add(trip);
         return tripRepo.save(trip);
     }

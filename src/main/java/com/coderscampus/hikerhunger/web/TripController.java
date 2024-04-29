@@ -1,6 +1,8 @@
 package com.coderscampus.hikerhunger.web;
 
 import com.coderscampus.hikerhunger.domain.*;
+import com.coderscampus.hikerhunger.dto.IngredientDTO;
+import com.coderscampus.hikerhunger.dto.RecipeDTO;
 import com.coderscampus.hikerhunger.service.RecipeService;
 import com.coderscampus.hikerhunger.service.TripService;
 import com.coderscampus.hikerhunger.service.UserService;
@@ -94,17 +96,31 @@ public class TripController {
     }
 
     @PostMapping("/saveRecipe/{recipeId}/ToTrip/{tripId}")
-    public ResponseEntity<Recipe> saveRecipeToTrip(@PathVariable Long recipeId, @PathVariable Long tripId) {
+    public ResponseEntity<Recipe> saveRecipeToTrip(@RequestBody RecipeDTO recipeData, @PathVariable Long recipeId, @PathVariable Long tripId) {
         Optional<Trip> optionalTrip = tripService.findById(tripId);
         Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
 
         if (optionalTrip.isPresent() && optionalRecipe.isPresent()) {
             Trip trip = optionalTrip.get();
             Recipe recipe = optionalRecipe.get();
+            recipe.setServings(recipeData.getServings());
+            recipe.setTotalWeight(recipeData.getTotalWeight());
+
+
+            List<IngredientDTO> ingredientDTOs = recipeData.getIngredients();
+            List<Ingredient> ingredients = recipe.getIngredients();
+
+            for (int i = 0; i < ingredientDTOs.size(); i++) {
+                IngredientDTO ingredientDTO = ingredientDTOs.get(i);
+                Ingredient ingredient = ingredients.get(i);
+                ingredient.setQuantity(ingredientDTO.getQuantity());
+                ingredient.setWeightInGrams(ingredientDTO.getWeightInGrams());
+            }
+
             trip.getRecipes().add(recipe);
             tripService.save(trip);
             // print out the updated recipe HERE, right now you are only saving the original recipe to the trip
-            System.out.println(recipe);
+            System.out.println("Updated recipe:" + recipe);
             return ResponseEntity.status(HttpStatus.CREATED).body(recipe);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

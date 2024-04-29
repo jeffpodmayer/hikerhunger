@@ -8,6 +8,7 @@ let numOfDays = document.getElementById("numOfDays");
 let numberOfPeople = document.getElementById("numOfPeople");
 let allRecipes = [];
 
+// create an array of all recipes -  using DOM Content loaded to create a fetch GET request and add the response to the array
 document.addEventListener("DOMContentLoaded", async function () {
   try {
     const response = await fetch("/home/fetchAllRecipes");
@@ -173,20 +174,28 @@ tripRecipeTable.addEventListener("click", handlePlusMinusIconClick);
 ///// HANDLE CHECKBOX CLICK
 recipeTable.addEventListener("change", async function (event) {
   if (event.target.classList.contains("recipeCheckbox")) {
-    const recipeId = event.target.closest("tr").getAttribute("data-recipe-id");
+    const recipeId = parseInt(
+      event.target.closest("tr").getAttribute("data-recipe-id"),
+      10
+    );
+    console.log(recipeId);
     if (event.target.checked) {
       try {
-        // create an array of all recipes -  using DOM Content loaded to create a fetch GET request and add the response to the array
+        const recipeToUpdate = allRecipes.find(
+          (recipe) => recipe.recipeId === recipeId
+        );
+        console.log(recipeToUpdate);
+        updateRecipeBasedOnNumberOfPeople(
+          recipeId,
+          recipeToUpdate,
+          numberOfPeople.value
+        );
+        renderRecipe(recipeToUpdate);
         // calculate and update the new recipe
         // .filter method to filter recipes related to that trip
-        const recipe = await saveRecipeToTrip(recipeId, tripId);
-        console.log(recipe);
-        if (recipe) {
-          console.log(recipe);
-          renderRecipe(recipe); //renders on page with variable
-          updateRecipeRow(tripId, recipeId, recipe, numberOfPeople.value);
-          updateRecipe(tripId, recipeId, recipe);
-        }
+        await saveRecipeToTrip(recipeId, recipeToUpdate, tripId);
+        console.log(allRecipes);
+        // updateRecipe(tripId, recipeId, recipe);
       } catch (error) {
         console.error("Error:", error);
       }
@@ -196,7 +205,7 @@ recipeTable.addEventListener("change", async function (event) {
   }
 });
 
-async function saveRecipeToTrip(recipeId, recipe) {
+async function saveRecipeToTrip(recipeId, recipeData, tripId) {
   try {
     const response = await fetch(
       `/home/saveRecipe/${recipeId}/ToTrip/${tripId}`,
@@ -205,32 +214,36 @@ async function saveRecipeToTrip(recipeId, recipe) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(recipe),
+        body: JSON.stringify(recipeData),
       }
     );
 
     if (!response.ok) {
       throw new Error("Failed to save recipe to trip");
     }
-    const recipe = await response.json();
+    const savedRecipe = await response.json();
 
     console.log("Recipe saved to trip.");
-    return recipe; // Return the recipe object
+    return savedRecipe; // Return the recipe object
   } catch (error) {
     console.error("Error saving:", error);
     return null;
   }
 }
-async function updateRecipeRow(tripId, recipeId, recipe, numberOfPeople) {
+
+async function updateRecipeBasedOnNumberOfPeople(
+  recipeId,
+  recipe,
+  numberOfPeople
+) {
   const row = document.querySelector(`[data-recipe-id="${recipeId}"]`);
   if (!row) return;
-
-  const newServings = calculateNewServingsAndWeight(recipe, numberOfPeople);
+  calculateNewServingsAndWeight(recipe, numberOfPeople);
   // console.log("New Servings:" + newServings);
   const totalWeight = calculateTotalWeight(recipe);
   recipe.totalWeight = totalWeight;
   // console.log("Total Weight:" + totalWeight);
-  updateDOMRecipeRow(row, newServings, totalWeight);
+  // updateDOMRecipeRow(row, newServings, totalWeight);
 }
 
 async function updateRecipe(tripId, recipeId, recipe) {

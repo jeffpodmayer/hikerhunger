@@ -103,12 +103,14 @@ public class TripController {
         if (optionalTrip.isPresent() && optionalRecipe.isPresent()) {
             Trip trip = optionalTrip.get();
             Recipe recipe = optionalRecipe.get();
-            recipe.setServings(recipeData.getServings());
-            recipe.setTotalWeight(recipeData.getTotalWeight());
+            Recipe recipeCopy = recipe.createCopy();
+
+            recipeCopy.setServings(recipeData.getServings());
+            recipeCopy.setTotalWeight(recipeData.getTotalWeight());
 
 
             List<IngredientDTO> ingredientDTOs = recipeData.getIngredients();
-            List<Ingredient> ingredients = recipe.getIngredients();
+            List<Ingredient> ingredients = recipeCopy.getIngredients();
 
             for (int i = 0; i < ingredientDTOs.size(); i++) {
                 IngredientDTO ingredientDTO = ingredientDTOs.get(i);
@@ -117,11 +119,10 @@ public class TripController {
                 ingredient.setWeightInGrams(ingredientDTO.getWeightInGrams());
             }
 
-            trip.getRecipes().add(recipe);
+            trip.getRecipes().add(recipeCopy);
             tripService.save(trip);
-            // print out the updated recipe HERE, right now you are only saving the original recipe to the trip
-            System.out.println("Updated recipe:" + recipe);
-            return ResponseEntity.status(HttpStatus.CREATED).body(recipe);
+            System.out.println("Updated recipe:" + recipeCopy);
+            return ResponseEntity.status(HttpStatus.CREATED).body(recipeCopy);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
@@ -160,41 +161,41 @@ public class TripController {
         return ResponseEntity.notFound().build();
     }
 
-    @PutMapping("/trip/{tripId}/updateRecipe/{recipeId}")
-    public void updateTripRecipe(@RequestBody Recipe updatedRecipe, @PathVariable Long tripId, @PathVariable Long recipeId) {
-        Optional<Trip> optionalTrip = tripService.findById(tripId);
-        System.out.println(optionalTrip);
-
-        if (optionalTrip.isPresent()) {
-            Trip trip = optionalTrip.get();
-            List<Recipe> recipes = trip.getRecipes();
-
-            for (Recipe existingRecipe : recipes) {
-                if (existingRecipe.getRecipeId().equals(recipeId)) {
-                    existingRecipe.setServings(updatedRecipe.getServings());
-                    existingRecipe.setTotalWeight(updatedRecipe.getTotalWeight());
-
-                    List<Ingredient> existingIngredients = existingRecipe.getIngredients();
-                    List<Ingredient> updatedIngredients = updatedRecipe.getIngredients();
-
-                    Map<Long, Ingredient> existingIngredientMap = existingIngredients.stream()
-                            .collect(Collectors.toMap(Ingredient::getIngredientId, Function.identity()));
-
-                    for (Ingredient updatedIngredient : updatedIngredients) {
-                        Long ingredientId = updatedIngredient.getIngredientId();
-                        if (existingIngredientMap.containsKey(ingredientId)) {
-                            Ingredient existingIngredient = existingIngredientMap.get(ingredientId);
-                            existingIngredient.setQuantity(updatedIngredient.getQuantity());
-                            existingIngredient.setWeightInGrams(updatedIngredient.getWeightInGrams());
-                        }
-                    }
-                System.out.println(trip.getRecipes());
-                tripService.save(trip);
-                return; // Exit the method after updating the recipe
-                }
-            }
-        }
-    }
+//    @PutMapping("/trip/{tripId}/updateRecipe/{recipeId}")
+//    public void updateTripRecipe(@RequestBody Recipe updatedRecipe, @PathVariable Long tripId, @PathVariable Long recipeId) {
+//        Optional<Trip> optionalTrip = tripService.findById(tripId);
+//        System.out.println(optionalTrip);
+//
+//        if (optionalTrip.isPresent()) {
+//            Trip trip = optionalTrip.get();
+//            List<Recipe> recipes = trip.getRecipes();
+//
+//            for (Recipe existingRecipe : recipes) {
+//                if (existingRecipe.getRecipeId().equals(recipeId)) {
+//                    existingRecipe.setServings(updatedRecipe.getServings());
+//                    existingRecipe.setTotalWeight(updatedRecipe.getTotalWeight());
+//
+//                    List<Ingredient> existingIngredients = existingRecipe.getIngredients();
+//                    List<Ingredient> updatedIngredients = updatedRecipe.getIngredients();
+//
+//                    Map<Long, Ingredient> existingIngredientMap = existingIngredients.stream()
+//                            .collect(Collectors.toMap(Ingredient::getIngredientId, Function.identity()));
+//
+//                    for (Ingredient updatedIngredient : updatedIngredients) {
+//                        Long ingredientId = updatedIngredient.getIngredientId();
+//                        if (existingIngredientMap.containsKey(ingredientId)) {
+//                            Ingredient existingIngredient = existingIngredientMap.get(ingredientId);
+//                            existingIngredient.setQuantity(updatedIngredient.getQuantity());
+//                            existingIngredient.setWeightInGrams(updatedIngredient.getWeightInGrams());
+//                        }
+//                    }
+//                System.out.println(trip.getRecipes());
+//                tripService.save(trip);
+//                return; // Exit the method after updating the recipe
+//                }
+//            }
+//        }
+//    }
 }
 
 

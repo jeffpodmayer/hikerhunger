@@ -161,16 +161,13 @@ recipeTable.addEventListener("change", async function (event) {
     const recipeId = event.target.closest("tr").getAttribute("data-recipe-id");
     if (event.target.checked) {
       try {
-        const updatedRecipe = await saveRecipeToTrip(recipeId, tripId); //assigns recipe in response to variable
-        console.log(updatedRecipe);
-        if (updatedRecipe) {
-          renderRecipe(updatedRecipe); //renders on page with variable
-          updateRecipeRow(
-            tripId,
-            recipeId,
-            updatedRecipe,
-            numberOfPeople.value
-          );
+        const recipe = await saveRecipeToTrip(recipeId, tripId);
+        console.log(recipe);
+        if (recipe) {
+          console.log(recipe);
+          renderRecipe(recipe); //renders on page with variable
+          updateRecipeRow(tripId, recipeId, recipe, numberOfPeople.value);
+          updateRecipe(tripId, recipeId, recipe);
         }
       } catch (error) {
         console.error("Error:", error);
@@ -199,11 +196,11 @@ async function saveRecipeToTrip(recipeId, recipe) {
     }
     const updatedRecipe = await response.json();
 
-    console.log("Recipe saved to trip!");
+    console.log("Recipe saved to trip.");
     return updatedRecipe; // Return the updated recipe object
   } catch (error) {
     console.error("Error saving:", error);
-    return null; // Return null if an error occurs
+    return null;
   }
 }
 async function updateRecipeRow(tripId, recipeId, recipe, numberOfPeople) {
@@ -211,42 +208,29 @@ async function updateRecipeRow(tripId, recipeId, recipe, numberOfPeople) {
   if (!row) return;
 
   const newServings = calculateNewServingsAndWeight(recipe, numberOfPeople);
-  console.log("New Servings:" + newServings);
+  // console.log("New Servings:" + newServings);
   const totalWeight = calculateTotalWeight(recipe);
   recipe.totalWeight = totalWeight;
-  console.log("Total Weight:" + totalWeight);
+  // console.log("Total Weight:" + totalWeight);
   updateDOMRecipeRow(row, newServings, totalWeight);
+}
 
-  try {
-    const updatedRecipe = {
-      recipeId: recipe.recipeId,
-      servings: recipe.servings,
-      totalWeight: recipe.totalWeight,
-      ingredients: recipe.ingredients.map((ingredient) => ({
-        ingredientId: ingredient.ingredientId,
-        quantity: ingredient.quantity,
-        weightInGrams: ingredient.weightInGrams,
-      })),
-    };
-    console.log(JSON.stringify(updatedRecipe));
-
-    const response = await fetch(
-      `/home/trip/${tripId}/updateRecipe/${recipeId}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedRecipe),
-      }
-    );
-    if (!response.ok) {
-      throw new Error("Failed to update recipe row in database");
+async function updateRecipe(tripId, recipeId, recipe) {
+  const response = await fetch(
+    `/home/trip/${tripId}/updateRecipe/${recipeId}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(recipe),
     }
-    console.log("Recipe updated successfully in the database");
-  } catch (error) {
-    console.error("Error updating recipe in database:", error);
+  );
+  console.log(JSON.stringify(recipe));
+  if (!response.ok) {
+    throw new Error("Failed to update recipe row in database");
   }
+  console.log("Recipe updated successfully in the database");
 }
 
 function calculateNewServingsAndWeight(recipe, numberOfPeople) {
@@ -275,6 +259,3 @@ function updateDOMRecipeRow(row, servings, totalWeight) {
   servingsElement.textContent = servings;
   totalWeightElement.textContent = totalWeight;
 }
-// Function to update servings and weights based on the number of people
-
-//////// EVENT LISTENERS

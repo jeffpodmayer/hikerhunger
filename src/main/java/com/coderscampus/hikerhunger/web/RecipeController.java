@@ -3,6 +3,7 @@ package com.coderscampus.hikerhunger.web;
 import com.coderscampus.hikerhunger.domain.Ingredient;
 import com.coderscampus.hikerhunger.domain.Recipe;
 import com.coderscampus.hikerhunger.domain.User;
+import com.coderscampus.hikerhunger.dto.RecipeDTO;
 import com.coderscampus.hikerhunger.service.IngredientService;
 import com.coderscampus.hikerhunger.service.RecipeService;
 import com.coderscampus.hikerhunger.service.UserService;
@@ -96,7 +97,7 @@ public class RecipeController {
     }
 
     @PostMapping("/postDeleteRecipe/{recipeId}")
-    public String postDeleteRecipe(@PathVariable Long recipeId){
+    public String postDeleteRecipe(@PathVariable Long recipeId) {
         Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
         if (optionalRecipe.isPresent()) {
             Recipe recipe = optionalRecipe.get();
@@ -135,30 +136,33 @@ public class RecipeController {
     @GetMapping("/fetch-recipe/{recipeId}")
     @ResponseBody
     public ResponseEntity<Recipe> fetchRecipe(@PathVariable Long recipeId) {
-    Optional<Recipe> recipeOptional = recipeService.findById(recipeId);
-    if (recipeOptional.isPresent()) {
-        Recipe recipe = recipeOptional.get();
-        System.out.println("Retrieved recipe: " + recipe);
-        return ResponseEntity.ok().body(recipe);
+        Optional<Recipe> recipeOptional = recipeService.findById(recipeId);
+        if (recipeOptional.isPresent()) {
+            Recipe recipe = recipeOptional.get();
+            System.out.println("Retrieved recipe: " + recipe);
+            return ResponseEntity.ok().body(recipe);
         } else {
-         return ResponseEntity.notFound().build();
+            return ResponseEntity.notFound().build();
         }
     }
 
     @GetMapping("/edit-recipe/{recipeId}")
     public String getEditRecipe(ModelMap model, @PathVariable Long recipeId) {
-    Optional<Recipe> recipe = recipeService.findById(recipeId);
-    User user = recipe.get().getUser();
-    List<Ingredient> ingredients = recipe.get().getIngredients();
-    model.put("user", user);
-    model.put("recipe", recipe.get());
-    model.put("ingredients", ingredients);
-    return "recipe/update";
+        Optional<Recipe> recipe = recipeService.findById(recipeId);
+        User user = recipe.get().getUser();
+        List<Ingredient> ingredients = recipe.get().getIngredients();
+        model.put("user", user);
+        model.put("recipe", recipe.get());
+        model.put("ingredients", ingredients);
+        return "recipe/update";
     }
 
     @GetMapping("/fetchAllRecipes")
-    public ResponseEntity <List<Recipe>> fetchAllRecipes() {
+    public ResponseEntity<List<RecipeDTO>> fetchAllRecipes(@PathVariable Integer userId) {
         List<Recipe> allRecipes = recipeService.findAll();
-            return ResponseEntity.ok().body(allRecipes);
+        List<RecipeDTO> recipeDTOs = allRecipes.stream()
+                .map(RecipeDTO::new) // Convert Recipe entities to DTOs
+                .collect(Collectors.toList());
+        return ResponseEntity.ok().body(recipeDTOs);
     }
 }

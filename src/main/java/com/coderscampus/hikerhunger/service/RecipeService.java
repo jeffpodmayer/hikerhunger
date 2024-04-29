@@ -42,4 +42,8 @@ public class RecipeService {
     public List<Recipe> findAll() {
        return recipeRepo.findAll();
     }
+
+    public List<Recipe> findByUserId(Integer userId) {
+        return recipeRepo.findByUserId(userId);
+    }
 }

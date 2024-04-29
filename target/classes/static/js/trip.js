@@ -1,4 +1,5 @@
 //// GLOBAL VARIABLES
+const userId = document.getElementById("userId").value;
 const recipeTable = document.getElementById("recipeTable");
 const tripRecipeTable = document.getElementById("tripRecipeTable");
 const tripId = document.getElementById("tripId").value;
@@ -6,12 +7,12 @@ let weightInGrams = document.getElementById("weightInGrams");
 let weightInPounds = document.getElementById("weightInPounds");
 let numOfDays = document.getElementById("numOfDays");
 let numberOfPeople = document.getElementById("numOfPeople");
-let allRecipes = [];
+const allRecipes = [];
 
 // create an array of all recipes -  using DOM Content loaded to create a fetch GET request and add the response to the array
 document.addEventListener("DOMContentLoaded", async function () {
   try {
-    const response = await fetch("/home/fetchAllRecipes");
+    const response = await fetch(`/home/fetchAllRecipes`);
     if (!response.ok) {
       throw new Error("Failed to fetch recipes");
     }

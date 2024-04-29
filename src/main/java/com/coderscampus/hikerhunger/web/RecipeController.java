@@ -140,10 +140,10 @@ public class RecipeController {
         Recipe recipe = recipeOptional.get();
         System.out.println("Retrieved recipe: " + recipe);
         return ResponseEntity.ok().body(recipe);
-    } else {
-        return ResponseEntity.notFound().build();
+        } else {
+         return ResponseEntity.notFound().build();
+        }
     }
-}
 
     @GetMapping("/edit-recipe/{recipeId}")
     public String getEditRecipe(ModelMap model, @PathVariable Long recipeId) {
@@ -154,5 +154,11 @@ public class RecipeController {
     model.put("recipe", recipe.get());
     model.put("ingredients", ingredients);
     return "recipe/update";
-}
+    }
+
+    @GetMapping("/fetchAllRecipes")
+    public ResponseEntity <List<Recipe>> fetchAllRecipes() {
+        List<Recipe> allRecipes = recipeService.findAll();
+            return ResponseEntity.ok().body(allRecipes);
+    }
 }

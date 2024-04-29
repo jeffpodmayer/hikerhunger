@@ -6,8 +6,23 @@ let weightInGrams = document.getElementById("weightInGrams");
 let weightInPounds = document.getElementById("weightInPounds");
 let numOfDays = document.getElementById("numOfDays");
 let numberOfPeople = document.getElementById("numOfPeople");
-console.log(numberOfPeople.value);
+let allRecipes = [];
 
+document.addEventListener("DOMContentLoaded", async function () {
+  try {
+    const response = await fetch("/home/fetchAllRecipes");
+    if (!response.ok) {
+      throw new Error("Failed to fetch recipes");
+    }
+    const recipesData = await response.json();
+    recipesData.forEach((recipe) => {
+      allRecipes.push(recipe);
+    });
+    console.log("All recipes:", allRecipes);
+  } catch (error) {
+    console.error("Error:", error);
+  }
+});
 //// FUNCTIONS
 const renderRecipe = (recipe) => {
   const tr = document.createElement("tr");
@@ -161,6 +176,9 @@ recipeTable.addEventListener("change", async function (event) {
     const recipeId = event.target.closest("tr").getAttribute("data-recipe-id");
     if (event.target.checked) {
       try {
+        // create an array of all recipes -  using DOM Content loaded to create a fetch GET request and add the response to the array
+        // calculate and update the new recipe
+        // .filter method to filter recipes related to that trip
         const recipe = await saveRecipeToTrip(recipeId, tripId);
         console.log(recipe);
         if (recipe) {

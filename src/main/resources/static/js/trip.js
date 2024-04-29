@@ -6,7 +6,6 @@ let weightInGrams = document.getElementById("weightInGrams");
 let weightInPounds = document.getElementById("weightInPounds");
 let numOfDays = document.getElementById("numOfDays");
 let numberOfPeople = document.getElementById("numOfPeople");
-console.log(numberOfPeople.value);
 
 //// FUNCTIONS
 const renderRecipe = (recipe) => {
@@ -161,8 +160,8 @@ recipeTable.addEventListener("change", async function (event) {
     const recipeId = event.target.closest("tr").getAttribute("data-recipe-id");
     if (event.target.checked) {
       try {
-        //calculate and update the new recipe
         // create an array of all recipes using DOM Content loaded to create a fetch GET request and add the response
+        // calculate and update the new recipe
         // .filter method to filter recipes related to that trip
         const recipe = await saveRecipeToTrip(recipeId, tripId);
         console.log(recipe);

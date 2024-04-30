@@ -163,7 +163,7 @@ public class TripController {
     @PutMapping("/trip/{tripId}/updateRecipe/{recipeId}")
     public ResponseEntity<String> updateTripRecipe(@RequestBody RecipeDTO updatedRecipe, @PathVariable Long tripId, @PathVariable Long recipeId) {
         Optional<Trip> optionalTrip = tripService.findById(tripId);
-        System.out.println(optionalTrip);
+//        System.out.println(optionalTrip);
 
         if (optionalTrip.isPresent()) {
             Trip trip = optionalTrip.get();
@@ -188,7 +188,7 @@ public class TripController {
                             existingIngredient.setWeightInGrams(updatedIngredient.getWeightInGrams());
                         }
                     }
-                    System.out.println(trip.getRecipes());
+//                    System.out.println("Updated recipe:" + trip.getRecipes());
                     tripService.save(trip);
 
                     // Return a success response

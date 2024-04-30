@@ -85,12 +85,12 @@ numberOfPeople.addEventListener("input", async () => {
         recipe,
         numberOfPeople.value
       );
-      // send the updated recipe to an endpoint to update it in the database
-      await updateRecipeInDatabase(tripId, recipeId, recipe);
-      // Update the recipe row in the DOM with the updated information
       updateDOMRecipeRow(recipeRow, recipe.servings, recipe.totalWeight);
+      await updateRecipeInDatabase(tripId, recipeId, recipe);
     }
   }
+  console.log(allRecipes);
+  calculateWeightPerPersonPerDay();
 });
 //// FUNCTIONS
 const renderRecipe = (recipe) => {
@@ -223,13 +223,21 @@ const calculateWeightPerPersonPerDay = () => {
     // Get the weight of the recipe from the row
     const gramsCell = recipeRow.querySelector(".weight");
     const weightInGrams = parseFloat(gramsCell.textContent.trim());
+    // console.log("WeightInGrams:" + weightInGrams);
 
     // Update total weight by multiplying recipe weight by recipe count
     totalWeight += weightInGrams * recipeCount;
+    // console.log("TotalWeight:" + totalWeight);
   });
+  // console.log(
+  //   "NumOfPeople:" + numberOfPeople.value,
+  //   "NumOfDays:" + numOfDays.value
+  // );
   // Calculate weight per person per day
   const weightPerPersonPerDay =
     totalWeight / (numberOfPeople.value * numOfDays.value);
+
+  // console.log(weightPerPersonPerDay);
 
   weightInGrams.value = weightPerPersonPerDay.toFixed(0);
   weightInPounds.textContent = isNaN(weightPerPersonPerDay * gramsToPounds)
@@ -311,7 +319,6 @@ async function updateRecipeInDatabase(tripId, recipeId, recipe) {
       body: JSON.stringify(recipe),
     }
   );
-  console.log(JSON.stringify(recipe));
   if (!response.ok) {
     throw new Error("Failed to update recipe in database");
   }

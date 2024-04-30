@@ -24,6 +24,74 @@ document.addEventListener("DOMContentLoaded", async function () {
     console.error("Error:", error);
   }
 });
+
+tripRecipeTable.addEventListener("click", function (event) {
+  if (event.target.closest(".trash_icon")) {
+    const recipeId = event.target.closest("tr").getAttribute("data-recipe-id");
+    uncheckCheckboxInRecipeTable(recipeId);
+    deleteAllRecipesWithRecipeId(recipeId);
+  }
+});
+
+tripRecipeTable.addEventListener("click", handlePlusMinusIconClick);
+
+///// HANDLE CHECKBOX CLICK
+recipeTable.addEventListener("change", async function (event) {
+  if (event.target.classList.contains("recipeCheckbox")) {
+    const recipeId = parseInt(
+      event.target.closest("tr").getAttribute("data-recipe-id"),
+      10
+    );
+    if (event.target.checked) {
+      try {
+        const recipeToUpdate = allRecipes.find(
+          (recipe) => recipe.recipeId === recipeId
+        );
+        updateRecipeBasedOnNumberOfPeople(
+          recipeId,
+          recipeToUpdate,
+          numberOfPeople.value
+        );
+        renderRecipe(recipeToUpdate);
+        calculateWeightPerPersonPerDay();
+        // calculate and update the new recipe
+        // .filter method to filter recipes related to that trip
+        await saveRecipeToTrip(recipeId, recipeToUpdate, tripId);
+        console.log(allRecipes);
+        // updateRecipe(tripId, recipeId, recipe);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    } else {
+      deleteAllRecipesWithRecipeId(recipeId);
+      calculateWeightPerPersonPerDay();
+    }
+  }
+});
+
+numOfDays.addEventListener("input", () => {
+  calculateWeightPerPersonPerDay();
+});
+
+numberOfPeople.addEventListener("input", async () => {
+  // Iterate through each recipe row
+  for (const recipeRow of document.querySelectorAll(".tripRecipe")) {
+    const recipeId = +recipeRow.getAttribute("data-recipe-id");
+    const recipe = allRecipes.find((recipe) => recipe.recipeId === recipeId);
+    if (recipe) {
+      // Update servings and weights of the recipe
+      await updateRecipeBasedOnNumberOfPeople(
+        recipeId,
+        recipe,
+        numberOfPeople.value
+      );
+      // send the updated recipe to an endpoint to update it in the database
+      await updateRecipeInDatabase(tripId, recipeId, recipe);
+      // Update the recipe row in the DOM with the updated information
+      updateDOMRecipeRow(recipeRow, recipe.servings, recipe.totalWeight);
+    }
+  }
+});
 //// FUNCTIONS
 const renderRecipe = (recipe) => {
   const tr = document.createElement("tr");
@@ -119,9 +187,7 @@ function handlePlusMinusIconClick(event) {
 
     if (recipeRow) {
       const recipeId = +recipeRow.getAttribute("data-recipe-id");
-      console.log(recipeId);
       const recipe = allRecipes.find((recipe) => recipe.recipeId === recipeId);
-      console.log(recipe);
       const recipeCountInput = minusIcon
         ? minusIcon.parentElement.querySelector(".recipeCountInput")
         : plusIcon.parentElement.querySelector(".recipeCountInput");
@@ -161,7 +227,6 @@ const calculateWeightPerPersonPerDay = () => {
     // Update total weight by multiplying recipe weight by recipe count
     totalWeight += weightInGrams * recipeCount;
   });
-
   // Calculate weight per person per day
   const weightPerPersonPerDay =
     totalWeight / (numberOfPeople.value * numOfDays.value);
@@ -171,50 +236,6 @@ const calculateWeightPerPersonPerDay = () => {
     ? 0
     : (weightPerPersonPerDay * gramsToPounds).toFixed(2);
 };
-
-tripRecipeTable.addEventListener("click", function (event) {
-  if (event.target.closest(".trash_icon")) {
-    const recipeId = event.target.closest("tr").getAttribute("data-recipe-id");
-    uncheckCheckboxInRecipeTable(recipeId);
-    deleteAllRecipesWithRecipeId(recipeId);
-  }
-});
-
-tripRecipeTable.addEventListener("click", handlePlusMinusIconClick);
-
-///// HANDLE CHECKBOX CLICK
-recipeTable.addEventListener("change", async function (event) {
-  if (event.target.classList.contains("recipeCheckbox")) {
-    const recipeId = parseInt(
-      event.target.closest("tr").getAttribute("data-recipe-id"),
-      10
-    );
-    if (event.target.checked) {
-      try {
-        const recipeToUpdate = allRecipes.find(
-          (recipe) => recipe.recipeId === recipeId
-        );
-        updateRecipeBasedOnNumberOfPeople(
-          recipeId,
-          recipeToUpdate,
-          numberOfPeople.value
-        );
-        renderRecipe(recipeToUpdate);
-        calculateWeightPerPersonPerDay();
-        // calculate and update the new recipe
-        // .filter method to filter recipes related to that trip
-        await saveRecipeToTrip(recipeId, recipeToUpdate, tripId);
-        console.log(allRecipes);
-        // updateRecipe(tripId, recipeId, recipe);
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    } else {
-      deleteAllRecipesWithRecipeId(recipeId);
-      calculateWeightPerPersonPerDay();
-    }
-  }
-});
 
 async function saveRecipeToTrip(recipeId, recipeData, tripId) {
   try {
@@ -248,11 +269,8 @@ async function updateRecipeBasedOnNumberOfPeople(
   const row = document.querySelector(`[data-recipe-id="${recipeId}"]`);
   if (!row) return;
   calculateNewServingsAndWeight(recipe, numberOfPeople);
-  // console.log("New Servings:" + newServings);
   const totalWeight = calculateTotalWeight(recipe);
   recipe.totalWeight = totalWeight;
-  // console.log("Total Weight:" + totalWeight);
-  // updateDOMRecipeRow(row, newServings, totalWeight);
 }
 
 function calculateNewServingsAndWeight(recipe, numberOfPeople) {
@@ -282,7 +300,7 @@ function updateDOMRecipeRow(row, servings, totalWeight) {
   totalWeightElement.textContent = totalWeight;
 }
 
-async function updateRecipe(tripId, recipeId, recipe) {
+async function updateRecipeInDatabase(tripId, recipeId, recipe) {
   const response = await fetch(
     `/home/trip/${tripId}/updateRecipe/${recipeId}`,
     {
@@ -295,7 +313,7 @@ async function updateRecipe(tripId, recipeId, recipe) {
   );
   console.log(JSON.stringify(recipe));
   if (!response.ok) {
-    throw new Error("Failed to update recipe row in database");
+    throw new Error("Failed to update recipe in database");
   }
   console.log("Recipe updated successfully in the database");
 }

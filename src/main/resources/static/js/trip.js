@@ -7,7 +7,6 @@ let weightInPounds = document.getElementById("weightInPounds");
 let numOfDays = document.getElementById("numOfDays");
 let numberOfPeople = document.getElementById("numOfPeople");
 const allRecipes = [];
-let recipeCountInput;
 
 // create an array of all recipes -  using DOM Content loaded to create a fetch GET request and add the response to the array
 document.addEventListener("DOMContentLoaded", async function () {
@@ -136,9 +135,9 @@ function handlePlusMinusIconClick(event) {
           } else if (plusIcon) {
             saveRecipeToTrip(recipeId, recipe, tripId);
             recipeCount++;
-            calculateWeightPerPersonPerDay();
           }
           recipeCountInput.value = recipeCount;
+          calculateWeightPerPersonPerDay();
         }
       }
     }
@@ -146,15 +145,14 @@ function handlePlusMinusIconClick(event) {
 }
 
 const calculateWeightPerPersonPerDay = () => {
+  let totalWeight = 0;
   const recipeRows = document.querySelectorAll(".tripRecipe");
   const gramsToPounds = 0.00220462;
-
-  let totalWeight = 0;
 
   recipeRows.forEach((recipeRow) => {
     // Get the recipe count from the row
     const recipeCountInput = recipeRow.querySelector(".recipeCountInput");
-    const recipeCount = parseInt(recipeCountInput.value) || 1;
+    const recipeCount = +recipeCountInput.value;
 
     // Get the weight of the recipe from the row
     const gramsCell = recipeRow.querySelector(".weight");
@@ -165,11 +163,10 @@ const calculateWeightPerPersonPerDay = () => {
   });
 
   // Calculate weight per person per day
-  const recipeCount = parseInt(recipeCountInput.value) || 1;
   const weightPerPersonPerDay =
-    (totalWeight * recipeCount) / (numberOfPeople.value * numOfDays.value);
+    totalWeight / (numberOfPeople.value * numOfDays.value);
 
-  weightInGrams.value = weightPerPersonPerDay;
+  weightInGrams.value = weightPerPersonPerDay.toFixed(0);
   weightInPounds.textContent = isNaN(weightPerPersonPerDay * gramsToPounds)
     ? 0
     : (weightPerPersonPerDay * gramsToPounds).toFixed(2);
@@ -214,6 +211,7 @@ recipeTable.addEventListener("change", async function (event) {
       }
     } else {
       deleteAllRecipesWithRecipeId(recipeId);
+      calculateWeightPerPersonPerDay();
     }
   }
 });

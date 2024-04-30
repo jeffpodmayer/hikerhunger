@@ -121,7 +121,6 @@ public class TripController {
 
             trip.getRecipes().add(recipeCopy);
             tripService.save(trip);
-            System.out.println("Updated recipe:" + recipeCopy);
             return ResponseEntity.status(HttpStatus.CREATED).body(recipeCopy);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

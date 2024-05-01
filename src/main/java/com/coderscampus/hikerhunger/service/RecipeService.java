@@ -3,6 +3,7 @@ package com.coderscampus.hikerhunger.service;
 import com.coderscampus.hikerhunger.domain.Recipe;
 import com.coderscampus.hikerhunger.domain.User;
 import com.coderscampus.hikerhunger.repository.RecipeRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,7 @@ public class RecipeService {
         return recipeRepo.findById(recipeId);
     }
 
+   @Transactional
     public void delete(Recipe recipe) {
         recipeRepo.delete(recipe);
     }

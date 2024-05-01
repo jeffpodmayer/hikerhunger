@@ -159,36 +159,40 @@ const handleDeleteItem = (itemId, itemType) => {
   //   `Are you sure you want to delete this ${itemType}?`
   // );
 
-  if (confirmed) {
-    fetch(
-      `/home/delete${
-        itemType.charAt(0).toUpperCase() + itemType.slice(1)
-      }/${itemId}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ itemId }),
+  // if (confirmed) {
+  fetch(
+    `/home/delete${
+      itemType.charAt(0).toUpperCase() + itemType.slice(1)
+    }/${itemId}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ itemId }),
+    }
+  )
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
       }
-    )
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        console.log(`Delete request successful for ${itemType}`);
-        closePopup(`${itemType}Popup`, overlay);
-        removeTableRow(itemId, itemType);
-        console.log(
-          `${
-            itemType.charAt(0).toUpperCase() + itemType.slice(1)
-          } deleted successfully`
-        );
-      })
-      .catch((error) => {
-        console.error(`Error deleting ${itemType}:`, error);
-      });
-  }
+      console.log(`Delete request successful for ${itemType}`);
+      if ((itemType = "recipe")) {
+        closePopup(recipePopup, overlay);
+      } else if ((itemType = "trip")) {
+        closePopup(tripPopup, overlay);
+      }
+      removeTableRow(itemId, itemType);
+      console.log(
+        `${
+          itemType.charAt(0).toUpperCase() + itemType.slice(1)
+        } deleted successfully`
+      );
+    })
+    .catch((error) => {
+      console.error(`Error deleting ${itemType}:`, error);
+    });
+  // }
 };
 
 const removeTableRow = (itemId, itemType) => {

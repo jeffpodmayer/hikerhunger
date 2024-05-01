@@ -118,7 +118,7 @@ public class TripController {
                 ingredient.setQuantity(ingredientDTO.getQuantity());
                 ingredient.setWeightInGrams(ingredientDTO.getWeightInGrams());
             }
-
+            System.out.println(recipeCopy);
             trip.getRecipes().add(recipeCopy);
             tripService.save(trip);
             return ResponseEntity.status(HttpStatus.CREATED).body(recipeCopy);

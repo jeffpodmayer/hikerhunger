@@ -25,7 +25,7 @@ public class Recipe {
     @JsonIgnoreProperties("recipe")
     private List<Ingredient> ingredients = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "recipes", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "recipes", fetch = FetchType.LAZY)
     private List<Trip> trips = new ArrayList<>();
 
     public Recipe createCopy() {

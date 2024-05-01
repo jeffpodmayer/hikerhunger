@@ -136,7 +136,7 @@ const renderTripPopup = function (data) {
   <button type="button" class="close-modal">&times;</button>
   <button class="edit_icon"><i class="fa-solid fa-pencil"></i></button>
   <button class="trash_icon"><i class="fa-regular fa-trash-can trash_icon"></i></button>
-  <input type="hidden" class="recipe-id" ${data.tripId}/>
+  <input type="hidden" class="trip-id" ${data.tripId}/>
   <h2>${data.tripName}</h2>
   <p>Number of days: ${data.numOfDays}</p>
   <p>Weight Per Person/Per Day: ${data.poundsPerPersonPerDay}</p>
@@ -177,9 +177,9 @@ const handleDeleteItem = (itemId, itemType) => {
         throw new Error("Network response was not ok");
       }
       console.log(`Delete request successful for ${itemType}`);
-      if ((itemType = "recipe")) {
+      if (itemType === "recipe") {
         closePopup(recipePopup, overlay);
-      } else if ((itemType = "trip")) {
+      } else if (itemType === "trip") {
         closePopup(tripPopup, overlay);
       }
       removeTableRow(itemId, itemType);

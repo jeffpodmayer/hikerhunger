@@ -13,6 +13,7 @@ public class Trip {
     private Long tripId;
     @ManyToOne
     @JoinColumn(name = "userId")
+    @JsonIgnore
     private User user;
     private String tripName;
     private Float numOfDays;

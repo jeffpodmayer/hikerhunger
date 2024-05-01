@@ -38,6 +38,7 @@
           method="get"
           th:each="recipe : ${recipes}"
           th:attr=" data-recipe-id=${recipe.recipeId}"
+          class="recipe-row"
         >
           <input
             type="hidden"
@@ -77,6 +78,7 @@
           method="get"
           th:each="trip : ${trips}"
           th:attr=" data-trip-id=${trip.tripId}"
+          class="trip-row"
         >
           <input type="hidden" th:value="${trip.tripId}" class="trip-id" />
           <td th:text="${trip.tripName}"></td>
@@ -86,6 +88,9 @@
         </tr>
       </table>
     </div>
+
+    <div class="tripViewPopup hidden"></div>
+
     <form th:action="@{/landing}" method="get">
       <button type="submit">Logout</button>
     </form>

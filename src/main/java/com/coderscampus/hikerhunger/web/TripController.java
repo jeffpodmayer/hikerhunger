@@ -200,6 +200,31 @@ public class TripController {
         // If the recipe or trip is not found, return a not found response
         return ResponseEntity.notFound().build();
     }
+
+    @GetMapping("/fetch-trip/{tripId}")
+    @ResponseBody
+    public ResponseEntity<Trip> fetchRecipe(@PathVariable Long tripId) {
+        Optional<Trip> optionalTrip = tripService.findById(tripId);
+        if (optionalTrip.isPresent()) {
+            Trip trip = optionalTrip.get();
+            System.out.println("Retrieved trip: " + trip);
+            return ResponseEntity.ok().body(trip);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/deleteTrip/{tripId}")
+    public ResponseEntity<Void> deleteTripIcon(@PathVariable Long tripId) {
+        Optional<Trip> optionalTrip = tripService.findById(tripId);
+        if (optionalTrip.isPresent()) {
+            Trip trip = optionalTrip.get();
+            tripService.delete(trip);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
 
 

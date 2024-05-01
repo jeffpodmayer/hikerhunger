@@ -139,7 +139,7 @@ public class RecipeController {
         Optional<Recipe> recipeOptional = recipeService.findById(recipeId);
         if (recipeOptional.isPresent()) {
             Recipe recipe = recipeOptional.get();
-            System.out.println("Retrieved recipe: " + recipe);
+//            System.out.println("Retrieved recipe: " + recipe);
             return ResponseEntity.ok().body(recipe);
         } else {
             return ResponseEntity.notFound().build();

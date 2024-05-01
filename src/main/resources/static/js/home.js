@@ -2,19 +2,61 @@
 //////////////////// GLOBAL VARIABLES //////////////////////////
 const recipeTable = document.getElementById(`homeRecipesTable`);
 const recipePopup = document.querySelector(`.recipeViewPopup`);
-const viewRecipeOverlay = document.querySelector(`.overlay`);
+const tripPopup = document.querySelector(`.tripViewPopup`);
+const overlay = document.querySelector(`.overlay`);
+const tripTable = document.getElementById("homeTripsTable");
 
 /////////////////////// FUNCTIONS ///////////////////////////////
-const handleRecipeTableRowClick = (event) => {
+function attachCommonEventListeners(
+  popupElement,
+  overlayElement,
+  itemId,
+  itemType
+) {
+  const btnCloseItemView = document.querySelector(".close-modal");
+  const overlay = document.querySelector(".overlay");
+  const btnEditItem = document.querySelector(".edit_icon");
+
+  btnCloseItemView.addEventListener("click", () =>
+    closePopup(popupElement, overlayElement)
+  );
+  overlay.addEventListener("click", () =>
+    closePopup(popupElement, overlayElement)
+  );
+  btnEditItem.addEventListener("click", () => goToEditPage(itemId, itemType));
+  document.addEventListener("click", function (event) {
+    if (event.target.classList.contains("trash_icon")) {
+      handleDeleteItem(itemId, itemType);
+    }
+  });
+  document.addEventListener(`keydown`, function (event) {
+    if (event.key === `Escape`) {
+      !popupElement.classList.contains(`hidden`);
+      closePopup(popupElement, overlayElement);
+    }
+  });
+}
+
+const handleTableRowClick = (event) => {
   const clickedRow = event.target.closest(`tr`);
-  if (!clickedRow) return; // Exit if the click is not on a table row
+  if (!clickedRow) return;
 
-  const recipeIdInput = clickedRow.querySelector(`.recipe-id`);
-  if (!recipeIdInput) return; // Exit if the recipe ID input is not found
+  const isRecipeRow = clickedRow.classList.contains("recipe-row");
+  const isTripRow = clickedRow.classList.contains("trip-row");
+  if (!isRecipeRow && !isTripRow) return;
 
-  const recipeId = recipeIdInput.value;
+  const idInput = clickedRow.querySelector(
+    isRecipeRow ? `.recipe-id` : `.trip-id`
+  );
+  if (!idInput) return;
 
-  fetch(`/home/fetch-recipe/${recipeId}`, {
+  const itemId = idInput.value;
+
+  const endpoint = isRecipeRow
+    ? `/home/fetch-recipe/${itemId}`
+    : `/home/fetch-trip/${itemId}`;
+
+  fetch(endpoint, {
     method: "GET",
   })
     .then((response) => {
@@ -24,13 +66,22 @@ const handleRecipeTableRowClick = (event) => {
       return response.json();
     })
     .then((data) => {
-      renderRecipePopUp(data);
+      renderPopup(data, isRecipeRow ? `recipe` : `trip`);
     })
     .catch((error) => {
       console.error("Error fetching recipe:", error);
     });
 };
-const renderRecipePopUp = function (data) {
+
+const renderPopup = (data, itemType) => {
+  if (itemType === "recipe") {
+    renderRecipePopup(data);
+  } else if (itemType === "trip") {
+    renderTripPopup(data);
+  }
+};
+
+const renderRecipePopup = function (data) {
   const ingredientsHTML = data.ingredients
     .map(
       (ingredient) => `
@@ -75,83 +126,108 @@ const renderRecipePopUp = function (data) {
 
   recipePopup.innerHTML = markupHTML;
 
-  openViewRecipePopup();
+  openPopup(recipePopup, overlay);
 
-  const btnCloseRecipeView = document.querySelector(`.close-modal`);
-  const btnEditRecipe = document.querySelector(`.edit_icon`);
-  //const deleteButton = document.querySelector(".trash_icon");
-
-  // EVENT LISTENERS
-  btnCloseRecipeView.addEventListener(`click`, closeViewRecipePopup);
-  viewRecipeOverlay.addEventListener(`click`, closeViewRecipePopup);
-  btnEditRecipe.addEventListener("click", () => goToEditPage(data.recipeId));
-  document.addEventListener("click", function (event) {
-    if (event.target.classList.contains("trash_icon")) {
-      handleDeleteRecipe();
-    }
-  });
+  attachCommonEventListeners(recipePopup, overlay, data.recipeId, "recipe");
 };
-const handleDeleteRecipe = () => {
-  const recipeIdInput = document.querySelector(".recipe-id");
-  if (!recipeIdInput) return;
 
-  const recipeId = recipeIdInput.value;
+const renderTripPopup = function (data) {
+  const markupHTML = `
+  <button type="button" class="close-modal">&times;</button>
+  <button class="edit_icon"><i class="fa-solid fa-pencil"></i></button>
+  <button class="trash_icon"><i class="fa-regular fa-trash-can trash_icon"></i></button>
+  <input type="hidden" class="recipe-id" ${data.tripId}/>
+  <h2>${data.tripName}</h2>
+  <p>Number of days: ${data.numOfDays}</p>
+  <p>Weight Per Person/Per Day: ${data.poundsPerPersonPerDay}</p>
+  <p>Number of People: ${data.numOfPeople}</p>
+  <p>Details: ${data.tripDetails}</p>
+  <h3>Recipes</h3>
+  <p></p>`;
 
-  const confirmed = window.confirm(
-    "Are you sure you want to delete this recipe?"
-  );
+  // NEED TO ADD RECIPES AND CONSIDER ADDING INGREDIENTS
+
+  tripPopup.innerHTML = markupHTML;
+
+  openPopup(tripPopup, overlay);
+
+  attachCommonEventListeners(tripPopup, overlay, data.tripId, "trip");
+};
+
+const handleDeleteItem = (itemId, itemType) => {
+  // const confirmed = window.confirm(
+  //   `Are you sure you want to delete this ${itemType}?`
+  // );
 
   if (confirmed) {
-    fetch(`/home/deleteRecipe/${recipeId}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ recipeId }),
-    })
+    fetch(
+      `/home/delete${
+        itemType.charAt(0).toUpperCase() + itemType.slice(1)
+      }/${itemId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ itemId }),
+      }
+    )
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-        closeViewRecipePopup();
-        removeTableRow(recipeId);
-        console.log("Recipe deleted successfully");
+        console.log(`Delete request successful for ${itemType}`);
+        closePopup(`${itemType}Popup`, overlay);
+        removeTableRow(itemId, itemType);
+        console.log(
+          `${
+            itemType.charAt(0).toUpperCase() + itemType.slice(1)
+          } deleted successfully`
+        );
       })
       .catch((error) => {
-        console.error("Error deleting recipe:", error);
+        console.error(`Error deleting ${itemType}:`, error);
       });
   }
 };
-const removeTableRow = (recipeId) => {
-  const tableRow = document.querySelector(`tr[data-recipe-id="${recipeId}"]`);
+
+const removeTableRow = (itemId, itemType) => {
+  const tableRow = document.querySelector(
+    `tr[data-${itemType}-id="${itemId}"]`
+  );
   if (tableRow) {
     tableRow.remove();
-    console.log(`Table row with recipe ID ${recipeId} removed successfully.`);
+    console.log(
+      `Table row with ${itemType} ID ${itemId} removed successfully.`
+    );
   } else {
-    console.log(`Table row with recipe ID ${recipeId} not found.`);
+    console.log(`Table row with ${itemType} ID ${itemId} not found.`);
   }
 };
-const goToEditPage = function (recipeId) {
-  const editUrl = `/home/edit-recipe/${recipeId}`;
+
+const goToEditPage = function (itemId, itemType) {
+  const editUrl =
+    itemType === "recipe"
+      ? `/home/edit-recipe/${itemId}`
+      : `/home/edit-trip/${itemId}`;
   window.location.href = editUrl;
 };
-const openViewRecipePopup = function () {
-  recipePopup.classList.remove(`hidden`);
-  viewRecipeOverlay.classList.remove(`hidden`);
+
+const openPopup = function (popupElement, overlayElement) {
+  popupElement.classList.remove("hidden");
+  overlayElement.classList.remove("hidden");
 };
-const closeViewRecipePopup = function () {
-  recipePopup.classList.add(`hidden`);
-  viewRecipeOverlay.classList.add(`hidden`);
+
+const closePopup = function (popupElement, overlayElement) {
+  popupElement.classList.add("hidden");
+  overlayElement.classList.add("hidden");
 };
 
 ///////////////////// EVENT LISTENERS //////////////////////////
-document.addEventListener(`keydown`, function (event) {
-  if (event.key === `Escape`) {
-    !recipePopup.classList.contains(`hidden`);
-    closeViewRecipePopup();
-  }
-});
-
 if (recipeTable) {
-  recipeTable.addEventListener("click", handleRecipeTableRowClick);
+  recipeTable.addEventListener("click", handleTableRowClick);
+}
+
+if (tripTable) {
+  tripTable.addEventListener("click", handleTableRowClick);
 }

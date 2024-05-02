@@ -1,9 +1,6 @@
 package com.coderscampus.hikerhunger.domain;
-
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
-
-
 import java.util.*;
 
 @Entity

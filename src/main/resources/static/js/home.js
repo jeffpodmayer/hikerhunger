@@ -132,6 +132,7 @@ const renderRecipePopup = function (data) {
 };
 
 const renderTripPopup = function (data) {
+  console.log(data);
   const markupHTML = `
   <button type="button" class="close-modal">&times;</button>
   <button class="edit_icon"><i class="fa-solid fa-pencil"></i></button>

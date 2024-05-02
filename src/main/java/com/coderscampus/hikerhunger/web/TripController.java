@@ -121,6 +121,7 @@ public class TripController {
             System.out.println(recipeCopy);
             trip.getRecipes().add(recipeCopy);
             tripService.save(trip);
+
             return ResponseEntity.status(HttpStatus.CREATED).body(recipeCopy);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -207,7 +208,7 @@ public class TripController {
         Optional<Trip> optionalTrip = tripService.findById(tripId);
         if (optionalTrip.isPresent()) {
             Trip trip = optionalTrip.get();
-            System.out.println("Retrieved trip: " + trip);
+            System.out.println("Retrieved trip: " + trip.getRecipes());
             return ResponseEntity.ok().body(trip);
         } else {
             return ResponseEntity.notFound().build();

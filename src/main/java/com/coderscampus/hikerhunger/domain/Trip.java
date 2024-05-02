@@ -20,6 +20,8 @@ public class Trip {
     private Integer numOfPeople;
     private String tripDetails;
     private Float poundsPerPersonPerDay;
+    
+    //START HERE
     @ManyToMany
     @JoinTable(
             name = "trip_recipe",

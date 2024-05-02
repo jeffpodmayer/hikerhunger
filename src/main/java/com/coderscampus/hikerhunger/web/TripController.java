@@ -95,7 +95,7 @@ public class TripController {
         }
     }
 
-    @PostMapping("/saveRecipe/{recipeId}/ToTrip/{tripId}")
+    @PostMapping("/saveRecipe/{recipeId}/ToTrip/{tripId}") //USE TRIPRECIPE ENTITY
     public ResponseEntity<Recipe> saveRecipeToTrip(@RequestBody RecipeDTO recipeData, @PathVariable Long recipeId, @PathVariable Long tripId) {
         Optional<Trip> optionalTrip = tripService.findById(tripId);
         Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
@@ -103,7 +103,7 @@ public class TripController {
         if (optionalTrip.isPresent() && optionalRecipe.isPresent()) {
             Trip trip = optionalTrip.get();
             Recipe recipe = optionalRecipe.get();
-            Recipe recipeCopy = recipe.createCopy();
+            Recipe recipeCopy = recipe.createCopy(); // DON'T THINK I NEED TO CREATE NEW RECIPE, JUST EDIT
 
             recipeCopy.setServings(recipeData.getServings());
             recipeCopy.setTotalWeight(recipeData.getTotalWeight());
@@ -128,7 +128,7 @@ public class TripController {
         }
     }
 
-    @DeleteMapping("/deleteAllRecipes/{recipeId}/{tripId}")
+    @DeleteMapping("/deleteAllRecipes/{recipeId}/{tripId}")//USE TRIPRECIPE ENTITY
     public ResponseEntity<Void> deleteAllRecipes(@PathVariable Long recipeId, @PathVariable Long tripId) {
         Optional<Trip> optionalTrip = tripService.findById(tripId);
         if (optionalTrip.isPresent()) {
@@ -143,7 +143,7 @@ public class TripController {
         }
     }
 
-    @DeleteMapping("/deleteRecipe/{recipeId}/{tripId}")
+    @DeleteMapping("/deleteRecipe/{recipeId}/{tripId}")//USE TRIPRECIPE ENTITY
     public ResponseEntity<Void> deleteRecipeFromTrip(@PathVariable Long recipeId, @PathVariable Long tripId) {
         Optional<Trip> optionalTrip = tripService.findById(tripId);
 
@@ -161,7 +161,7 @@ public class TripController {
         return ResponseEntity.notFound().build();
     }
 
-    @PutMapping("/trip/{tripId}/updateRecipe/{recipeId}")
+    @PutMapping("/trip/{tripId}/updateRecipe/{recipeId}")//USE TRIPRECIPE ENTITY
     public ResponseEntity<String> updateTripRecipe(@RequestBody RecipeDTO updatedRecipe, @PathVariable Long tripId, @PathVariable Long recipeId) {
         Optional<Trip> optionalTrip = tripService.findById(tripId);
 //        System.out.println(optionalTrip);
@@ -202,9 +202,9 @@ public class TripController {
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/fetch-trip/{tripId}")
+    @GetMapping("/fetch-trip/{tripId}")//USE TRIPRECIPE ENTITY
     @ResponseBody
-    public ResponseEntity<Trip> fetchRecipe(@PathVariable Long tripId) {
+    public ResponseEntity<Trip> fetchTrip(@PathVariable Long tripId) {
         Optional<Trip> optionalTrip = tripService.findById(tripId);
         if (optionalTrip.isPresent()) {
             Trip trip = optionalTrip.get();
@@ -215,7 +215,7 @@ public class TripController {
         }
     }
 
-    @PostMapping("/deleteTrip/{tripId}")
+    @PostMapping("/deleteTrip/{tripId}") //USE TRIPRECIPE ENTITY
     public ResponseEntity<Void> deleteTripIcon(@PathVariable Long tripId) {
         Optional<Trip> optionalTrip = tripService.findById(tripId);
         if (optionalTrip.isPresent()) {

@@ -73,4 +73,17 @@ public class Trip {
         this.numOfPeople = numOfPeople;
     }
 
+    @Override
+    public String toString() {
+        return "Trip{" +
+                "tripId=" + tripId +
+                ", user=" + user +
+                ", tripName='" + tripName + '\'' +
+                ", numOfDays=" + numOfDays +
+                ", numOfPeople=" + numOfPeople +
+                ", tripDetails='" + tripDetails + '\'' +
+                ", poundsPerPersonPerDay=" + poundsPerPersonPerDay +
+                ", tripRecipes=" + tripRecipes +
+                '}';
+    }
 }

@@ -4,6 +4,7 @@ import com.coderscampus.hikerhunger.domain.*;
 import com.coderscampus.hikerhunger.dto.IngredientDTO;
 import com.coderscampus.hikerhunger.dto.RecipeDTO;
 import com.coderscampus.hikerhunger.service.RecipeService;
+import com.coderscampus.hikerhunger.service.TripRecipeService;
 import com.coderscampus.hikerhunger.service.TripService;
 import com.coderscampus.hikerhunger.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +27,14 @@ public class TripController {
     private final UserService userService;
     private final TripService tripService;
     private final RecipeService recipeService;
-//    private final TripRecipe tripRecipeService;
+    private final TripRecipeService tripRecipeService;
 
     @Autowired
-    public TripController(UserService userService, TripService tripService, RecipeService recipeService) {
+    public TripController(UserService userService, TripService tripService, RecipeService recipeService, TripRecipeService tripRecipeService) {
         this.userService = userService;
         this.tripService = tripService;
         this.recipeService = recipeService;
-//        this.tripRecipeService = tripRecipeService;
+        this.tripRecipeService = tripRecipeService;
     }
 
     @PostMapping("/{userId}/trip")
@@ -97,12 +98,20 @@ public class TripController {
         }
     }
 
-    @PostMapping("/saveRecipe/{recipeId}/ToTrip/{tripId}") //USE TRIPRECIPE ENTITY
+    @PostMapping("/saveRecipe/{recipeId}/ToTrip/{tripId}")
     public ResponseEntity<Recipe> saveRecipeToTrip(@RequestBody RecipeDTO recipeData, @PathVariable Long recipeId, @PathVariable Long tripId) {
         Optional<Trip> optionalTrip = tripService.findById(tripId);
         Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
+        Optional<TripRecipe> optionalTripRecipe = tripRecipeService.findByTripAndRecipeId(tripId, recipeId);
+        Integer recipeQuantity = 1;
 
-        if (optionalTrip.isPresent() && optionalRecipe.isPresent()) {
+        if(optionalTripRecipe.isPresent()){
+            TripRecipe tripRecipe = optionalTripRecipe.get();
+            tripRecipe.setRecipeQuantity(tripRecipe.getRecipeQuantity() + recipeQuantity);
+            tripRecipeService.save(tripRecipe);
+            return ResponseEntity.status(HttpStatus.CREATED).body(tripRecipe.getRecipe());
+
+        } else if (optionalTrip.isPresent() && optionalRecipe.isPresent()) {
             Trip trip = optionalTrip.get();
             Recipe recipe = optionalRecipe.get();
 
@@ -111,7 +120,7 @@ public class TripController {
             tripRecipe.setRecipe(recipe);
             tripRecipe.setRecipeServings(recipeData.getServings());
             tripRecipe.setTotalWeight(recipeData.getTotalWeight());
-            tripRecipe.setRecipeQuantity(1);
+            tripRecipe.setRecipeQuantity(recipeQuantity);
 
 
             List<IngredientDTO> ingredientDTOs = recipeData.getIngredients();
@@ -124,102 +133,113 @@ public class TripController {
                 ingredient.setWeightInGrams(ingredientDTO.getWeightInGrams());
             }
 
+
             trip.getTripRecipes().add(tripRecipe);
             tripService.save(trip);
             System.out.println(tripRecipe);
+        return ResponseEntity.status(HttpStatus.CREATED).body(tripRecipe.getRecipe());
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(tripRecipe.getRecipe());
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
-//    @DeleteMapping("/deleteAllRecipes/{recipeId}/{tripId}")//USE TRIPRECIPE ENTITY
-//    public ResponseEntity<Void> deleteAllRecipes(@PathVariable Long recipeId, @PathVariable Long tripId) {
-//        Optional<Trip> optionalTrip = tripService.findById(tripId);
-//        if (optionalTrip.isPresent()) {
-//            Trip trip = optionalTrip.get();
-//            List<Recipe> recipes = trip.getRecipes();
-//
-//            recipes.removeIf(recipe -> recipe.getRecipeId().equals(recipeId));
-//            tripService.save(trip);
-//            return ResponseEntity.noContent().build();
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
-//
-//    @DeleteMapping("/deleteRecipe/{recipeId}/{tripId}")//USE TRIPRECIPE ENTITY
-//    public ResponseEntity<Void> deleteRecipeFromTrip(@PathVariable Long recipeId, @PathVariable Long tripId) {
-//        Optional<Trip> optionalTrip = tripService.findById(tripId);
-//
-//        if (optionalTrip.isPresent()) {
-//            Trip trip = optionalTrip.get();
-//            List<Recipe> recipes = trip.getRecipes();
-//            for (Recipe recipe : recipes) {
-//                if (recipe.getRecipeId().equals(recipeId)) {
-//                    recipes.remove(recipe);
-//                    tripService.save(trip);
-//                    return ResponseEntity.noContent().build();
-//                }
-//            }
-//        }
-//        return ResponseEntity.notFound().build();
-//    }
-//
-//    @PutMapping("/trip/{tripId}/updateRecipe/{recipeId}")//USE TRIPRECIPE ENTITY
-//    public ResponseEntity<String> updateTripRecipe(@RequestBody RecipeDTO updatedRecipe, @PathVariable Long tripId, @PathVariable Long recipeId) {
-//        Optional<Trip> optionalTrip = tripService.findById(tripId);
-////        System.out.println(optionalTrip);
-//
-//        if (optionalTrip.isPresent()) {
-//            Trip trip = optionalTrip.get();
-//            List<Recipe> recipes = trip.getRecipes();
-//
-//            for (Recipe existingRecipe : recipes) {
-//                if (existingRecipe.getRecipeId().equals(recipeId)) {
-//                    existingRecipe.setServings(updatedRecipe.getServings());
-//                    existingRecipe.setTotalWeight(updatedRecipe.getTotalWeight());
-//
-//                    List<Ingredient> existingIngredients = existingRecipe.getIngredients();
-//                    List<IngredientDTO> updatedIngredients = updatedRecipe.getIngredients();
-//
-//                    Map<Long, Ingredient> existingIngredientMap = existingIngredients.stream()
-//                            .collect(Collectors.toMap(Ingredient::getIngredientId, Function.identity()));
-//
-//                    for (IngredientDTO updatedIngredient : updatedIngredients) {
-//                        Long ingredientId = updatedIngredient.getIngredientId();
-//                        if (existingIngredientMap.containsKey(ingredientId)) {
-//                            Ingredient existingIngredient = existingIngredientMap.get(ingredientId);
-//                            existingIngredient.setQuantity(updatedIngredient.getQuantity());
-//                            existingIngredient.setWeightInGrams(updatedIngredient.getWeightInGrams());
-//                        }
-//                    }
-////                    System.out.println("Updated recipe:" + trip.getRecipes());
-//                    tripService.save(trip);
-//
-//                    // Return a success response
-//                    return ResponseEntity.ok("Recipe updated successfully");
-//                }
-//            }
-//        }
-//
-//        // If the recipe or trip is not found, return a not found response
-//        return ResponseEntity.notFound().build();
-//    }
-//
-//    @GetMapping("/fetch-trip/{tripId}")//USE TRIPRECIPE ENTITY
-//    @ResponseBody
-//    public ResponseEntity<Trip> fetchTrip(@PathVariable Long tripId) {
-//        Optional<Trip> optionalTrip = tripService.findById(tripId);
-//        if (optionalTrip.isPresent()) {
-//            Trip trip = optionalTrip.get();
-//            System.out.println("Retrieved trip: " + trip.getRecipes());
-//            return ResponseEntity.ok().body(trip);
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
+    @DeleteMapping("/deleteAllRecipes/{recipeId}/{tripId}")
+    public ResponseEntity<Void> deleteAllRecipes(@PathVariable Long recipeId, @PathVariable Long tripId) {
+        Optional<Trip> optionalTrip = tripService.findById(tripId);
+        Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
+
+        if (optionalTrip.isPresent() && optionalRecipe.isPresent()) {
+            Trip trip = optionalTrip.get();
+            Optional<TripRecipe> optionalTripRecipe = tripRecipeService.findByTripAndRecipeId(tripId, recipeId);
+
+            if (optionalTripRecipe.isPresent()) {
+                TripRecipe tripRecipe = optionalTripRecipe.get();
+                trip.getTripRecipes().remove(tripRecipe);
+                tripRecipeService.delete(tripRecipe);
+                tripService.save(trip);
+
+                return ResponseEntity.noContent().build();
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/deleteRecipe/{recipeId}/{tripId}")
+    public ResponseEntity<Void> deleteRecipeFromTrip(@PathVariable Long recipeId, @PathVariable Long tripId) {
+        Optional<Trip> optionalTrip = tripService.findById(tripId);
+        Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
+
+        if (optionalTrip.isPresent() && optionalRecipe.isPresent()) {
+            Trip trip = optionalTrip.get();
+            Optional<TripRecipe> optionalTripRecipe = tripRecipeService.findByTripAndRecipeId(tripId, recipeId);
+
+            if (optionalTripRecipe.isPresent()) {
+                TripRecipe tripRecipe = optionalTripRecipe.get();
+
+                Integer currentQuantity = tripRecipe.getRecipeQuantity();
+                tripRecipe.setRecipeQuantity(currentQuantity - 1);
+                tripService.save(trip);
+
+                return ResponseEntity.noContent().build();
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/trip/{tripId}/updateRecipe/{recipeId}")
+    public ResponseEntity<String> updateTripRecipe(@RequestBody RecipeDTO updatedRecipe, @PathVariable Long tripId, @PathVariable Long recipeId) {
+        Optional<TripRecipe> optionalTripRecipe = tripRecipeService.findByTripAndRecipeId(tripId, recipeId);
+
+        if (optionalTripRecipe.isPresent()) {
+            TripRecipe tripRecipe = optionalTripRecipe.get();
+
+            tripRecipe.setRecipeServings(updatedRecipe.getServings());
+            tripRecipe.setTotalWeight(updatedRecipe.getTotalWeight());
+
+            List<IngredientDTO> updatedIngredients = updatedRecipe.getIngredients();
+            List<Ingredient> existingIngredients = tripRecipe.getRecipe().getIngredients();
+
+            Map<Long, Ingredient> existingIngredientMap = existingIngredients.stream()
+                    .collect(Collectors.toMap(Ingredient::getIngredientId, Function.identity()));
+
+            for (IngredientDTO updatedIngredient : updatedIngredients) {
+                Long ingredientId = updatedIngredient.getIngredientId();
+                if (existingIngredientMap.containsKey(ingredientId)) {
+                    Ingredient existingIngredient = existingIngredientMap.get(ingredientId);
+                    existingIngredient.setQuantity(updatedIngredient.getQuantity());
+                    existingIngredient.setWeightInGrams(updatedIngredient.getWeightInGrams());
+                }
+            }
+
+            tripRecipeService.save(tripRecipe);
+
+            return ResponseEntity.ok("Recipe updated successfully");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+    @GetMapping("/fetch-trip/{tripId}")
+    @ResponseBody
+    public ResponseEntity<Trip> fetchTrip(@PathVariable Long tripId) {
+        Optional<Trip> optionalTrip = tripService.findById(tripId);
+
+        if (optionalTrip.isPresent()) {
+            Trip trip = optionalTrip.get();
+            System.out.println("Retrieved trip: " + trip.getTripRecipes());
+            return ResponseEntity.ok().body(trip);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
     @PostMapping("/deleteTrip/{tripId}") //USE TRIPRECIPE ENTITY
     public ResponseEntity<Void> deleteTripIcon(@PathVariable Long tripId) {

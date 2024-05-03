@@ -133,6 +133,32 @@ const renderRecipePopup = function (data) {
 
 const renderTripPopup = function (data) {
   console.log(data);
+  const tableHTML = `
+  <table>
+    <thead>
+      <tr>
+        <th>Quantity</th>
+        <th>Name</th>
+        <th>Recipe Type</th>
+        <th>Weight</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${data.tripRecipes
+        .map(
+          (tripRecipe) => `
+          <tr>
+            <td>${tripRecipe.recipeQuantity}</td>
+            <td>${tripRecipe.recipe.recipeName}</td> 
+            <td>${tripRecipe.recipe.recipeType}</td> 
+            <td>${tripRecipe.totalWeight}</td>
+          </tr>
+        `
+        )
+        .join("")}
+    </tbody>
+  </table>`;
+
   const markupHTML = `
   <button type="button" class="close-modal">&times;</button>
   <button class="edit_icon"><i class="fa-solid fa-pencil"></i></button>
@@ -144,9 +170,7 @@ const renderTripPopup = function (data) {
   <p>Number of People: ${data.numOfPeople}</p>
   <p>Details: ${data.tripDetails}</p>
   <h3>Recipes</h3>
-  <p></p>`;
-
-  // NEED TO ADD RECIPES AND CONSIDER ADDING INGREDIENTS
+  <p>${tableHTML}</p>`;
 
   tripPopup.innerHTML = markupHTML;
 

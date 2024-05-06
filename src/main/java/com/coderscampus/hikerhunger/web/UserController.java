@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class UserController {
@@ -29,7 +30,9 @@ public class UserController {
         if(user == null){
             return "redirect:/landing";
         }
-        List<Recipe> recipes = user.getRecipes();
+        List<Recipe> recipes = user.getRecipes().stream()
+                .filter(recipe -> !recipe.isDeleted())
+                .collect(Collectors.toList());
         List<Trip> trips = user.getTrips();
         model.put("user", user);
         model.put("recipes", recipes);

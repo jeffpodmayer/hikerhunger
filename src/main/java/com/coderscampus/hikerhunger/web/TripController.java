@@ -47,7 +47,9 @@ public class TripController {
     @GetMapping("/{userId}/trip/{tripId}")
     public String getCreateTrip(ModelMap model, @PathVariable Integer userId, @PathVariable Long tripId) {
         User user = userService.findById(userId);
-        List<Recipe> recipes = user.getRecipes();
+        List<Recipe> recipes = user.getRecipes().stream()
+                .filter(recipe -> !recipe.isDeleted())
+                .toList();
         Optional<Trip> optionalTrip = tripService.findById(tripId);
 
         if (optionalTrip.isPresent()) {
@@ -257,7 +259,9 @@ public class TripController {
         public String getEditTrip(ModelMap model, @PathVariable Long tripId) {
             Optional<Trip> trip = tripService.findById(tripId);
             User user = trip.get().getUser();
-            List<Recipe> recipes = user.getRecipes();
+            List<Recipe> recipes = user.getRecipes().stream()
+                    .filter(recipe -> !recipe.isDeleted())
+                    .toList();;
             List<TripRecipe> tripRecipes = trip.get().getTripRecipes();
             for(TripRecipe tripRecipe : tripRecipes){
                 System.out.println(tripRecipe.toString());

@@ -24,7 +24,17 @@ public class Recipe {
 
     @OneToMany(mappedBy = "recipe")
     private List<TripRecipe> tripRecipes = new ArrayList<>();
-    
+
+    private boolean isDeleted;
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+
     public enum RecipeType {
         BREAKFAST("Breakfast"),
         LUNCH("Lunch"),

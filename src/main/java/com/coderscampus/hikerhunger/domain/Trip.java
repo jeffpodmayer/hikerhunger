@@ -21,7 +21,7 @@ public class Trip {
     private String tripDetails;
     private Float poundsPerPersonPerDay;
 
-    @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "trip", cascade = CascadeType.MERGE)
     private List<TripRecipe> tripRecipes = new ArrayList<>();
 
     public List<TripRecipe> getTripRecipes() {

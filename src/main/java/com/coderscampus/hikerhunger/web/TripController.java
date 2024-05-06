@@ -225,6 +225,7 @@ public class TripController {
         } else {
             return ResponseEntity.notFound().build();
         }
+        
     }
 }
 

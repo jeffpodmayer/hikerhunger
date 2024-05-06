@@ -226,7 +226,6 @@ public class TripController {
         }
     }
 
-
     @GetMapping("/fetch-trip/{tripId}")
     @ResponseBody
     public ResponseEntity<Trip> fetchTrip(@PathVariable Long tripId) {
@@ -252,7 +251,24 @@ public class TripController {
             return ResponseEntity.notFound().build();
         }
     }
-}
+
+        @GetMapping("/edit-trip/{tripId}")
+        public String getEditTrip(ModelMap model, @PathVariable Long tripId) {
+            Optional<Trip> trip = tripService.findById(tripId);
+            User user = trip.get().getUser();
+            List<Recipe> recipes = user.getRecipes();
+            List<TripRecipe> tripRecipes = trip.get().getTripRecipes();
+            for(TripRecipe tripRecipe : tripRecipes){
+                System.out.println(tripRecipe.toString());
+            }
+            model.put("user", user);
+            model.put("trip", trip.get());
+            model.put("recipes", recipes);
+            model.put("tripRecipes", tripRecipes);
+            return "trip/update";
+        }
+    }
+
 
 
 

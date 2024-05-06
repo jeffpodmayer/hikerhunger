@@ -71,7 +71,7 @@
             <th>Weight</th>
             <th>Delete?</th>
           </tr>
-          <tr
+          <tr class="tripRecipe"
           method="get"
           th:each="tripRecipe : ${tripRecipes}"
           th:attr=" data-recipe-id=${tripRecipe.recipe.recipeId}"
@@ -110,7 +110,7 @@
             th:attr=" data-recipe-id=${recipe.recipeId}"
           >
           <td>
-            <input type="checkbox" id="recipeCheckbox" class="recipeCheckbox" th:value="${recipe.recipeId}">
+            <input type="checkbox" id="recipeCheckbox" class="recipeCheckbox" th:value="${recipe.recipeId}" th:checked="${tripRecipes.![recipe.recipeId].contains(recipe.recipeId)}">
           </td>
             <td th:text="${recipe.recipeName}"></td>
             <td th:text="${recipe.recipeType?.displayValue}"></td>

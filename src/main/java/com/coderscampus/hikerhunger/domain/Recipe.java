@@ -159,4 +159,15 @@ public class Recipe {
         this.ingredients = ingredients;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Recipe recipe)) return false;
+        return Objects.equals(getRecipeId(), recipe.getRecipeId()) && Objects.equals(getUser(), recipe.getUser()) && Objects.equals(getRecipeName(), recipe.getRecipeName()) && getRecipeType() == recipe.getRecipeType() && Objects.equals(getInstructions(), recipe.getInstructions()) && Objects.equals(getServings(), recipe.getServings()) && Objects.equals(getTotalWeight(), recipe.getTotalWeight()) && Objects.equals(getIngredients(), recipe.getIngredients()) && Objects.equals(getTripRecipes(), recipe.getTripRecipes());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getRecipeId(), getUser(), getRecipeName(), getRecipeType(), getInstructions(), getServings(), getTotalWeight(), getIngredients(), getTripRecipes());
+    }
 }

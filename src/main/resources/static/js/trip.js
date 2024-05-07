@@ -92,6 +92,7 @@ numberOfPeople.addEventListener("input", async () => {
   console.log(allRecipes);
   calculateWeightPerPersonPerDay();
 });
+
 //// FUNCTIONS
 const renderRecipe = (recipe) => {
   const tr = document.createElement("tr");

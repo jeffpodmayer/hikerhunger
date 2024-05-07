@@ -159,9 +159,10 @@ public class RecipeController {
 
     @GetMapping("/fetchAllRecipes")
     public ResponseEntity<List<RecipeDTO>> fetchAllRecipes() {
-        List<Recipe> allRecipes = recipeService.findAll().stream()
-                .filter(recipe -> !recipe.isDeleted())
-                .toList();
+        List<Recipe> allRecipes = recipeService.findAll();
+//                .stream()
+//                .filter(recipe -> !recipe.isDeleted())
+//                .toList();
         List<RecipeDTO> recipeDTOs = allRecipes.stream()
                 .map(RecipeDTO::new)
                 .collect(Collectors.toList());

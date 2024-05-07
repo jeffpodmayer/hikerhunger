@@ -12,6 +12,10 @@ import java.util.Optional;
 public interface TripRecipeRepository extends JpaRepository<TripRecipe,Long> {
     @Query("SELECT tr FROM TripRecipe tr WHERE tr.trip.id = :tripId AND tr.recipe.id = :recipeId")
     Optional<TripRecipe> findByTripAndRecipeId(Long tripId, Long recipeId);
+
     @Query("SELECT tr FROM TripRecipe tr WHERE tr.trip.tripId = :tripId")
     List<TripRecipe> findByTripId(Long tripId);
+
+    @Query("SELECT tr FROM TripRecipe tr WHERE tr.recipe.id= :recipeId")
+    List<TripRecipe> findByRecipeId(Long recipeId);
 }

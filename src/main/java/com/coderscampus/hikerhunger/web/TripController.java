@@ -47,7 +47,9 @@ public class TripController {
     @GetMapping("/{userId}/trip/{tripId}")
     public String getCreateTrip(ModelMap model, @PathVariable Integer userId, @PathVariable Long tripId) {
         User user = userService.findById(userId);
-        List<Recipe> recipes = user.getRecipes();
+        List<Recipe> recipes = user.getRecipes().stream()
+                .filter(recipe -> !recipe.isDeleted())
+                .toList();
         Optional<Trip> optionalTrip = tripService.findById(tripId);
 
         if (optionalTrip.isPresent()) {
@@ -255,15 +257,22 @@ public class TripController {
 
         @GetMapping("/edit-trip/{tripId}")
         public String getEditTrip(ModelMap model, @PathVariable Long tripId) {
-            Optional<Trip> trip = tripService.findById(tripId);
-            User user = trip.get().getUser();
-            List<Recipe> recipes = user.getRecipes();
-            List<TripRecipe> tripRecipes = trip.get().getTripRecipes();
-            for(TripRecipe tripRecipe : tripRecipes){
-                System.out.println(tripRecipe.toString());
+            Optional<Trip> tripOptional = tripService.findById(tripId);
+            if (tripOptional.isEmpty()) {
+                return "redirect:/error";
             }
+            Trip trip = tripOptional.get();
+            User user = trip.getUser();
+            List<Recipe> allRecipes = user.getRecipes();
+            List<TripRecipe> tripRecipes = trip.getTripRecipes();
+
+            // Filter recipes to include only non-deleted recipes associated with the trip
+            List<Recipe> recipes = allRecipes.stream()
+                    .filter(recipe -> !recipe.isDeleted() || tripRecipes.stream().anyMatch(tr -> tr.getRecipe().equals(recipe)))
+                    .collect(Collectors.toList());
+
             model.put("user", user);
-            model.put("trip", trip.get());
+            model.put("trip", trip);
             model.put("recipes", recipes);
             model.put("tripRecipes", tripRecipes);
             return "trip/update";

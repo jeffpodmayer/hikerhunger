@@ -1,11 +1,12 @@
 package com.coderscampus.hikerhunger.service;
 
 import com.coderscampus.hikerhunger.domain.Recipe;
+import com.coderscampus.hikerhunger.domain.TripRecipe;
 import com.coderscampus.hikerhunger.domain.User;
 import com.coderscampus.hikerhunger.repository.RecipeRepository;
+import com.coderscampus.hikerhunger.repository.TripRecipeRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,10 +16,12 @@ import java.util.Optional;
 public class RecipeService {
 
     private final RecipeRepository recipeRepo;
+    private final TripRecipeRepository tripRecipeRepo;
 
     @Autowired
-    public RecipeService(RecipeRepository recipeRepo) {
+    public RecipeService(RecipeRepository recipeRepo, TripRecipeRepository tripRecipeRepo) {
         this.recipeRepo = recipeRepo;
+        this.tripRecipeRepo = tripRecipeRepo;
     }
 
     public Recipe saveRecipe(Recipe recipe){
@@ -38,7 +41,15 @@ public class RecipeService {
 
    @Transactional
     public void delete(Recipe recipe) {
-        recipeRepo.delete(recipe);
+        Optional<Recipe> optionalRecipe = recipeRepo.findById(recipe.getRecipeId());
+        Recipe recipeToUpdateOrDelete = optionalRecipe.get();
+
+        if(recipeToUpdateOrDelete.getTripRecipes().isEmpty()){
+            recipeRepo.delete(recipe);
+        } else {
+            recipe.setDeleted(true);
+            recipeRepo.save(recipe);
+        }
     }
 
     public List<Recipe> findAll() {

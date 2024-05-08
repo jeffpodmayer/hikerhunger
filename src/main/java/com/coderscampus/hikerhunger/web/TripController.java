@@ -93,6 +93,9 @@ public class TripController {
         Optional<Trip> optionalTrip = tripService.findById(tripId);
         if (optionalTrip.isPresent()) {
             Trip trip = optionalTrip.get();
+            for(TripRecipe tripRecipe : trip.getTripRecipes()){
+                tripRecipeService.delete(tripRecipe);
+            }
             tripService.delete(trip);
             return "redirect:/home/" + trip.getUser().getId();
         } else {
@@ -247,6 +250,9 @@ public class TripController {
         Optional<Trip> optionalTrip = tripService.findById(tripId);
         if (optionalTrip.isPresent()) {
             Trip trip = optionalTrip.get();
+            for(TripRecipe tripRecipe : trip.getTripRecipes()){
+                tripRecipeService.delete(tripRecipe);
+            }
             tripService.delete(trip);
             return ResponseEntity.noContent().build();
         } else {

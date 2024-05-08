@@ -122,13 +122,18 @@ public class RecipeController {
                 recipe.setTotalWeight(recipeData.getTotalWeight());
                 recipeService.saveRecipe(recipe);
 
+                //TO update all the related TripRecipes
+                // intial servings = servings from the recipe that is being updated B4 update
+                // newServings = multiply servingsb4update by numberOfPeople(using the tripRecipe.getTrip.getNumOfPeople)/servingsb4update
+                // set ratio variable to newServings/servingsb4update
+                // take the recipes updated ingredients quantity and weight in grams ingredients and multiply it by the ratio
+                // Then,add up all the weight of updated/added ingredients and set that amount to the total weight of the updated tripRecipe
+
                 return "redirect:/home/" + recipe.getUser().getId();
             } else {
-                // Recipe with given ID not found
                 return "Recipe not found!";
             }
         } catch (Exception e) {
-            // Internal server error
             return "Error updating recipe: " + e.getMessage();
         }
     }

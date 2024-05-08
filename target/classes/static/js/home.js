@@ -114,7 +114,6 @@ const renderRecipePopup = function (data) {
   const markupHTML = `
     <button type="button" class="close-modal">&times;</button>
     <button class="edit_icon"><i class="fa-solid fa-pencil"></i></button>
-    <button class="trash_icon"><i class="fa-regular fa-trash-can trash_icon"></i></button>
     <input type="hidden" class="recipe-id" ${data.recipeId}/>
     <h2>${data.recipeName}</h2>
     <p>Recipe Type: ${data.recipeType}</p>
@@ -162,7 +161,6 @@ const renderTripPopup = function (data) {
   const markupHTML = `
   <button type="button" class="close-modal">&times;</button>
   <button class="edit_icon"><i class="fa-solid fa-pencil"></i></button>
-  <button class="trash_icon"><i class="fa-regular fa-trash-can trash_icon"></i></button>
   <input type="hidden" class="trip-id" ${data.tripId}/>
   <h2>${data.tripName}</h2>
   <p>Number of days: ${data.numOfDays}</p>
@@ -177,61 +175,6 @@ const renderTripPopup = function (data) {
   openPopup(tripPopup, overlay);
 
   attachCommonEventListeners(tripPopup, overlay, data.tripId, "trip");
-};
-
-const handleDeleteItem = (itemId, itemType) => {
-  // const confirmed = window.confirm(
-  //   `Are you sure you want to delete this ${itemType}?`
-  // );
-
-  // if (confirmed) {
-  fetch(
-    `/home/delete${
-      itemType.charAt(0).toUpperCase() + itemType.slice(1)
-    }/${itemId}`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ itemId }),
-    }
-  )
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      console.log(`Delete request successful for ${itemType}`);
-      if (itemType === "recipe") {
-        closePopup(recipePopup, overlay);
-      } else if (itemType === "trip") {
-        closePopup(tripPopup, overlay);
-      }
-      removeTableRow(itemId, itemType);
-      console.log(
-        `${
-          itemType.charAt(0).toUpperCase() + itemType.slice(1)
-        } deleted successfully`
-      );
-    })
-    .catch((error) => {
-      console.error(`Error deleting ${itemType}:`, error);
-    });
-  // }
-};
-
-const removeTableRow = (itemId, itemType) => {
-  const tableRow = document.querySelector(
-    `tr[data-${itemType}-id="${itemId}"]`
-  );
-  if (tableRow) {
-    tableRow.remove();
-    console.log(
-      `Table row with ${itemType} ID ${itemId} removed successfully.`
-    );
-  } else {
-    console.log(`Table row with ${itemType} ID ${itemId} not found.`);
-  }
 };
 
 const goToEditPage = function (itemId, itemType) {
@@ -260,3 +203,59 @@ if (recipeTable) {
 if (tripTable) {
   tripTable.addEventListener("click", handleTableRowClick);
 }
+
+// const handleDeleteItem = (itemId, itemType) => {
+//   // const confirmed = window.confirm(
+//   //   `Are you sure you want to delete this ${itemType}?`
+//   // );
+
+//   // if (confirmed) {
+//   fetch(
+//     `/home/delete${
+//       itemType.charAt(0).toUpperCase() + itemType.slice(1)
+//     }/${itemId}`,
+//     {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify({ itemId }),
+//     }
+//   )
+//     .then((response) => {
+//       if (!response.ok) {
+//         throw new Error("Network response was not ok");
+//       }
+//       console.log(`Delete request successful for ${itemType}`);
+//       if (itemType === "recipe") {
+//         closePopup(recipePopup, overlay);
+//       } else if (itemType === "trip") {
+//         closePopup(tripPopup, overlay);
+//       }
+//       removeTableRow(itemId, itemType);
+//       console.log(
+//         `${
+//           itemType.charAt(0).toUpperCase() + itemType.slice(1)
+//         } deleted successfully`
+//       );
+//       // window.location.reload();
+//     })
+//     .catch((error) => {
+//       console.error(`Error deleting ${itemType}:`, error);
+//     });
+//   // }
+// };
+
+// const removeTableRow = (itemId, itemType) => {
+//   const tableRow = document.querySelector(
+//     `tr[data-${itemType}-id="${itemId}"]`
+//   );
+//   if (tableRow) {
+//     tableRow.remove();
+//     console.log(
+//       `Table row with ${itemType} ID ${itemId} removed successfully.`
+//     );
+//   } else {
+//     console.log(`Table row with ${itemType} ID ${itemId} not found.`);
+//   }
+// };

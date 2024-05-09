@@ -2,10 +2,13 @@ package com.coderscampus.hikerhunger.web;
 
 import com.coderscampus.hikerhunger.domain.Ingredient;
 import com.coderscampus.hikerhunger.domain.Recipe;
+import com.coderscampus.hikerhunger.domain.TripRecipe;
 import com.coderscampus.hikerhunger.domain.User;
 import com.coderscampus.hikerhunger.dto.RecipeDTO;
+import com.coderscampus.hikerhunger.repository.TripRecipeRepository;
 import com.coderscampus.hikerhunger.service.IngredientService;
 import com.coderscampus.hikerhunger.service.RecipeService;
+import com.coderscampus.hikerhunger.service.TripRecipeService;
 import com.coderscampus.hikerhunger.service.UserService;
 import jakarta.transaction.Transactional;
 import org.apache.coyote.Response;
@@ -28,10 +31,13 @@ public class RecipeController {
     private final UserService userService;
     private final RecipeService recipeService;
 
+    private final TripRecipeService tripRecipeService;
+
     @Autowired
-    public RecipeController(UserService userService, RecipeService recipeService, IngredientService ingredientService) {
+    public RecipeController(UserService userService, RecipeService recipeService, IngredientService ingredientService, TripRecipeService tripRecipeService, TripRecipeService tripRecipeService1) {
         this.userService = userService;
         this.recipeService = recipeService;
+        this.tripRecipeService = tripRecipeService1;
     }
 
     @PostMapping("/{userId}/recipe")
@@ -115,19 +121,20 @@ public class RecipeController {
 
             if (optionalRecipe.isPresent()) {
                 Recipe recipe = optionalRecipe.get();
+
+                int originalServings = recipe.getServings();
+
                 recipe.setRecipeName(recipeData.getRecipeName());
                 recipe.setRecipeType(recipeData.getRecipeType());
                 recipe.setInstructions(recipeData.getInstructions());
                 recipe.setServings(recipeData.getServings());
                 recipe.setTotalWeight(recipeData.getTotalWeight());
+
+                double ratio = (double) originalServings / recipe.getServings();
+
                 recipeService.saveRecipe(recipe);
 
-                //TO update all the related TripRecipes
-                // intial servings = servings from the recipe that is being updated B4 update
-                // newServings = multiply servingsb4update by numberOfPeople(using the tripRecipe.getTrip.getNumOfPeople)/servingsb4update
-                // set ratio variable to newServings/servingsb4update
-                // take the recipes updated ingredients quantity and weight in grams ingredients and multiply it by the ratio
-                // Then,add up all the weight of updated/added ingredients and set that amount to the total weight of the updated tripRecipe
+                tripRecipeService.updateRelatedTripRecipes(recipe, ratio);
 
                 return "redirect:/home/" + recipe.getUser().getId();
             } else {

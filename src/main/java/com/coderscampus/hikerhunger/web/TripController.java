@@ -26,14 +26,16 @@ public class TripController {
     private final RecipeService recipeService;
     private final TripRecipeService tripRecipeService;
     private final IngredientService ingredientService;
+    private final TripIngredientService tripIngredientService;
 
     @Autowired
-    public TripController(UserService userService, TripService tripService, RecipeService recipeService, TripRecipeService tripRecipeService, IngredientService ingredientService) {
+    public TripController(UserService userService, TripService tripService, RecipeService recipeService, TripRecipeService tripRecipeService, IngredientService ingredientService, TripIngredientService tripIngredientService) {
         this.userService = userService;
         this.tripService = tripService;
         this.recipeService = recipeService;
         this.tripRecipeService = tripRecipeService;
         this.ingredientService = ingredientService;
+        this.tripIngredientService = tripIngredientService;
     }
 
     @PostMapping("/{userId}/trip")
@@ -213,20 +215,23 @@ public class TripController {
             tripRecipe.setTotalWeight(updatedRecipe.getTotalWeight());
 
             List<IngredientDTO> updatedIngredients = updatedRecipe.getIngredients();
-            List<Ingredient> existingIngredients = tripRecipe.getRecipe().getIngredients();
+            List<TripIngredient> existingTripIngredients = tripRecipe.getTripIngredients();
 
-            Map<Long, Ingredient> existingIngredientMap = existingIngredients.stream()
-                    .collect(Collectors.toMap(Ingredient::getIngredientId, Function.identity()));
 
             for (IngredientDTO updatedIngredient : updatedIngredients) {
                 Long ingredientId = updatedIngredient.getIngredientId();
-                if (existingIngredientMap.containsKey(ingredientId)) {
-                    Ingredient existingIngredient = existingIngredientMap.get(ingredientId);
-                    existingIngredient.setQuantity(updatedIngredient.getQuantity());
-                    existingIngredient.setWeightInGrams(updatedIngredient.getWeightInGrams());
+
+                Optional<TripIngredient> optionalTripIngredient = existingTripIngredients.stream()
+                        .filter(tripIngredient -> tripIngredient.getIngredient().getIngredientId().equals(ingredientId))
+                        .findFirst();
+
+                if (optionalTripIngredient.isPresent()) {
+                    TripIngredient tripIngredient = optionalTripIngredient.get();
+                    tripIngredient.setQuantity(updatedIngredient.getQuantity());
+                    tripIngredient.setWeightInGrams(updatedIngredient.getWeightInGrams());
+                    tripIngredientService.save(tripIngredient);
                 }
             }
-            // NEED TO ADD TRIPINGREDIENT.SAVE
             tripRecipeService.save(tripRecipe);
 
             return ResponseEntity.ok("Recipe updated successfully");

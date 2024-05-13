@@ -85,7 +85,6 @@ numberOfPeople.addEventListener("input", async () => {
         recipe,
         numberOfPeople.value
       );
-      console.log(recipe);
       updateDOMRecipeRow(recipeRow, recipe.servings, recipe.totalWeight);
       await updateRecipeInDatabase(tripId, recipeId, recipe);
     }

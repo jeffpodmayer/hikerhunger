@@ -3,10 +3,7 @@ package com.coderscampus.hikerhunger.web;
 import com.coderscampus.hikerhunger.domain.*;
 import com.coderscampus.hikerhunger.dto.IngredientDTO;
 import com.coderscampus.hikerhunger.dto.RecipeDTO;
-import com.coderscampus.hikerhunger.service.RecipeService;
-import com.coderscampus.hikerhunger.service.TripRecipeService;
-import com.coderscampus.hikerhunger.service.TripService;
-import com.coderscampus.hikerhunger.service.UserService;
+import com.coderscampus.hikerhunger.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,13 +25,17 @@ public class TripController {
     private final TripService tripService;
     private final RecipeService recipeService;
     private final TripRecipeService tripRecipeService;
+    private final IngredientService ingredientService;
+    private final TripIngredientService tripIngredientService;
 
     @Autowired
-    public TripController(UserService userService, TripService tripService, RecipeService recipeService, TripRecipeService tripRecipeService) {
+    public TripController(UserService userService, TripService tripService, RecipeService recipeService, TripRecipeService tripRecipeService, IngredientService ingredientService, TripIngredientService tripIngredientService) {
         this.userService = userService;
         this.tripService = tripService;
         this.recipeService = recipeService;
         this.tripRecipeService = tripRecipeService;
+        this.ingredientService = ingredientService;
+        this.tripIngredientService = tripIngredientService;
     }
 
     @PostMapping("/{userId}/trip")
@@ -103,7 +104,7 @@ public class TripController {
         }
     }
 
-    @PostMapping("/saveRecipe/{recipeId}/ToTrip/{tripId}")
+    @PostMapping("/saveRecipe/{recipeId}/ToTrip/{tripId}") // CHANGE TO USE TripIngredient Entity
     public ResponseEntity<Recipe> saveRecipeToTrip(@RequestBody RecipeDTO recipeData, @PathVariable Long recipeId, @PathVariable Long tripId) {
         Optional<Trip> optionalTrip = tripService.findById(tripId);
         Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
@@ -129,13 +130,18 @@ public class TripController {
 
 
             List<IngredientDTO> ingredientDTOs = recipeData.getIngredients();
-            List<Ingredient> ingredients = recipe.getIngredients();
 
-            for (int i = 0; i < ingredientDTOs.size(); i++) {
-                IngredientDTO ingredientDTO = ingredientDTOs.get(i);
-                Ingredient ingredient = ingredients.get(i);
-                ingredient.setQuantity(ingredientDTO.getQuantity());
-                ingredient.setWeightInGrams(ingredientDTO.getWeightInGrams());
+            for (IngredientDTO ingredientDTO : ingredientDTOs) {
+                TripIngredient tripIngredient = new TripIngredient();
+                tripIngredient.setTripRecipe(tripRecipe);
+
+                Optional<Ingredient> optionalIngredient = ingredientService.findById(ingredientDTO.getIngredientId());
+                Ingredient ingredient = optionalIngredient.get();
+                tripIngredient.setIngredient(ingredient);
+                tripIngredient.setQuantity(ingredientDTO.getQuantity());
+                tripIngredient.setWeightInGrams(ingredientDTO.getWeightInGrams());
+
+                tripRecipe.getTripIngredients().add(tripIngredient);
             }
 
 
@@ -198,7 +204,7 @@ public class TripController {
         }
     }
 
-    @PutMapping("/trip/{tripId}/updateRecipe/{recipeId}")
+    @PutMapping("/trip/{tripId}/updateRecipe/{recipeId}") // REFACTOR TO USE TripIngredient ENTITY
     public ResponseEntity<String> updateTripRecipe(@RequestBody RecipeDTO updatedRecipe, @PathVariable Long tripId, @PathVariable Long recipeId) {
         Optional<TripRecipe> optionalTripRecipe = tripRecipeService.findByTripAndRecipeId(tripId, recipeId);
 
@@ -209,20 +215,23 @@ public class TripController {
             tripRecipe.setTotalWeight(updatedRecipe.getTotalWeight());
 
             List<IngredientDTO> updatedIngredients = updatedRecipe.getIngredients();
-            List<Ingredient> existingIngredients = tripRecipe.getRecipe().getIngredients();
+            List<TripIngredient> existingTripIngredients = tripRecipe.getTripIngredients();
 
-            Map<Long, Ingredient> existingIngredientMap = existingIngredients.stream()
-                    .collect(Collectors.toMap(Ingredient::getIngredientId, Function.identity()));
 
             for (IngredientDTO updatedIngredient : updatedIngredients) {
                 Long ingredientId = updatedIngredient.getIngredientId();
-                if (existingIngredientMap.containsKey(ingredientId)) {
-                    Ingredient existingIngredient = existingIngredientMap.get(ingredientId);
-                    existingIngredient.setQuantity(updatedIngredient.getQuantity());
-                    existingIngredient.setWeightInGrams(updatedIngredient.getWeightInGrams());
+
+                Optional<TripIngredient> optionalTripIngredient = existingTripIngredients.stream()
+                        .filter(tripIngredient -> tripIngredient.getIngredient().getIngredientId().equals(ingredientId))
+                        .findFirst();
+
+                if (optionalTripIngredient.isPresent()) {
+                    TripIngredient tripIngredient = optionalTripIngredient.get();
+                    tripIngredient.setQuantity(updatedIngredient.getQuantity());
+                    tripIngredient.setWeightInGrams(updatedIngredient.getWeightInGrams());
+                    tripIngredientService.save(tripIngredient);
                 }
             }
-
             tripRecipeService.save(tripRecipe);
 
             return ResponseEntity.ok("Recipe updated successfully");

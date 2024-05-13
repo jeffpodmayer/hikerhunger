@@ -103,7 +103,7 @@ public class TripController {
         }
     }
 
-    @PostMapping("/saveRecipe/{recipeId}/ToTrip/{tripId}")
+    @PostMapping("/saveRecipe/{recipeId}/ToTrip/{tripId}") // CHANGE TO USE TripIngredient Entity
     public ResponseEntity<Recipe> saveRecipeToTrip(@RequestBody RecipeDTO recipeData, @PathVariable Long recipeId, @PathVariable Long tripId) {
         Optional<Trip> optionalTrip = tripService.findById(tripId);
         Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);

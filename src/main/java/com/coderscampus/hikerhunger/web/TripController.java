@@ -198,7 +198,7 @@ public class TripController {
         }
     }
 
-    @PutMapping("/trip/{tripId}/updateRecipe/{recipeId}")
+    @PutMapping("/trip/{tripId}/updateRecipe/{recipeId}") // REFACTOR TO USE TripIngredient ENTITY
     public ResponseEntity<String> updateTripRecipe(@RequestBody RecipeDTO updatedRecipe, @PathVariable Long tripId, @PathVariable Long recipeId) {
         Optional<TripRecipe> optionalTripRecipe = tripRecipeService.findByTripAndRecipeId(tripId, recipeId);
 
@@ -222,7 +222,7 @@ public class TripController {
                     existingIngredient.setWeightInGrams(updatedIngredient.getWeightInGrams());
                 }
             }
-
+            // NEED TO ADD TRIPINGREDIENT.SAVE
             tripRecipeService.save(tripRecipe);
 
             return ResponseEntity.ok("Recipe updated successfully");

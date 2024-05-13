@@ -1,5 +1,6 @@
 package com.coderscampus.hikerhunger.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -20,7 +21,8 @@ public class TripRecipe {
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;
 
-    @OneToMany(mappedBy = "tripRecipe")
+    @OneToMany(mappedBy = "tripRecipe", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<TripIngredient> tripIngredients = new ArrayList<>();
 
     public List<TripIngredient> getTripIngredients() {

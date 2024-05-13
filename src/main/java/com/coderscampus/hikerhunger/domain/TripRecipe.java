@@ -1,6 +1,10 @@
 package com.coderscampus.hikerhunger.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class TripRecipe {
@@ -16,6 +20,18 @@ public class TripRecipe {
     @ManyToOne
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;
+
+    @OneToMany(mappedBy = "tripRecipe", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<TripIngredient> tripIngredients = new ArrayList<>();
+
+    public List<TripIngredient> getTripIngredients() {
+        return tripIngredients;
+    }
+
+    public void setTripIngredients(List<TripIngredient> tripIngredients) {
+        this.tripIngredients = tripIngredients;
+    }
 
     private Integer recipeQuantity;
 

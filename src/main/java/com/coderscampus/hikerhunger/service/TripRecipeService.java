@@ -78,31 +78,4 @@ public class TripRecipeService {
             tripService.updateTripDetails(tripRecipe.getTrip().getTripId());
         }
     }
-
-//    private void updateTripWeightPerPersonPerDay(Trip trip) {
-//        // Calculate the total weight of all TripRecipes in the trip
-//        double totalTripWeight = trip.getTripRecipes().stream()
-//                .mapToDouble(tripRecipe -> tripRecipe.getTotalWeight() * tripRecipe.getRecipeQuantity() * tripRecipe.getRecipeServings())
-//                .sum();
-//
-//        // Calculate the weight per person per day
-//        int numberOfPeople = trip.getNumOfPeople();
-//        Float tripDuration = trip.getNumOfDays();
-//        Float weightPerPersonPerDay = (float) (totalTripWeight  / (numberOfPeople * tripDuration));
-//
-//        // Update the weightPerPersonPerDay of the trip
-//        trip.setPoundsPerPersonPerDay(weightPerPersonPerDay);
-//
-//        // Save the updated trip
-//        tripService.save(trip);
-//    }
-
-//    private double calculateTotalWeight(Recipe recipe, int newServings) {
-//        double totalWeight = 0.0;
-//        for (Ingredient ingredient : recipe.getIngredients()) {
-//            double ingredientWeight = ingredient.getWeightInGrams();
-//            totalWeight += ingredientWeight;
-//        }
-//        return totalWeight * newServings;
-//    }
 }

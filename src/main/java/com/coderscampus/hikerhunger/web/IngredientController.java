@@ -89,6 +89,7 @@ public class IngredientController {
 
         if (optionalIngredient.isPresent()) {
             Ingredient ingredient = optionalIngredient.get();
+            tripIngredientService.deleteRelatedTripIngredients(ingredient);
             ingredientService.delete(ingredient);
             return ResponseEntity.ok("Ingredient deleted!");
         } else {

@@ -5,6 +5,7 @@ import com.coderscampus.hikerhunger.domain.TripIngredient;
 import com.coderscampus.hikerhunger.repository.TripIngredientRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,6 +22,11 @@ public class TripIngredientService {
 
     public Optional<TripIngredient> findById(Long ingredientId) {
         return tripIngredientRepo.findById(ingredientId);
+    }
+
+    public void deleteRelatedTripIngredients(Ingredient ingredient) {
+        Optional<TripIngredient> optionalTripIngredient = findById(ingredient.getIngredientId());
+        optionalTripIngredient.ifPresent(tripIngredientRepo::delete);
     }
 
     public void updateRelatedTripIngredients(Ingredient ingredient) {

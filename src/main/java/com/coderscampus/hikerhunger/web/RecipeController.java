@@ -126,11 +126,6 @@ public class RecipeController {
                 recipe.setTotalWeight(recipeData.getTotalWeight());
                 recipeService.saveRecipe(recipe);
 
-                List<Ingredient> ingredients = recipe.getIngredients();
-                for(Ingredient ingredient : ingredients){
-                    tripIngredientService.updateRelatedTripIngredients(ingredient);
-                }
-
                 tripRecipeService.updateRelatedTripRecipes(recipe);
 
                 return "redirect:/home/" + recipe.getUser().getId();

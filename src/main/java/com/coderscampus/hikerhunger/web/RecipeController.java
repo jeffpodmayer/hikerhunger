@@ -6,10 +6,7 @@ import com.coderscampus.hikerhunger.domain.TripRecipe;
 import com.coderscampus.hikerhunger.domain.User;
 import com.coderscampus.hikerhunger.dto.RecipeDTO;
 import com.coderscampus.hikerhunger.repository.TripRecipeRepository;
-import com.coderscampus.hikerhunger.service.IngredientService;
-import com.coderscampus.hikerhunger.service.RecipeService;
-import com.coderscampus.hikerhunger.service.TripRecipeService;
-import com.coderscampus.hikerhunger.service.UserService;
+import com.coderscampus.hikerhunger.service.*;
 import jakarta.transaction.Transactional;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,14 +27,15 @@ public class RecipeController {
 
     private final UserService userService;
     private final RecipeService recipeService;
-
     private final TripRecipeService tripRecipeService;
+    private final TripIngredientService tripIngredientService;
 
     @Autowired
-    public RecipeController(UserService userService, RecipeService recipeService, IngredientService ingredientService, TripRecipeService tripRecipeService, TripRecipeService tripRecipeService1) {
+    public RecipeController(UserService userService, RecipeService recipeService, IngredientService ingredientService, TripRecipeService tripRecipeService, TripRecipeService tripRecipeService1, TripIngredientService tripIngredientService) {
         this.userService = userService;
         this.recipeService = recipeService;
         this.tripRecipeService = tripRecipeService1;
+        this.tripIngredientService = tripIngredientService;
     }
 
     @PostMapping("/{userId}/recipe")
@@ -121,15 +119,19 @@ public class RecipeController {
 
             if (optionalRecipe.isPresent()) {
                 Recipe recipe = optionalRecipe.get();
-
                 recipe.setRecipeName(recipeData.getRecipeName());
                 recipe.setRecipeType(recipeData.getRecipeType());
                 recipe.setInstructions(recipeData.getInstructions());
                 recipe.setServings(recipeData.getServings());
                 recipe.setTotalWeight(recipeData.getTotalWeight());
-
                 recipeService.saveRecipe(recipe);
 
+                List<Ingredient> ingredients = recipe.getIngredients();
+                for(Ingredient ingredient : ingredients){
+                    tripIngredientService.updateRelatedTripIngredients(ingredient);
+                }
+
+                tripRecipeService.updateRelatedTripRecipes(recipe);
 
                 return "redirect:/home/" + recipe.getUser().getId();
             } else {

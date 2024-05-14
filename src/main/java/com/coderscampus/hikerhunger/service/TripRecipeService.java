@@ -1,9 +1,6 @@
 package com.coderscampus.hikerhunger.service;
 
-import com.coderscampus.hikerhunger.domain.Ingredient;
-import com.coderscampus.hikerhunger.domain.Recipe;
-import com.coderscampus.hikerhunger.domain.Trip;
-import com.coderscampus.hikerhunger.domain.TripRecipe;
+import com.coderscampus.hikerhunger.domain.*;
 import com.coderscampus.hikerhunger.repository.TripRecipeRepository;
 import org.springframework.stereotype.Service;
 
@@ -47,36 +44,41 @@ public class TripRecipeService {
 
         // Update each TripRecipe with adjusted quantities and total weight
         for (TripRecipe tripRecipe : tripRecipesToUpdate) {
-            // Get total weight of TripRecipe by summing all weightInGrams of TripIngredients and multplying by tripRecipe quantity
-            // Save the updated TripRecipe
+            Float totalWeight = 0F;
+            for (TripIngredient tripIngredient : tripRecipe.getTripIngredients()) {
+                totalWeight += tripIngredient.getWeightInGrams();
+            }
+            tripRecipe.setTotalWeight(totalWeight);
             save(tripRecipe);
+            tripService.updateTripDetails(tripRecipe.getTrip().getTripId());
         }
+
     }
 
-    private void updateTripWeightPerPersonPerDay(Trip trip) {
-        // Calculate the total weight of all TripRecipes in the trip
-        double totalTripWeight = trip.getTripRecipes().stream()
-                .mapToDouble(tripRecipe -> tripRecipe.getTotalWeight() * tripRecipe.getRecipeQuantity() * tripRecipe.getRecipeServings())
-                .sum();
+//    private void updateTripWeightPerPersonPerDay(Trip trip) {
+//        // Calculate the total weight of all TripRecipes in the trip
+//        double totalTripWeight = trip.getTripRecipes().stream()
+//                .mapToDouble(tripRecipe -> tripRecipe.getTotalWeight() * tripRecipe.getRecipeQuantity() * tripRecipe.getRecipeServings())
+//                .sum();
+//
+//        // Calculate the weight per person per day
+//        int numberOfPeople = trip.getNumOfPeople();
+//        Float tripDuration = trip.getNumOfDays();
+//        Float weightPerPersonPerDay = (float) (totalTripWeight  / (numberOfPeople * tripDuration));
+//
+//        // Update the weightPerPersonPerDay of the trip
+//        trip.setPoundsPerPersonPerDay(weightPerPersonPerDay);
+//
+//        // Save the updated trip
+//        tripService.save(trip);
+//    }
 
-        // Calculate the weight per person per day
-        int numberOfPeople = trip.getNumOfPeople();
-        Float tripDuration = trip.getNumOfDays();
-        Float weightPerPersonPerDay = (float) (totalTripWeight  / (numberOfPeople * tripDuration));
-
-        // Update the weightPerPersonPerDay of the trip
-        trip.setPoundsPerPersonPerDay(weightPerPersonPerDay);
-
-        // Save the updated trip
-        tripService.save(trip);
-    }
-
-    private double calculateTotalWeight(Recipe recipe, int newServings) {
-        double totalWeight = 0.0;
-        for (Ingredient ingredient : recipe.getIngredients()) {
-            double ingredientWeight = ingredient.getWeightInGrams();
-            totalWeight += ingredientWeight;
-        }
-        return totalWeight * newServings;
-    }
+//    private double calculateTotalWeight(Recipe recipe, int newServings) {
+//        double totalWeight = 0.0;
+//        for (Ingredient ingredient : recipe.getIngredients()) {
+//            double ingredientWeight = ingredient.getWeightInGrams();
+//            totalWeight += ingredientWeight;
+//        }
+//        return totalWeight * newServings;
+//    }
 }

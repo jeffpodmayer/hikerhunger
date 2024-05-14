@@ -77,31 +77,6 @@ public class IngredientController {
 
             Ingredient updatedIngredient = ingredientService.saveIngredient(existingIngredient);
 
-            // Find Associated TripIngredient
-            Optional<TripIngredient> optionalTripIngredient = tripIngredientService.findById(updatedIngredient.getIngredientId());
-            System.out.println("Found trip Ingredient: " + optionalTripIngredient.toString());
-            TripIngredient tripIngredient = optionalTripIngredient.get();
-
-            // Calculate Adjustment ratio
-            Integer originalRecipeServings = existingIngredient.getRecipe().getServings();
-            System.out.println("Existing recipe servings: " + originalRecipeServings);
-            Integer numOfPeople = tripIngredient.getTripRecipe().getTrip().getNumOfPeople();
-            System.out.println("Num Of People on Trip: " + numOfPeople);
-            double ratio = (double) numOfPeople / originalRecipeServings;
-            System.out.println("Calculated ratio: " + ratio);
-
-            // Update TripIngredient's Quantity & WeightInGrams
-            tripIngredient.setQuantity((float) (updatedIngredient.getQuantity() * ratio));
-            tripIngredient.setWeightInGrams((float) (updatedIngredient.getWeightInGrams() * ratio));
-            tripIngredientService.save(tripIngredient);
-            System.out.println("Updated quantity: " + tripIngredient.getQuantity());
-            System.out.println("Updated weight: " + tripIngredient.getWeightInGrams());
-
-
-
-            // Then, use the new updated TripIngredients weightInGrams to calculate totalWeightOf the TripRecipe
-            // Then, use new TotalWeigh to calculate poundsPerPersonPerDay by multiplying TripRecipe weight by TripRecipe quantity and dividing  numOfPeopleOnTrip by numOfDays
-
             return ResponseEntity.ok(updatedIngredient);
         } else {
             return ResponseEntity.notFound().build();

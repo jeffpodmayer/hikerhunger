@@ -2,8 +2,10 @@ package com.coderscampus.hikerhunger.web;
 
 import com.coderscampus.hikerhunger.domain.Ingredient;
 import com.coderscampus.hikerhunger.domain.Recipe;
+import com.coderscampus.hikerhunger.domain.TripIngredient;
 import com.coderscampus.hikerhunger.service.IngredientService;
 import com.coderscampus.hikerhunger.service.RecipeService;
+import com.coderscampus.hikerhunger.service.TripIngredientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +20,13 @@ public class IngredientController {
     private final IngredientService ingredientService;
 
     private final RecipeService recipeService;
+    private final TripIngredientService tripIngredientService;
 
     @Autowired
-    public IngredientController(IngredientService ingredientService, RecipeService recipeService) {
+    public IngredientController(IngredientService ingredientService, RecipeService recipeService, TripIngredientService tripIngredientService) {
         this.ingredientService = ingredientService;
         this.recipeService = recipeService;
+        this.tripIngredientService = tripIngredientService;
     }
 
       @PostMapping("/saveIngredient/{recipeId}")
@@ -72,6 +76,32 @@ public class IngredientController {
             existingIngredient.setNotes(updatedIngredientData.getNotes());
 
             Ingredient updatedIngredient = ingredientService.saveIngredient(existingIngredient);
+
+            // Find Associated TripIngredient
+            Optional<TripIngredient> optionalTripIngredient = tripIngredientService.findById(updatedIngredient.getIngredientId());
+            System.out.println("Found trip Ingredient: " + optionalTripIngredient.toString());
+            TripIngredient tripIngredient = optionalTripIngredient.get();
+
+            // Update TripIngredient's Quantity & WeightInGrams
+            tripIngredient.setQuantity(updatedIngredient.getQuantity());
+            tripIngredient.setWeightInGrams(updatedIngredient.getWeightInGrams());
+            tripIngredientService.save(tripIngredient);
+            System.out.println("Updated quantity: " + tripIngredient.getQuantity());
+            System.out.println("Updated weight: " + tripIngredient.getWeightInGrams());
+
+            // Calculate Adjustment ratio
+            Integer originalRecipeServings = existingIngredient.getRecipe().getServings();
+            System.out.println("Existing recipe servings: " + originalRecipeServings);
+            Integer numOfPeople = tripIngredient.getTripRecipe().getTrip().getNumOfPeople();
+            System.out.println("Num Of People on Trip: " + numOfPeople);
+            double ratio = (double) (originalRecipeServings * numOfPeople) / originalRecipeServings;
+            System.out.println("Calculated ratio: " + ratio);
+
+            // Adjust each TripIngredient by multiplying the quantity and weightInGrams by the ratio
+            // Set the new TripIngredient quantity and weightInGrams
+
+            // Then, use the new updated TripIngredients weightInGrams to calculate totalWeightOf the TripRecipe
+            // Then, use new TotalWeigh to calculate poundsPerPersonPerDay by multiplying TripRecipe weight by TripRecipe quantity and dividing  numOfPeopleOnTrip by numOfDays
 
             return ResponseEntity.ok(updatedIngredient);
         } else {

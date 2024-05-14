@@ -122,19 +122,14 @@ public class RecipeController {
             if (optionalRecipe.isPresent()) {
                 Recipe recipe = optionalRecipe.get();
 
-                int originalServings = recipe.getServings();
-
                 recipe.setRecipeName(recipeData.getRecipeName());
                 recipe.setRecipeType(recipeData.getRecipeType());
                 recipe.setInstructions(recipeData.getInstructions());
                 recipe.setServings(recipeData.getServings());
                 recipe.setTotalWeight(recipeData.getTotalWeight());
 
-                double ratio = (double) originalServings / recipe.getServings();
-
                 recipeService.saveRecipe(recipe);
 
-                tripRecipeService.updateRelatedTripRecipes(recipe, ratio);
 
                 return "redirect:/home/" + recipe.getUser().getId();
             } else {

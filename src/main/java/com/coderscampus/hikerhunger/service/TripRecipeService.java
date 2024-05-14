@@ -41,28 +41,13 @@ public class TripRecipeService {
         return tripRecipeRepo.findByRecipeId(recipeId);
     }
 
-    public void updateRelatedTripRecipes(Recipe recipe, double ratio) {
+    public void updateRelatedTripRecipes(Recipe recipe) {
         // Retrieve all TripRecipes associated with the updated recipe
         List<TripRecipe> tripRecipesToUpdate = findByRecipeId(recipe.getRecipeId());
 
         // Update each TripRecipe with adjusted quantities and total weight
         for (TripRecipe tripRecipe : tripRecipesToUpdate) {
-            // Calculate new servings based on the ratio
-            int newServings = (int) Math.round(tripRecipe.getRecipeServings() * ratio);
-
-            // Update the servings of the TripRecipe
-            tripRecipe.setRecipeServings(newServings);
-
-            // Calculate total weight based on ingredients and new servings
-            Float totalWeight = (float) calculateTotalWeight(recipe, newServings);
-
-            // Update the total weight of the TripRecipe
-            tripRecipe.setTotalWeight(totalWeight);
-
-            if (tripRecipe.getTrip() != null) {
-                updateTripWeightPerPersonPerDay(tripRecipe.getTrip());
-            }
-
+            // Get total weight of TripRecipe by summing all weightInGrams of TripIngredients and multplying by tripRecipe quantity
             // Save the updated TripRecipe
             save(tripRecipe);
         }

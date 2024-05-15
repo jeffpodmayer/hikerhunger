@@ -49,7 +49,7 @@ public class TripRecipeService {
             // Check if the TripRecipe already contains the newly added ingredients
             for (Ingredient updatedIngredient : updatedIngredients) {
                 boolean ingredientExists = tripRecipe.getTripIngredients().stream()
-                        .anyMatch(tripIngredient -> tripIngredient.getIngredient().equals(updatedIngredient));
+                        .anyMatch(tripIngredient -> tripIngredient.getIngredient().getIngredientId().equals(updatedIngredient.getIngredientId()));
                 if (!ingredientExists) {
                     // Create a new TripIngredient for the added ingredient
                     TripIngredient newTripIngredient = new TripIngredient();
@@ -67,11 +67,11 @@ public class TripRecipeService {
                 tripIngredientService.updateRelatedTripIngredients(updatedIngredient);
             }
             // Calculate total weight of the TripRecipe
-            float totalWeight = 0F;
+            int totalWeight = 0;
             for (TripIngredient tripIngredient : tripRecipe.getTripIngredients()) {
                 totalWeight += tripIngredient.getWeightInGrams();
             }
-            tripRecipe.setTotalWeight(totalWeight);
+            tripRecipe.setTotalWeight((float) Math.round(totalWeight));
             save(tripRecipe);
 
             // Update trip details

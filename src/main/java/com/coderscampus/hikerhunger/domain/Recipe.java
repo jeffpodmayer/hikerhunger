@@ -21,57 +21,10 @@ public class Recipe {
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("recipe")
     private List<Ingredient> ingredients = new ArrayList<>();
-
     @OneToMany(mappedBy = "recipe")
     private List<TripRecipe> tripRecipes = new ArrayList<>();
-
     private boolean isDeleted;
 
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
-    }
-
-    public enum RecipeType {
-        BREAKFAST("Breakfast"),
-        LUNCH("Lunch"),
-        DINNER("Dinner"),
-        SNACK("Snack"),
-        EXTRA("Extra");
-        private final String displayValue;
-        RecipeType(String displayValue) {
-            this.displayValue = displayValue;
-        }
-        public String getDisplayValue() {
-            return displayValue;
-        }
-    }
-
-    @Override
-    public String toString() {
-        return "Recipe{" +
-                "recipeId=" + recipeId +
-                ", user=" + user +
-                ", recipeName='" + recipeName + '\'' +
-                ", recipeType=" + recipeType +
-                ", instructions='" + instructions + '\'' +
-                ", servings=" + servings +
-                ", totalWeight=" + totalWeight +
-                ", ingredients=" + ingredients +
-                ", tripRecipes=" + tripRecipes +
-                '}';
-    }
-
-    public List<TripRecipe> getTripRecipes() {
-        return tripRecipes;
-    }
-
-    public void setTripRecipes(List<TripRecipe> tripRecipes) {
-        this.tripRecipes = tripRecipes;
-    }
 
     public Long getRecipeId() {
         return recipeId;
@@ -79,6 +32,14 @@ public class Recipe {
 
     public void setRecipeId(Long recipeId) {
         this.recipeId = recipeId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getRecipeName() {
@@ -121,14 +82,6 @@ public class Recipe {
         this.totalWeight = totalWeight;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public List<Ingredient> getIngredients() {
         return ingredients;
     }
@@ -137,15 +90,48 @@ public class Recipe {
         this.ingredients = ingredients;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Recipe recipe)) return false;
-        return Objects.equals(getRecipeId(), recipe.getRecipeId()) && Objects.equals(getUser(), recipe.getUser()) && Objects.equals(getRecipeName(), recipe.getRecipeName()) && getRecipeType() == recipe.getRecipeType() && Objects.equals(getInstructions(), recipe.getInstructions()) && Objects.equals(getServings(), recipe.getServings()) && Objects.equals(getTotalWeight(), recipe.getTotalWeight()) && Objects.equals(getIngredients(), recipe.getIngredients()) && Objects.equals(getTripRecipes(), recipe.getTripRecipes());
+    public List<TripRecipe> getTripRecipes() {
+        return tripRecipes;
     }
 
+    public void setTripRecipes(List<TripRecipe> tripRecipes) {
+        this.tripRecipes = tripRecipes;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    public enum RecipeType {
+        BREAKFAST("Breakfast"),
+        LUNCH("Lunch"),
+        DINNER("Dinner"),
+        SNACK("Snack"),
+        EXTRA("Extra");
+        private final String displayValue;
+        RecipeType(String displayValue) {
+            this.displayValue = displayValue;
+        }
+        public String getDisplayValue() {
+            return displayValue;
+        }
+    }
     @Override
-    public int hashCode() {
-        return Objects.hash(getRecipeId(), getUser(), getRecipeName(), getRecipeType(), getInstructions(), getServings(), getTotalWeight(), getIngredients(), getTripRecipes());
+    public String toString() {
+        return "Recipe{" +
+                "recipeId=" + recipeId +
+                ", user=" + user +
+                ", recipeName='" + recipeName + '\'' +
+                ", recipeType=" + recipeType +
+                ", instructions='" + instructions + '\'' +
+                ", servings=" + servings +
+                ", totalWeight=" + totalWeight +
+                ", ingredients=" + ingredients +
+                ", tripRecipes=" + tripRecipes +
+                '}';
     }
 }

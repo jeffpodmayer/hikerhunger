@@ -19,13 +19,6 @@ public class Ingredient {
     private Integer weightInGrams;
     private String notes;
 
-    public Recipe getRecipe() {
-        return recipe;
-    }
-
-    public void setRecipe(Recipe recipe) {
-        this.recipe = recipe;
-    }
 
     public Long getIngredientId() {
         return ingredientId;
@@ -33,6 +26,14 @@ public class Ingredient {
 
     public void setIngredientId(Long ingredientId) {
         this.ingredientId = ingredientId;
+    }
+
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
     }
 
     public String getIngredientName() {
@@ -74,6 +75,4 @@ public class Ingredient {
     public void setNotes(String notes) {
         this.notes = notes;
     }
-
-
 }

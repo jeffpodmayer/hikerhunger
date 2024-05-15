@@ -164,7 +164,7 @@ const renderTripPopup = function (data) {
   <input type="hidden" class="trip-id" ${data.tripId}/>
   <h2>${data.tripName}</h2>
   <p>Number of days: ${data.numOfDays}</p>
-  <p>Weight Per Person/Per Day: ${data.poundsPerPersonPerDay}</p>
+  <p>Weight Per Person/Per Day: ${data.gramsPerPersonPerDay}</p>
   <p>Number of People: ${data.numOfPeople}</p>
   <p>Details: ${data.tripDetails}</p>
   <h3>Recipes</h3>

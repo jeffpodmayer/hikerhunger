@@ -19,58 +19,72 @@ public class Trip {
     private Float numOfDays;
     private Integer numOfPeople;
     private String tripDetails;
-    private Integer poundsPerPersonPerDay;
-
+    private Integer gramsPerPersonPerDay;
     @OneToMany(mappedBy = "trip", cascade = CascadeType.MERGE)
     private List<TripRecipe> tripRecipes = new ArrayList<>();
+
+    public Long getTripId() {
+        return tripId;
+    }
+
+    public void setTripId(Long tripId) {
+        this.tripId = tripId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getTripName() {
+        return tripName;
+    }
+
+    public void setTripName(String tripName) {
+        this.tripName = tripName;
+    }
+
+    public Float getNumOfDays() {
+        return numOfDays;
+    }
+
+    public void setNumOfDays(Float numOfDays) {
+        this.numOfDays = numOfDays;
+    }
+
+    public Integer getNumOfPeople() {
+        return numOfPeople;
+    }
+
+    public void setNumOfPeople(Integer numOfPeople) {
+        this.numOfPeople = numOfPeople;
+    }
+
+    public String getTripDetails() {
+        return tripDetails;
+    }
+
+    public void setTripDetails(String tripDetails) {
+        this.tripDetails = tripDetails;
+    }
+
+    public Integer getGramsPerPersonPerDay() {
+        return gramsPerPersonPerDay;
+    }
+
+    public void setGramsPerPersonPerDay(Integer gramsPerPersonPerDay) {
+        this.gramsPerPersonPerDay = gramsPerPersonPerDay;
+    }
 
     public List<TripRecipe> getTripRecipes() {
         return tripRecipes;
     }
+
     public void setTripRecipes(List<TripRecipe> tripRecipes) {
         this.tripRecipes = tripRecipes;
-    }
-    public String getTripDetails() {
-        return tripDetails;
-    }
-    public void setTripDetails(String tripDetails) {
-        this.tripDetails = tripDetails;
-    }
-    public Integer getPoundsPerPersonPerDay() {
-        return poundsPerPersonPerDay;
-    }
-    public void setPoundsPerPersonPerDay(Integer poundsPerPersonPerDay) {
-        this.poundsPerPersonPerDay = poundsPerPersonPerDay;
-    }
-    public Long getTripId() {
-        return tripId;
-    }
-    public void setTripId(Long tripId) {
-        this.tripId = tripId;
-    }
-    public User getUser() {
-        return user;
-    }
-    public void setUser(User user) {
-        this.user = user;
-    }
-    public String getTripName() {
-        return tripName;
-    }
-    public void setTripName(String tripName) {
-        this.tripName = tripName;
-    }
-    public Float getNumOfDays() {
-        return numOfDays;
-    }
-    public void setNumOfDays(Float numOfDays) {
-        this.numOfDays = numOfDays;
-    }
-    public Integer getNumOfPeople() {
-        return numOfPeople;
-    }
-    public void setNumOfPeople(Integer numOfPeople) {
-        this.numOfPeople = numOfPeople;
     }
 
     @Override
@@ -82,7 +96,7 @@ public class Trip {
                 ", numOfDays=" + numOfDays +
                 ", numOfPeople=" + numOfPeople +
                 ", tripDetails='" + tripDetails + '\'' +
-                ", poundsPerPersonPerDay=" + poundsPerPersonPerDay +
+                ", gramsPerPersonPerDay=" + gramsPerPersonPerDay +
                 ", tripRecipes=" + tripRecipes +
                 '}';
     }

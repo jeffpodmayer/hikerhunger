@@ -12,9 +12,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Controller
@@ -57,7 +55,7 @@ public class TripController {
             Trip trip = optionalTrip.get();
             trip.setNumOfPeople(1);
             trip.setNumOfDays(1F);
-            trip.setPoundsPerPersonPerDay(0);
+            trip.setGramsPerPersonPerDay(0);
             model.put("user", user);
             model.put("recipes", recipes);
             model.put("trip", trip);
@@ -76,7 +74,7 @@ public class TripController {
                 trip.setNumOfPeople(tripData.getNumOfPeople());
                 trip.setNumOfDays(tripData.getNumOfDays());
                 trip.setTripDetails(tripData.getTripDetails());
-                trip.setPoundsPerPersonPerDay(tripData.getPoundsPerPersonPerDay());
+                trip.setGramsPerPersonPerDay(tripData.getGramsPerPersonPerDay());
 
                 tripService.save(trip);
                 return "redirect:/home/" + trip.getUser().getId();

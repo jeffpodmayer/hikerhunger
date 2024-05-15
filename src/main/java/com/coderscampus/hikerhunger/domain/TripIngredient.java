@@ -4,21 +4,16 @@ import jakarta.persistence.*;
 
 @Entity
 public class TripIngredient {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long tripIngredientId;
-
     @ManyToOne
     @JoinColumn(name = "trip_recipe_id")
     private TripRecipe tripRecipe;
-
     @ManyToOne
     @JoinColumn(name="ingredient_id")
     private Ingredient ingredient;
-
     private Integer weightInGrams;
-
     private Float quantity;
 
     public Long getTripIngredientId() {

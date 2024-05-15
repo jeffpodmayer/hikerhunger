@@ -47,7 +47,7 @@ public class TripService {
 
             double totalWeightOfTrip = 0.0;
             for(TripRecipe tripRecipe : tripRecipes){
-                totalWeightOfTrip += tripRecipe.getTotalWeight();
+                totalWeightOfTrip += tripRecipe.getTotalWeight()*tripRecipe.getRecipeQuantity();
             }
 
             System.out.println("Total Weight of Trip: " + totalWeightOfTrip);

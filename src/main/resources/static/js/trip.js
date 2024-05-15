@@ -6,7 +6,61 @@ let weightInGrams = document.getElementById("weightInGrams");
 let weightInPounds = document.getElementById("weightInPounds");
 let numOfDays = document.getElementById("numOfDays");
 let numberOfPeople = document.getElementById("numOfPeople");
+const numOfPeopleInput = document.getElementById("numOfPeople");
+const numOfDaysInput = document.getElementById("numOfDays");
+const numOfPeopleAlert = document.getElementById("numOfPeopleAlert");
+const numOfDaysAlert = document.getElementById("numOfDaysAlert");
 const allRecipes = [];
+
+// checkNumberAlert
+[numOfPeopleInput, numOfDaysInput].forEach((input) => {
+  input.addEventListener("keydown", function (event) {
+    // Check if the key pressed is the "-" key
+    if (
+      event.key === "-" ||
+      event.key === "Minus" ||
+      event.key === "Subtract"
+    ) {
+      // Prevent the default action (typing the "-" key)
+      event.preventDefault();
+      // Show alert message
+      if (input === numOfPeopleInput) {
+        numOfPeopleAlert.textContent = "Please enter a non-negative number.";
+        numOfPeopleAlert.style.display = "block";
+      } else {
+        numOfDaysAlert.textContent = "Please enter a non-negative number.";
+        numOfDaysAlert.style.display = "block";
+      }
+    } else {
+      // Hide alert message
+      if (input === numOfPeopleInput) {
+        numOfPeopleAlert.style.display = "none";
+      } else {
+        numOfDaysAlert.style.display = "none";
+      }
+    }
+  });
+
+  input.addEventListener("input", function (event) {
+    if (input.value < 0) {
+      if (input === numOfPeopleInput) {
+        numOfPeopleAlert.textContent = "Please enter a non-negative number.";
+        numOfPeopleAlert.style.display = "block";
+        numOfPeopleInput.value = 0;
+      } else {
+        numOfDaysAlert.textContent = "Please enter a non-negative number.";
+        numOfDaysAlert.style.display = "block";
+        numOfDaysInput.value = 0;
+      }
+    } else {
+      if (input === numOfPeopleInput) {
+        numOfPeopleAlert.style.display = "none";
+      } else {
+        numOfDaysAlert.style.display = "none";
+      }
+    }
+  });
+});
 
 // create an array of all recipes -  using DOM Content loaded to create a fetch GET request and add the response to the array
 document.addEventListener("DOMContentLoaded", async function () {

@@ -108,11 +108,11 @@
       <label>Ingredient Name:</label>
       <input id="ingredientNameInput" type="text" /><br />
       <label>Quantity:</label>
-      <input id="quantityInput"type="number" /><br />
+      <input id="quantityInput" value="0" min="0" type="number"/><br />
       <label>Unit:</label>
-      <input id="unitInput"type="text" /><br />
+      <input id="unitInput" type="text"/><br />
       <label>Weight In Grams:</label>
-      <input id="weightInput"type="number" /><br />
+      <input id="weightInput" value="0" min="0" type="number"/><br />
       <label>Notes:</label>
       <input id="notesInput"type="text" />
       <div>
@@ -124,15 +124,15 @@
     <!-- EDIT INGREDIENT MODAL WINDOW -->
     <div class="edit-ingredient-modal hidden">
       <button type="button" class="close-modal">&times;</button>
-      <input id="id" type="text" /><br />
+      <input type="hidden" id="id"/><br />
       <label>Ingredient Name:</label>
       <input id="ingredientName" type="text" /><br />
       <label>Quantity:</label>
-      <input id="quantity" type="number" /><br />
+      <input id="quantity" type="number" value="0" min="0" /><br />
       <label>Unit:</label>
       <input id="unit" type="text" /><br />
       <label>Weight In Grams:</label>
-      <input id="weight" type="number" /><br />
+      <input id="weight" type="number" value="0" min="0" /><br />
       <label>Notes:</label>
       <input id="notes" type="text" />
       <div>

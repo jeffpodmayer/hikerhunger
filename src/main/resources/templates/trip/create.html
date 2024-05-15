@@ -24,10 +24,13 @@
       </div>
       <div>
         <label>Number of Days:</label>
+        <div id="numOfDaysAlert" style="color: red; display: none;"></div>
         <input id="numOfDays" type="number" min="1" value="1" th:field="${trip.numOfDays}"/>
+       
       </div>
       <div>
         <label>Number of People:</label>
+        <div id="numOfPeopleAlert" style="color: red; display: none;"></div>
         <input id="numOfPeople" type="number" min="1" value="1" th:field="${trip.numOfPeople}" />
       </div>
       <div>

@@ -31,6 +31,13 @@ const submitAddIngredient = async function () {
     weightInGrams: weightInput.value,
     notes: notesInput.value,
   };
+
+  const validationError = validateIngredientData(ingredientData);
+  if (validationError !== null) {
+    alert(validationError);
+    return;
+  }
+
   try {
     const response = await fetch(`/saveIngredient/${recipeIdNumber}`, {
       method: "POST",
@@ -52,7 +59,14 @@ const submitAddIngredient = async function () {
     console.error("Error saving ingredient:", error);
   }
 };
+
 const submitUpdateIngredient = async (updatedIngredientData, ingredientId) => {
+  const validationError = validateIngredientData(updatedIngredientData);
+  if (validationError !== null) {
+    alert(validationError);
+    return;
+  }
+
   try {
     const response = await fetch(`/updateIngredient/${ingredientId}`, {
       method: "PUT",
@@ -185,6 +199,20 @@ const calculateTotalWeight = () => {
   labelWeightInPounds.textContent = isNaN(totalWeight * gramsToPounds)
     ? 0
     : (totalWeight * gramsToPounds).toFixed(2);
+};
+const validateIngredientData = function (ingredient) {
+  const quantity = parseFloat(ingredient.quantity);
+  const weightInGrams = parseFloat(ingredient.weightInGrams);
+
+  // Check if quantity is a non-negative number
+  if (isNaN(quantity) || quantity < 0) {
+    return "The quantity for your ingredient cannot be a negative number! Please enter a positive value.";
+  }
+  // Check if weightInGrams is a non-negative number
+  if (isNaN(weightInGrams) || weightInGrams < 0) {
+    return "The weight for your ingredient cannot be a negative number! Please enter a positive value.";
+  }
+  return null;
 };
 
 /////////////////////////// ADD INGREDIENT ////////////////////////////

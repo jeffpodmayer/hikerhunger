@@ -8,15 +8,12 @@ import java.util.List;
 
 @Entity
 public class TripRecipe {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long tripRecipeId;
-
     @ManyToOne
     @JoinColumn(name = "trip_id")
     private Trip trip;
-
     @ManyToOne
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;
@@ -25,6 +22,10 @@ public class TripRecipe {
     @JsonIgnore
     private List<TripIngredient> tripIngredients = new ArrayList<>();
 
+    private Integer recipeQuantity;
+    private Integer recipeServings;
+    private Integer totalWeight;
+
     public List<TripIngredient> getTripIngredients() {
         return tripIngredients;
     }
@@ -32,12 +33,6 @@ public class TripRecipe {
     public void setTripIngredients(List<TripIngredient> tripIngredients) {
         this.tripIngredients = tripIngredients;
     }
-
-    private Integer recipeQuantity;
-
-    private Integer recipeServings;
-
-    private Integer totalWeight;
 
     public Long getTripRecipeId() {
         return tripRecipeId;

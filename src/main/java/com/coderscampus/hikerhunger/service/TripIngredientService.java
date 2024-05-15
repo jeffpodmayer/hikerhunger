@@ -45,7 +45,7 @@ public class TripIngredientService {
 
         // Update TripIngredient's Quantity & WeightInGrams
         tripIngredient.setQuantity((float) (ingredient.getQuantity() * ratio));
-        tripIngredient.setWeightInGrams((float) (ingredient.getWeightInGrams() * ratio));
+        tripIngredient.setWeightInGrams((int) (ingredient.getWeightInGrams() * ratio));
         save(tripIngredient);
         System.out.println("Updated quantity: " + tripIngredient.getQuantity());
         System.out.println("Updated weight: " + tripIngredient.getWeightInGrams());

@@ -52,7 +52,7 @@ public class RecipeController {
         if (optionalRecipe.isPresent()) {
             Recipe recipe = optionalRecipe.get();
             recipe.setServings(1);
-            recipe.setTotalWeight(0F);
+            recipe.setTotalWeight(0);
             List<Ingredient> ingredients = recipe.getIngredients();
             Ingredient ingredient = new Ingredient();
             model.put("user", user);

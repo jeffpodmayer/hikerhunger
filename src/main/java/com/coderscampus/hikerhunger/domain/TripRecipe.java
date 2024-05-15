@@ -37,7 +37,7 @@ public class TripRecipe {
 
     private Integer recipeServings;
 
-    private Float totalWeight;
+    private Integer totalWeight;
 
     public Long getTripRecipeId() {
         return tripRecipeId;
@@ -79,11 +79,11 @@ public class TripRecipe {
         this.recipeServings = recipeServings;
     }
 
-    public Float getTotalWeight() {
+    public Integer getTotalWeight() {
         return totalWeight;
     }
 
-    public void setTotalWeight(Float totalWeight) {
+    public void setTotalWeight(Integer totalWeight) {
         this.totalWeight = totalWeight;
     }
 

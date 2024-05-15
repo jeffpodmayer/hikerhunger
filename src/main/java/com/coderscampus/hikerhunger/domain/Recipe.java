@@ -17,7 +17,7 @@ public class Recipe {
     private RecipeType recipeType;
     private String instructions;
     private Integer servings;
-    private Float totalWeight;
+    private Integer totalWeight;
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("recipe")
     private List<Ingredient> ingredients = new ArrayList<>();
@@ -113,11 +113,11 @@ public class Recipe {
         this.servings = servings;
     }
 
-    public Float getTotalWeight() {
+    public Integer getTotalWeight() {
         return totalWeight;
     }
 
-    public void setTotalWeight(Float totalWeight) {
+    public void setTotalWeight(Integer totalWeight) {
         this.totalWeight = totalWeight;
     }
 

@@ -71,7 +71,7 @@ public class TripRecipeService {
             for (TripIngredient tripIngredient : tripRecipe.getTripIngredients()) {
                 totalWeight += tripIngredient.getWeightInGrams();
             }
-            tripRecipe.setTotalWeight((float) Math.round(totalWeight));
+            tripRecipe.setTotalWeight(Math.round(totalWeight));
             save(tripRecipe);
 
             // Update trip details

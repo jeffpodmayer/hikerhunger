@@ -1,6 +1,7 @@
 package com.coderscampus.hikerhunger.service;
 
 import com.coderscampus.hikerhunger.domain.Ingredient;
+import com.coderscampus.hikerhunger.domain.Recipe;
 import com.coderscampus.hikerhunger.domain.TripIngredient;
 import com.coderscampus.hikerhunger.repository.TripIngredientRepository;
 import org.springframework.stereotype.Service;

@@ -36,7 +36,6 @@ public class RecipeDTO {
         this.instructions = recipe.getInstructions();
         this.servings = recipe.getServings();
         this.totalWeight = recipe.getTotalWeight();
-        // Convert ingredients to IngredientDTO objects
         this.ingredients = recipe.getIngredients().stream()
                 .map(IngredientDTO::new)
                 .collect(Collectors.toList());

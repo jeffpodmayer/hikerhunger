@@ -16,10 +16,10 @@ public class RecipeDTO {
     private Recipe.RecipeType recipeType;
     private String instructions;
     private Integer servings;
-    private Float totalWeight;
+    private Integer totalWeight;
     private List<IngredientDTO> ingredients;
 
-    public RecipeDTO(Long recipeId, String recipeName, Recipe.RecipeType recipeType, String instructions, Integer servings, Float totalWeight, List<IngredientDTO> ingredients) {
+    public RecipeDTO(Long recipeId, String recipeName, Recipe.RecipeType recipeType, String instructions, Integer servings, Integer totalWeight, List<IngredientDTO> ingredients) {
         this.recipeId = recipeId;
         this.recipeName = recipeName;
         this.recipeType = recipeType;
@@ -50,11 +50,11 @@ public class RecipeDTO {
         this.servings = servings;
     }
 
-    public Float getTotalWeight() {
+    public Integer getTotalWeight() {
         return totalWeight;
     }
 
-    public void setTotalWeight(Float totalWeight) {
+    public void setTotalWeight(Integer totalWeight) {
         this.totalWeight = totalWeight;
     }
 

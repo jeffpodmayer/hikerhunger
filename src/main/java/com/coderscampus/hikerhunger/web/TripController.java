@@ -57,7 +57,7 @@ public class TripController {
             Trip trip = optionalTrip.get();
             trip.setNumOfPeople(1);
             trip.setNumOfDays(1F);
-            trip.setPoundsPerPersonPerDay(0F);
+            trip.setPoundsPerPersonPerDay(0);
             model.put("user", user);
             model.put("recipes", recipes);
             model.put("trip", trip);

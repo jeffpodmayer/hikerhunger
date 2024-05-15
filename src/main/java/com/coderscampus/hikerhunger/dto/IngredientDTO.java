@@ -7,10 +7,10 @@ public class IngredientDTO {
     private String ingredientName;
     private Float quantity;
     private String unit;
-    private Float weightInGrams;
+    private Integer weightInGrams;
     private String notes;
 
-    public IngredientDTO(Long ingredientId, String ingredientName, Float quantity, String unit, Float weightInGrams, String notes) {
+    public IngredientDTO(Long ingredientId, String ingredientName, Float quantity, String unit, Integer weightInGrams, String notes) {
         this.ingredientId = ingredientId;
         this.ingredientName = ingredientName;
         this.quantity = quantity;
@@ -68,11 +68,11 @@ public class IngredientDTO {
         this.quantity = quantity;
     }
 
-    public Float getWeightInGrams() {
+    public Integer getWeightInGrams() {
         return weightInGrams;
     }
 
-    public void setWeightInGrams(Float weightInGrams) {
+    public void setWeightInGrams(Integer weightInGrams) {
         this.weightInGrams = weightInGrams;
     }
 }

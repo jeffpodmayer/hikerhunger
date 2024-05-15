@@ -16,7 +16,7 @@ public class Ingredient {
     private String ingredientName;
     private Float quantity;
     private String unit;
-    private Float weightInGrams;
+    private Integer weightInGrams;
     private String notes;
 
     public Recipe getRecipe() {
@@ -59,11 +59,11 @@ public class Ingredient {
         this.unit = unit;
     }
 
-    public Float getWeightInGrams() {
+    public Integer getWeightInGrams() {
         return weightInGrams;
     }
 
-    public void setWeightInGrams(Float weightInGrams) {
+    public void setWeightInGrams(Integer weightInGrams) {
         this.weightInGrams = weightInGrams;
     }
 

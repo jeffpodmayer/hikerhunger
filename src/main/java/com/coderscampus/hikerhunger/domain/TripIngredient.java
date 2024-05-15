@@ -17,7 +17,7 @@ public class TripIngredient {
     @JoinColumn(name="ingredient_id")
     private Ingredient ingredient;
 
-    private Float weightInGrams;
+    private Integer weightInGrams;
 
     private Float quantity;
 
@@ -45,11 +45,11 @@ public class TripIngredient {
         this.ingredient = ingredient;
     }
 
-    public Float getWeightInGrams() {
+    public Integer getWeightInGrams() {
         return weightInGrams;
     }
 
-    public void setWeightInGrams(Float weightInGrams) {
+    public void setWeightInGrams(Integer weightInGrams) {
         this.weightInGrams = weightInGrams;
     }
 

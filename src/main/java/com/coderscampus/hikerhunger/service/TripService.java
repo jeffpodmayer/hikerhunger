@@ -53,9 +53,9 @@ public class TripService {
             System.out.println("Total Weight of Trip: " + totalWeightOfTrip);
             Integer numOfPeople = trip.getNumOfPeople();
             Float numOfDays = trip.getNumOfDays();
-            Float poundsPerPersonPerDay = (float) (totalWeightOfTrip/(numOfPeople * numOfDays));
-            System.out.println("PoundsperPersonPerDay: " + poundsPerPersonPerDay);
-            trip.setPoundsPerPersonPerDay((float) Math.round(poundsPerPersonPerDay));
+            int poundsPerPersonPerDay = (int) (totalWeightOfTrip/(numOfPeople * numOfDays));
+            System.out.println("PoundsPerPersonPerDay: " + poundsPerPersonPerDay);
+            trip.setPoundsPerPersonPerDay(Math.round(poundsPerPersonPerDay));
             save(trip);
         }
         // UPDATE RELATED TRIP DETAILS

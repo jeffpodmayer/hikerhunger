@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
-    <title>Add a Recipe</title>
+    <title>Create Recipe</title>
     <link rel="stylesheet" type="text/css" href="/css/style.css" />
     <script
       src="https://kit.fontawesome.com/783d090aa0.js"
@@ -11,58 +11,80 @@
   <body>
     <input type="hidden" id="recipeIdInput" th:value="${recipeId}" />
     <input type="hidden" id="userIdInput" th:value="${user.id}" />
+    <div class="container">
+      <header class="main-header" style="border-bottom: black solid 2px">
+        <h1>LOGO</h1>
+        <form th:action="@{/landing}" method="get">
+          <button type="submit">Logout</button>
+        </form>
+      </header>
+      <section class="recipe-section">
+        <form
+          id="recipeForm"
+          th:action="@{/home/saveRecipe/{recipeId}(recipeId=${recipe.recipeId})}"
+          method="post"
+        >
+          <div>
+            <label id="recipeName">Recipe Name:</label>
+            <input type="text" th:field="${recipe.recipeName}" />
+          </div>
+          <div>
+            <label for="mealCategory">Meal Category:</label>
+            <select id="recipeType" th:field="${recipe.recipeType}">
+              <option value="BREAKFAST">Breakfast</option>
+              <option value="LUNCH">Lunch</option>
+              <option value="DINNER">Dinner</option>
+              <option value="SNACK">Snack</option>
+              <option value="EXTRA">Extra</option>
+            </select>
+          </div>
 
-    <h1>Enter your recipe details:</h1>
-    <!-- RECIPE DETAILS SECTION -->
-    <form
-      id="recipeForm"
-      th:action="@{/home/saveRecipe/{recipeId}(recipeId=${recipe.recipeId})}"
-      method="post"
-    >
-      <div>
-        <label id="recipeName">Recipe Name:</label>
-        <input type="text" th:field="${recipe.recipeName}" />
-      </div>
-      <div>
-        <label for="mealCategory">Meal Category:</label>
-        <select id="recipeType" th:field="${recipe.recipeType}">
-          <option value="BREAKFAST">Breakfast</option>
-          <option value="LUNCH">Lunch</option>
-          <option value="DINNER">Dinner</option>
-          <option value="SNACK">Snack</option>
-          <option value="EXTRA">Extra</option>
-        </select>
-      </div>
+          <div>
+            <label for="instructions">Instructions:</label>
+            <input
+              type="text"
+              id="instructions"
+              th:field="${recipe.instructions}"
+            />
+          </div>
 
-      <div>
-        <label for="instructions">Instructions:</label>
-        <input
-          type="text"
-          id="instructions"
-          th:field="${recipe.instructions}"
-        />
-      </div>
-
-      <div>
-        <label for="servings">How many people does this serve:</label>
-        <input type="number" min="1" id="servings" th:field="${recipe.servings}" />
-      </div>
-      <div class="totalWeight">
-        <h3>Weight</h3>
-        <div>
-            <p class="weight__label">Grams:</label>
-            <input th:field="${recipe.totalWeight}" class="weightInGrams" type="number" id="weightInGrams" readonly/>
-        </div>
-        <div>
-            <p class="weight__label">Pounds:</p>
-            <p class="weightInPounds">0.0</p>
-        </div>
-    </div>
+          <div>
+            <label for="servings">How many people does this serve:</label>
+            <input
+              type="number"
+              min="1"
+              id="servings"
+              th:field="${recipe.servings}"
+            />
+          </div>
+          <div class="totalWeight">
+            <h3>Weight</h3>
+            <div>
+              <label class="weight__label">Grams:</label>
+              <input
+                th:field="${recipe.totalWeight}"
+                class="weightInGrams"
+                type="number"
+                id="weightInGrams"
+                readonly
+              />
+            </div>
+            <div>
+              <p class="weight__label">Pounds:</p>
+              <p class="weightInPounds">0.0</p>
+            </div>
+          </div>
+          <button type="submit" id="submitButton">Add Recipe</button>
+        </form>
+      </section>
 
       <!-- INGREDIENTS SECTION -->
-      <div id="ingredientsSection">
+      <section class="ingredient-section" id="ingredientsSection">
         <h2>Ingredients</h2>
-        <table id="ingredientsContainer">
+        <button class="show-newIngredient-modal" type="button">
+          Add Ingredient
+        </button>
+        <table class="ingredient-table" id="ingredientsContainer">
           <tr>
             <th>ID</th>
             <th>Ingredient Name</th>
@@ -74,55 +96,47 @@
             <th></th>
           </tr>
         </table>
-      </div>
+      </section>
 
-      <button class="show-newIngredient-modal" type="button">
-        Add Ingredient
-      </button>
-      <button type="submit" id="submitButton">Add Recipe</button>
-    </form>
+      <!-- NEW INGREDIENT MODAL WINDOW -->
+      <form class="new-ingredient-modal hidden">
+        <button type="button" class="close-modal">&times;</button>
+        <h3>Add an Ingredient</h3>
+        <label>Ingredient Name:</label>
+        <input id="ingredientNameInput" type="text" /><br />
+        <label>Quantity:</label>
+        <input id="quantityInput" value="0" min="0" type="number" /><br />
+        <label>Unit:</label>
+        <input id="unitInput" type="text" /><br />
+        <label>Weight In Grams:</label>
+        <input id="weightInput" value="0" min="0" type="number" /><br />
+        <label>Notes:</label>
+        <input id="notesInput" type="text" />
+        <input type="button" id="addIngredientButton" value="Add!" />
+      </form>
+      <div class="overlay hidden"></div>
 
-    <!-- NEW INGREDIENT MODAL WINDOW -->
-    <form class="new-ingredient-modal hidden">
-      <button type="button" class="close-modal">&times;</button>
-      <h3>Add an Ingredient</h3>
-      <label>Ingredient Name:</label>
-      <input id="ingredientNameInput" type="text" /><br />
-      <label>Quantity:</label>
-      <input id="quantityInput" value="0" min="0" type="number"/><br />
-      <label>Unit:</label>
-      <input id="unitInput" type="text"/><br />
-      <label>Weight In Grams:</label>
-      <input id="weightInput" value="0" min="0" type="number"/><br />
-      <label>Notes:</label>
-      <input id="notesInput" type="text" />
-      <input type="button" id="addIngredientButton" value="Add!" />
-    </form>
-    <div class="overlay hidden"></div>
+      <!-- EDIT INGREDIENT MODAL WINDOW -->
+      <form id="editIngredientForm" class="edit-ingredient-modal hidden">
+        <button type="button" class="close-modal">&times;</button>
+        <input id="id" type="hidden" /><br />
+        <label>Ingredient Name:</label>
+        <input id="ingredientName" type="text" /><br />
+        <label>Quantity:</label>
+        <input id="quantity" type="number" value="0" min="0" /><br />
+        <label>Unit:</label>
+        <input id="unit" type="text" /><br />
+        <label>Weight In Grams:</label>
+        <input id="weight" type="number" value="0" min="0" /><br />
+        <label>Notes:</label>
+        <input id="notes" type="text" />
+        <div>
+          <input type="button" id="editIngredientButton" value="Update!" />
+        </div>
+      </form>
+      <div class="edit-overlay hidden"></div>
 
-
-
-
-    <!-- EDIT INGREDIENT MODAL WINDOW -->
-    <form id="editIngredientForm" class="edit-ingredient-modal hidden">
-      <button type="button" class="close-modal">&times;</button>
-      <input id="id" type="hidden"/><br />
-      <label>Ingredient Name:</label>
-      <input id="ingredientName" type="text" /><br />
-      <label>Quantity:</label>
-      <input id="quantity" type="number" value="0" min="0" /><br />
-      <label>Unit:</label>
-      <input id="unit" type="text"/><br />
-      <label>Weight In Grams:</label>
-      <input id="weight" type="number" value="0" min="0" /><br />
-      <label>Notes:</label>
-      <input id="notes" type="text" />
-      <div>
-        <input type="button" id="editIngredientButton" value="Update!" />
-      </div>
-    </form>
-    <div class="edit-overlay hidden"></div>
-
-    <script src="/js/recipe.js"></script>
+      <script src="/js/recipe.js"></script>
+    </div>
   </body>
 </html>

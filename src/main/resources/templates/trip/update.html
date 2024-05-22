@@ -7,7 +7,16 @@
       src="https://kit.fontawesome.com/783d090aa0.js"
       crossorigin="anonymous"
     ></script>
-    <title>Edit a Trip!</title>
+    <!-- SHOELACE -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/themes/light.css"
+    />
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/shoelace-autoloader.js"
+    ></script>
+    <title>Update Trip!</title>
   </head>
   <body>
     <input type="hidden" id="tripId" th:value="${trip.tripId}" />
@@ -15,7 +24,9 @@
       <header class="main-header" style="border-bottom: black solid 2px">
         <h1>LOGO</h1>
         <form th:action="@{/landing}" method="get">
-          <button type="submit">Logout</button>
+          <sl-button type="submit" variant="primary" size="medium"
+            >Logout</sl-button
+          >
         </form>
       </header>
       <section class="trip-details-section">
@@ -90,17 +101,26 @@
           </div>
 
           <hr />
-          <button class="save-trip-btn" type="submit" id="saveTripButton">
-            Save Trip
-          </button>
+          <sl-button
+            variant="success"
+            class="save-trip-btn"
+            type="submit"
+            id="saveTripButton"
+            >Save Trip</sl-button
+          >
         </form>
         <form
           th:action="@{/home/postDeleteTrip/{tripId}(tripId=${trip.tripId})}"
           method="post"
         >
-          <button class="delete-trip-btn" type="submit" id="discardTripButton">
-            Discard Trip
-          </button>
+          <sl-button
+            class="delete-trip-btn"
+            id="discardTripButton"
+            type="submit"
+            variant="danger"
+            outline
+            >Discard Trip</sl-button
+          >
         </form>
 
         <hr />
@@ -150,7 +170,7 @@
               <td class="servings" th:text="${tripRecipe.recipeServings}"></td>
               <td class="weight" th:text="${tripRecipe.totalWeight}"></td>
               <td class="trash_icon">
-                <i class="fa-regular fa-trash-can"></i>
+                <sl-icon name="trash3"></sl-icon>
               </td>
             </tr>
           </table>
@@ -179,13 +199,12 @@
               th:attr=" data-recipe-id=${recipe.recipeId}"
             >
               <td>
-                <input
-                  type="checkbox"
+                <sl-checkbox
                   id="recipeCheckbox"
                   class="recipeCheckbox"
                   th:value="${recipe.recipeId}"
                   th:checked="${tripRecipes.![recipe.recipeId].contains(recipe.recipeId)}"
-                />
+                ></sl-checkbox>
               </td>
               <td th:text="${recipe.recipeName}"></td>
               <td th:text="${recipe.recipeType?.displayValue}"></td>

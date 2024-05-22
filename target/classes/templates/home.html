@@ -11,6 +11,17 @@
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <!-- SHOELACE -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/themes/light.css"
+    />
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/shoelace-autoloader.js"
+    ></script>
+
+    <!-- ICONS -->
     <script
       src="https://kit.fontawesome.com/783d090aa0.js"
       crossorigin="anonymous"
@@ -21,7 +32,9 @@
       <header class="main-header" style="border-bottom: black solid 2px">
         <h1>LOGO</h1>
         <form th:action="@{/landing}" method="get">
-          <button type="submit">Logout</button>
+          <sl-button type="submit" variant="primary" size="medium"
+            >Logout</sl-button
+          >
         </form>
       </header>
       <h1>Welcome [[${user.firstName}]]!</h1>
@@ -32,7 +45,9 @@
             th:action="@{/home/{userId}/recipe(userId=${user.id})}"
             method="post"
           >
-            <button type="submit" value="">Add New Recipe</button>
+            <sl-button type="submit" variant="success"
+              >Add New Recipe</sl-button
+            >
           </form>
         </div>
         <div class="recipes-box">
@@ -81,7 +96,7 @@
             th:action="@{/home/{userId}/trip(userId=${user.id})}"
             method="post"
           >
-            <button type="submit">Build A Trip</button>
+            <sl-button type="submit" variant="success">Build A Trip</sl-button>
           </form>
         </div>
         <div class="trips-box">

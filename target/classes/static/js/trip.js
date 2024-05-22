@@ -154,13 +154,14 @@ const renderRecipe = (recipe) => {
   tr.setAttribute("data-recipe-id", recipe.recipeId);
 
   const recipeHTML = `
-  <td><i class="fa-solid fa-minus minus_icon"></i><input type="number" class="recipeCountInput" id="recipeCounter" min="1" step="1" value="1" readonly><i class="fa-solid fa-plus plus_icon"></i></td>
+  <td><sl-icon name="dash-square" class="minus_icon"></sl-icon>
+  <input type="number" class="recipeCountInput" id="recipeCounter" min="1" step="1" value="1" readonly><sl-icon name="plus-square" class="plus_icon"></sl-icon></i></td>
   <td class="recipeName"><p>${recipe.recipeName}</p></td>
   <td class="type"><p>${recipe.recipeType}</p></td>
   <td class="instructions"><p>${recipe.instructions}</p></td>
   <td class="servings"><p>${recipe.servings}</p></td>
   <td class="weight"><p>${recipe.totalWeight}</p></td>
-  <td class="trash_icon"><i class="fa-regular fa-trash-can"></i></td>
+  <td class="trash_icon"><sl-icon name="trash3"></sl-icon></td>
      `;
 
   tr.innerHTML = recipeHTML;

@@ -7,20 +7,31 @@
       src="https://kit.fontawesome.com/783d090aa0.js"
       crossorigin="anonymous"
     ></script>
+    <!-- SHOELACE -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/themes/light.css"
+    />
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/shoelace-autoloader.js"
+    ></script>
   </head>
   <body>
+    <input
+      type="hidden"
+      id="recipeIdInput"
+      th:field="${recipe.recipeId}"
+      th:value="${recipe.recipeId}"
+    />
+    <input type="hidden" id="userIdInput" th:value="${user.id}" />
     <div class="container">
-      <input
-        type="hidden"
-        id="recipeIdInput"
-        th:field="${recipe.recipeId}"
-        th:value="${recipe.recipeId}"
-      />
-      <input type="hidden" id="userIdInput" th:value="${user.id}" />
       <header class="main-header" style="border-bottom: black solid 2px">
         <h1>LOGO</h1>
         <form th:action="@{/landing}" method="get">
-          <button type="submit">Logout</button>
+          <sl-button type="submit" variant="primary" size="medium"
+            >Logout</sl-button
+          >
         </form>
       </header>
       <section class="recipe-section">
@@ -89,26 +100,33 @@
               <p class="weightInPounds">0</p>
             </div>
           </div>
-          <div class="update-button">
-            <input id="updateButton" type="submit" value="Update Recipe" />
+          <div class="recipe-update-btn">
+            <sl-button variant="success" type="submit" id="updateButton"
+              >Update Recipe</sl-button
+            >
           </div>
         </form>
-        <div class="delete-button">
+        <div class="recipe-delete-btn">
           <form
             id="recipeForm"
             th:action="@{/home/postDeleteRecipe/{recipeId}(recipeId=${recipe.recipeId})}"
             method="post"
           >
-            <input id="deleteButton" type="submit" value="Delete Recipe" />
+            <sl-button id="deleteButton" type="submit" variant="danger" outline
+              >Delete Recipe</sl-button
+            >
           </form>
         </div>
       </section>
 
       <section class="ingredient-section" id="ingredientsSection">
         <h2>Ingredients</h2>
-        <button class="show-newIngredient-modal" type="button">
-          Add Ingredient
-        </button>
+        <sl-button
+          variant="success"
+          class="show-newIngredient-modal"
+          type="button"
+          >Add Another Ingredient</sl-button
+        >
         <table class="ingredient-table" id="ingredientsContainer">
           <tr>
             <th>ID</th>
@@ -146,7 +164,7 @@
 
       <!-- NEW INGREDIENT MODAL WINDOW -->
       <div class="new-ingredient-modal hidden">
-        <button type="button" class="close-modal">&times;</button>
+        <sl-icon name="x-square" class="close-modal"></sl-icon>
         <h3>Add an Ingredient</h3>
         <label>Ingredient Name:</label>
         <input id="ingredientNameInput" type="text" /><br />
@@ -158,15 +176,17 @@
         <input id="weightInput" value="0" min="0" type="number" /><br />
         <label>Notes:</label>
         <input id="notesInput" type="text" />
-        <div>
-          <input type="button" id="addIngredientButton" value="Add!" />
+        <div class="add-ingredient-btn">
+          <sl-button variant="success" type="button" id="addIngredientButton"
+            >Save Ingredient</sl-button
+          >
         </div>
       </div>
       <div class="overlay hidden"></div>
 
       <!-- EDIT INGREDIENT MODAL WINDOW -->
       <div class="edit-ingredient-modal hidden">
-        <button type="button" class="close-modal">&times;</button>
+        <sl-icon name="x-square" class="close-modal"></sl-icon>
         <input type="hidden" id="id" /><br />
         <label>Ingredient Name:</label>
         <input id="ingredientName" type="text" /><br />
@@ -178,8 +198,10 @@
         <input id="weight" type="number" value="0" min="0" /><br />
         <label>Notes:</label>
         <input id="notes" type="text" />
-        <div>
-          <input type="button" id="editIngredientButton" value="Update!" />
+        <div class="update-ingredient-btn">
+          <sl-button variant="success" type="button" id="editIngredientButton"
+            >Update Ingredient</sl-button
+          >
         </div>
       </div>
       <div class="edit-overlay hidden"></div>

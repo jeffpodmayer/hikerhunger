@@ -157,8 +157,9 @@ const renderIngredient = (ingredient) => {
   <td class="unit"><p>${ingredient.unit}</p></td>
   <td class="weight"><p class="weightInput">${ingredient.weightInGrams}</p></td>
   <td class="notes"><p>${ingredient.notes}</p></td>
-  <td class="trash_icon"><i class="fa-regular fa-trash-can"></i></td>
-  <td class="edit_icon"><i class="fa-solid fa-pencil"></i></td>
+  <td class="trash_icon"><sl-icon name="trash3"></sl-icon></td>
+  <td class="edit_icon"><sl-icon name="pencil-square"></sl-icon>
+  </td>
      `;
 
   tr.innerHTML = ingredientHTML;

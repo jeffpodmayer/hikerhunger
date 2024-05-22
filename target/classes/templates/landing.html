@@ -2,6 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
     <title>Welcome to hikerhunger</title>
+    <!-- SHOELACE -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/themes/light.css"
+    />
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/shoelace-autoloader.js"
+    ></script>
     <!-- <link rel="stylesheet" type="text/css" href="css/style.css"/> -->
   </head>
   <body>
@@ -9,16 +18,14 @@
       <header class="main-header" style="border-bottom: black solid 5px">
         <h1>LOGO</h1>
         <nav>
-          <!-- <strong>This is the navigation</strong> -->
-          <a href="#">About</a>
-          <a href="#">FAQ</a>
+          <sl-button href="#" variant="text" size="medium">About</sl-button>
+          <sl-button href="#" variant="text" size="medium">FAQ</sl-button>
         </nav>
         <form th:action="@{/register}" method="get">
-          <h2>Sign Up!</h2>
-          <button type="submit">Sign Up</button>
+          <sl-button type="submit" variant="primary" outline>Sign-Up</sl-button>
         </form>
         <form th:action="@{/signin}" method="get">
-          <button type="submit">Log In</button>
+          <sl-button type="submit" variant="success">Log In</sl-button>
         </form>
       </header>
       <section class="section-1">

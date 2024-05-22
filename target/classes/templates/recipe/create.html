@@ -36,37 +36,50 @@
           method="post"
         >
           <div>
-            <label id="recipeName">Recipe Name:</label>
-            <input type="text" th:field="${recipe.recipeName}" />
+            <sl-input
+              id="recipeName"
+              label="Recipe Name"
+              placeholder="Mac & Cheese, Fancy Ramen, etc."
+              size="large"
+              clearable
+            ></sl-input>
           </div>
           <div>
-            <label for="mealCategory">Meal Category:</label>
-            <select id="recipeType" th:field="${recipe.recipeType}">
-              <option value="BREAKFAST">Breakfast</option>
-              <option value="LUNCH">Lunch</option>
-              <option value="DINNER">Dinner</option>
-              <option value="SNACK">Snack</option>
-              <option value="EXTRA">Extra</option>
-            </select>
+            <sl-select
+              for="mealCategory"
+              id="recipeType"
+              th:field="${recipe.recipeType}"
+              label="Meal Type"
+            >
+              <sl-option value="BREAKFAST">Breakfast</sl-option>
+              <sl-option value="LUNCH">Lunch</sl-option>
+              <sl-option value="DINNER">Dinner</sl-option>
+              <sl-option value="SNACK">Snack</sl-option>
+              <sl-option value="EXTRA">Extra</sl-option>
+            </sl-select>
           </div>
 
           <div>
-            <label for="instructions">Instructions:</label>
-            <input
-              type="text"
+            <sl-textarea
               id="instructions"
               th:field="${recipe.instructions}"
-            />
+              label="Recipe Instructions"
+              placeholder="Step 1: Boil water, Step 2: Add Macaroni, etc..."
+            >
+            </sl-textarea>
           </div>
 
           <div>
-            <label for="servings">How many people does this serve:</label>
-            <input
+            <sl-input
+              label="How many people does this serve?"
+              placeholder="2"
+              size="medium"
               type="number"
               min="1"
               id="servings"
               th:field="${recipe.servings}"
-            />
+              clearable
+            ></sl-input>
           </div>
           <div class="totalWeight">
             <h3>Weight</h3>

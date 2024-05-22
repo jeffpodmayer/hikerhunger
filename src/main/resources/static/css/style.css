@@ -51,12 +51,11 @@ table {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 50px;
+  gap: 120px;
   margin-bottom: 50px;
 }
 
-.trip-title-box,
-.recipe-title-box {
+.title-box {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -74,6 +73,14 @@ table {
   height: 500px;
   width: 600px;
   border-radius: 10px;
+}
+
+.empty {
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 220px;
 }
 
 .footer {

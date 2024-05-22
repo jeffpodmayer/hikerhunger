@@ -29,119 +29,138 @@
   </head>
   <body>
     <div class="container">
-      <header class="main-header" style="border-bottom: black solid 2px">
-        <h1>LOGO</h1>
-        <form th:action="@{/landing}" method="get">
-          <sl-button type="submit" variant="primary" size="medium"
-            >Logout</sl-button
-          >
-        </form>
-      </header>
-      <h1>Welcome [[${user.firstName}]]!</h1>
-      <section class="home-recipe-section">
-        <div class="recipe-title-box">
-          <h2>Your Recipes</h2>
-          <form
-            th:action="@{/home/{userId}/recipe(userId=${user.id})}"
-            method="post"
-          >
-            <sl-button type="submit" variant="success"
-              >Add New Recipe</sl-button
+      <header class="main-header">
+        <nav class="nav">
+          <img class="logo" src="/img/hikerhunger-logo.svg" />
+          <form th:action="@{/landing}" method="get">
+            <sl-button
+              class="logout-btn"
+              type="submit"
+              variant="primary"
+              size="medium"
+              >Logout</sl-button
             >
           </form>
-        </div>
-        <div class="recipes-box">
-          <div th:if="${recipes == null or #lists.size(recipes) == 0}">
-            You don't have any recipes yet!
-          </div>
-          <div th:if="${#lists.size(recipes) > 0}">
-            <table id="homeRecipesTable">
-              <tr>
-                <th>Recipe Name</th>
-                <th>Recipe Type</th>
-                <th>Instructions</th>
-                <th>Serves</th>
-                <th>Weight</th>
-              </tr>
-              <tr
-                method="get"
-                th:each="recipe : ${recipes}"
-                th:attr=" data-recipe-id=${recipe.recipeId}"
-                class="recipe-row"
+        </nav>
+      </header>
+      <!-- <h1>Welcome [[${user.firstName}]]!</h1> -->
+      <div class="main">
+        <section class="home-recipe-section">
+          <div class="title-box">
+            <h2>Your Recipes</h2>
+            <form
+              th:action="@{/home/{userId}/recipe(userId=${user.id})}"
+              method="post"
+            >
+              <sl-button class="btn" type="submit" variant="success"
+                >Add New Recipe</sl-button
               >
-                <input
-                  type="hidden"
-                  th:value="${recipe.recipeId}"
-                  class="recipe-id"
-                />
-                <td th:text="${recipe.recipeName}"></td>
-                <td th:text="${recipe.recipeType?.displayValue}"></td>
-                <td th:text="${recipe.instructions}"></td>
-                <td th:text="${recipe.servings}"></td>
-                <td th:text="${recipe.totalWeight}"></td>
-              </tr>
-            </table>
+            </form>
           </div>
-        </div>
-      </section>
-
-      <!-- ////////////// RECIPE POP_UP WINDOW //////////////////////// -->
-      <div class="recipeViewPopup hidden"></div>
-      <div class="overlay hidden"></div>
-
-      <section class="home-trip-section">
-        <div class="trip-title-box">
-          <h2>Your Trips</h2>
-          <form
-            th:action="@{/home/{userId}/trip(userId=${user.id})}"
-            method="post"
-          >
-            <sl-button type="submit" variant="success">Build A Trip</sl-button>
-          </form>
-        </div>
-        <div class="trips-box">
-          <div th:if="${trips == null or #lists.size(trips) == 0}">
-            You don't have any trips yet!
+          <div class="recipes-box">
+            <div
+              class="empty"
+              th:if="${recipes == null or #lists.size(recipes) == 0}"
+            >
+              <p>You don't have any recipes yet!</p>
+            </div>
+            <div th:if="${#lists.size(recipes) > 0}">
+              <table id="homeRecipesTable">
+                <tr>
+                  <th>Recipe Name</th>
+                  <th>Recipe Type</th>
+                  <th>Instructions</th>
+                  <th>Serves</th>
+                  <th>Weight</th>
+                </tr>
+                <tr
+                  method="get"
+                  th:each="recipe : ${recipes}"
+                  th:attr=" data-recipe-id=${recipe.recipeId}"
+                  class="recipe-row"
+                >
+                  <input
+                    type="hidden"
+                    th:value="${recipe.recipeId}"
+                    class="recipe-id"
+                  />
+                  <td th:text="${recipe.recipeName}"></td>
+                  <td th:text="${recipe.recipeType?.displayValue}"></td>
+                  <td th:text="${recipe.instructions}"></td>
+                  <td th:text="${recipe.servings}"></td>
+                  <td th:text="${recipe.totalWeight}"></td>
+                </tr>
+              </table>
+            </div>
           </div>
-          <div th:if="${#lists.size(trips) > 0}">
-            <table id="homeTripsTable">
-              <tr>
-                <th>Trip Name</th>
-                <th>Number Of Days</th>
-                <th>Number of People</th>
-                <th>Weight Per Person/Per Day</th>
-              </tr>
-              <tr
-                method="get"
-                th:each="trip : ${trips}"
-                th:attr=" data-trip-id=${trip.tripId}"
-                class="trip-row"
+        </section>
+
+        <!-- ////////////// RECIPE POP_UP WINDOW //////////////////////// -->
+        <div class="recipeViewPopup hidden"></div>
+        <div class="overlay hidden"></div>
+
+        <section class="home-trip-section">
+          <div class="title-box">
+            <h2>Your Trips</h2>
+            <form
+              th:action="@{/home/{userId}/trip(userId=${user.id})}"
+              method="post"
+            >
+              <sl-button class="btn" type="submit" variant="success"
+                >Build A Trip</sl-button
               >
-                <input
-                  type="hidden"
-                  th:value="${trip.tripId}"
-                  class="trip-id"
-                />
-                <td th:text="${trip.tripName}"></td>
-                <td th:text="${trip.numOfDays}"></td>
-                <td th:text="${trip.numOfPeople}"></td>
-                <td th:text="${trip.gramsPerPersonPerDay}"></td>
-              </tr>
-            </table>
+            </form>
           </div>
-        </div>
-      </section>
+          <div class="trips-box">
+            <div
+              class="empty"
+              th:if="${trips == null or #lists.size(trips) == 0}"
+            >
+              <p>You don't have any trips yet!</p>
+            </div>
+            <div th:if="${#lists.size(trips) > 0}">
+              <table id="homeTripsTable">
+                <tr>
+                  <th>Trip Name</th>
+                  <th>Number Of Days</th>
+                  <th>Number of People</th>
+                  <th>Weight Per Person/Per Day</th>
+                </tr>
+                <tr
+                  method="get"
+                  th:each="trip : ${trips}"
+                  th:attr=" data-trip-id=${trip.tripId}"
+                  class="trip-row"
+                >
+                  <input
+                    type="hidden"
+                    th:value="${trip.tripId}"
+                    class="trip-id"
+                  />
+                  <td th:text="${trip.tripName}"></td>
+                  <td th:text="${trip.numOfDays}"></td>
+                  <td th:text="${trip.numOfPeople}"></td>
+                  <td th:text="${trip.gramsPerPersonPerDay}"></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </section>
+        <div class="tripViewPopup hidden"></div>
 
-      <div class="tripViewPopup hidden"></div>
-
-      <!--[if lt IE 7]>
-        <p class="browsehappy">
-          You are using an <strong>outdated</strong> browser. Please
-          <a href="#">upgrade your browser</a> to improve your experience.
+        <!--[if lt IE 7]>
+          <p class="browsehappy">
+            You are using an <strong>outdated</strong> browser. Please
+            <a href="#">upgrade your browser</a> to improve your experience.
+          </p>
+        <![endif]-->
+      </div>
+      <footer class="footer">
+        <p id="copyright" class="copyright text">
+          Copyright &copy; 2024 by Jeff Podmayer.
         </p>
-      <![endif]-->
-
-      <script src="/js/home.js"></script>
+      </footer>
     </div>
+    <script src="/js/home.js"></script>
   </body>
 </html>

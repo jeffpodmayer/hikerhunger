@@ -49,7 +49,6 @@ const submitAddIngredient = async function () {
 
     if (response.ok) {
       const savedIngredient = await response.json();
-      console.log("Saved:", savedIngredient);
       renderIngredient(savedIngredient);
       clearModalInputFields();
     } else {
@@ -59,7 +58,6 @@ const submitAddIngredient = async function () {
     console.error("Error saving ingredient:", error);
   }
 };
-
 const submitUpdateIngredient = async (updatedIngredientData, ingredientId) => {
   const validationError = validateIngredientData(updatedIngredientData);
   if (validationError !== null) {
@@ -77,7 +75,6 @@ const submitUpdateIngredient = async (updatedIngredientData, ingredientId) => {
     });
 
     if (response.ok) {
-      console.log("Ingredient updated successfully");
       const ingredientData = await response.json();
       const updatedRow = document.querySelector(
         `tr[data-ingredient-id="${ingredientId}"]`

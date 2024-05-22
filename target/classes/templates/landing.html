@@ -5,17 +5,31 @@
     <!-- <link rel="stylesheet" type="text/css" href="css/style.css"/> -->
   </head>
   <body>
-    <h1>Welcome to hikerhunger</h1>
     <div class="container">
-      <form th:action="@{/register}" method="get">
-        <h2>Sign Up!</h2>
-        <button type="submit">Register</button>
-      </form>
-
-      <form th:action="@{/signin}" method="get">
-        <h2>Already Registered?</h2>
-        <button type="submit">Log In</button>
-      </form>
+      <header class="main-header" style="border-bottom: black solid 5px">
+        <h1>LOGO</h1>
+        <nav>
+          <!-- <strong>This is the navigation</strong> -->
+          <a href="#">About</a>
+          <a href="#">FAQ</a>
+        </nav>
+        <form th:action="@{/register}" method="get">
+          <h2>Sign Up!</h2>
+          <button type="submit">Sign Up</button>
+        </form>
+        <form th:action="@{/signin}" method="get">
+          <button type="submit">Log In</button>
+        </form>
+      </header>
+      <section class="section-1">
+        <h1>Welcome to hikerhunger</h1>
+      </section>
+      <section class="section-2">
+        <h1>About</h1>
+      </section>
+      <section class="section-3">
+        <h1>Frequently Asked Questions</h1>
+      </section>
     </div>
   </body>
 </html>

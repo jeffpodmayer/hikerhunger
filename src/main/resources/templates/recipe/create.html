@@ -19,64 +19,53 @@
     ></script>
   </head>
   <body>
-    <div class="recipe-container">
-      <header class="main-header">
-        <input type="hidden" id="recipeIdInput" th:value="${recipeId}" />
-        <input type="hidden" id="userIdInput" th:value="${user.id}" />
-        <nav class="nav">
-          <img class="logo" src="/static/img/hikerhunger-logo.svg" />
-          <form th:action="@{/landing}" method="get">
-            <sl-button
-              class="logout-btn"
-              type="submit"
-              variant="primary"
-              size="medium"
-              >Logout</sl-button
-            >
-          </form>
-        </nav>
-      </header>
-      <section class="recipe-section">
-        <form
-          id="recipeForm"
-          th:action="@{/home/saveRecipe/{recipeId}(recipeId=${recipe.recipeId})}"
-          method="post"
-        >
-          <div>
+    <header class="main-header">
+      <input type="hidden" id="recipeIdInput" th:value="${recipeId}" />
+      <input type="hidden" id="userIdInput" th:value="${user.id}" />
+      <nav class="nav">
+        <img class="logo" src="/static/img/hikerhunger-logo.svg" />
+        <form th:action="@{/landing}" method="get">
+          <sl-button
+            class="logout-btn"
+            type="submit"
+            variant="danger"
+            size="medium"
+            outline
+            >Logout</sl-button
+          >
+        </form>
+      </nav>
+    </header>
+    <div class="container">
+      <div class="recipe-container">
+        <section class="recipe-section">
+          <form
+            id="recipeForm"
+            th:action="@{/home/saveRecipe/{recipeId}(recipeId=${recipe.recipeId})}"
+            method="post"
+          >
             <sl-input
               id="recipeName"
               label="Recipe Name"
               placeholder="Mac & Cheese, Fancy Ramen, etc."
-              size="large"
+              size="medium"
               clearable
             ></sl-input>
-          </div>
-          <div>
-            <sl-select
-              for="mealCategory"
-              id="recipeType"
-              th:field="${recipe.recipeType}"
-              label="Meal Type"
-            >
-              <sl-option value="BREAKFAST">Breakfast</sl-option>
-              <sl-option value="LUNCH">Lunch</sl-option>
-              <sl-option value="DINNER">Dinner</sl-option>
-              <sl-option value="SNACK">Snack</sl-option>
-              <sl-option value="EXTRA">Extra</sl-option>
-            </sl-select>
-          </div>
+            <div>
+              <sl-select
+                for="mealCategory"
+                id="recipeType"
+                th:field="${recipe.recipeType}"
+                label="Meal Type"
+              >
+                <sl-option value="BREAKFAST">Breakfast</sl-option>
+                <sl-option value="LUNCH">Lunch</sl-option>
+                <sl-option value="DINNER">Dinner</sl-option>
+                <sl-option value="SNACK">Snack</sl-option>
+                <sl-option value="EXTRA">Extra</sl-option>
+              </sl-select>
+            </div>
 
-          <div>
-            <sl-textarea
-              id="instructions"
-              th:field="${recipe.instructions}"
-              label="Recipe Instructions"
-              placeholder="Step 1: Boil water, Step 2: Add Macaroni, etc..."
-            >
-            </sl-textarea>
-          </div>
-
-          <div>
             <sl-input
               label="How many people does this serve?"
               placeholder="2"
@@ -87,11 +76,21 @@
               th:field="${recipe.servings}"
               clearable
             ></sl-input>
-          </div>
-          <div class="totalWeight">
-            <h3>Weight</h3>
-            <div>
-              <label class="weight__label">Grams:</label>
+            <sl-textarea
+              id="instructions"
+              th:field="${recipe.instructions}"
+              label="Recipe Instructions"
+              placeholder="Step 1: Boil water, Step 2: Add Macaroni, etc..."
+              rows="12"
+            >
+            </sl-textarea>
+          </form>
+        </section>
+
+        <div class="totalWeight">
+          <div class="weights">
+            <div class="weight-box">
+              <label class="weight__label">Grams</label>
               <input
                 th:field="${recipe.totalWeight}"
                 class="weightInGrams"
@@ -100,89 +99,105 @@
                 readonly
               />
             </div>
-            <div>
-              <p class="weight__label">Pounds:</p>
+            <div class="weight-box">
+              <p class="weight__label">Pounds</p>
               <p class="weightInPounds">0.0</p>
             </div>
           </div>
-          <sl-button variant="success" type="submit" id="submitButton"
+        </div>
+        <div class="recipe-btn">
+          <sl-button variant="primary" type="submit" id="submitButton"
             >Save Recipe</sl-button
           >
-        </form>
-      </section>
-
-      <!-- INGREDIENTS SECTION -->
-      <section class="ingredient-section" id="ingredientsSection">
-        <h2>Ingredients</h2>
-        <sl-button
-          variant="success"
-          class="show-newIngredient-modal"
-          type="button"
-          >Add an Ingredient</sl-button
-        >
-        <table class="ingredient-table" id="ingredientsContainer">
-          <tr>
-            <th>ID</th>
-            <th>Ingredient Name</th>
-            <th>Quantity</th>
-            <th>Unit</th>
-            <th>Grams</th>
-            <th>Notes</th>
-            <th></th>
-            <th></th>
-          </tr>
-        </table>
-      </section>
-
-      <!-- NEW INGREDIENT MODAL WINDOW -->
-      <div class="new-ingredient-modal hidden">
-        <form>
-          <sl-icon name="x-square" class="close-modal"></sl-icon>
-          <h3>Add an Ingredient</h3>
-          <label>Ingredient Name:</label>
-          <input id="ingredientNameInput" type="text" /><br />
-          <label>Quantity:</label>
-          <input id="quantityInput" value="0" min="0" type="number" /><br />
-          <label>Unit:</label>
-          <input id="unitInput" type="text" /><br />
-          <label>Weight In Grams:</label>
-          <input id="weightInput" value="0" min="0" type="number" /><br />
-          <label>Notes:</label>
-          <input id="notesInput" type="text" />
-          <div class="add-ingredient-btn">
-            <sl-button variant="success" type="button" id="addIngredientButton"
-              >Save Ingredient</sl-button
+          <sl-button variant="warning" type="submit" outline
+            >Discard Recipe</sl-button
+          >
+        </div>
+        <!-- INGREDIENTS SECTION -->
+        <section class="ingredient-section" id="ingredientsSection">
+          <div class="ingredient-title-box">
+            <h2>Ingredients</h2>
+            <sl-button
+              variant="success"
+              class="show-newIngredient-modal"
+              type="button"
+              >Add an Ingredient</sl-button
             >
           </div>
-        </form>
-      </div>
-      <div class="overlay hidden"></div>
+          <table class="ingredient-table" id="ingredientsContainer">
+            <tr>
+              <th>ID</th>
+              <th>Ingredient Name</th>
+              <th>Quantity</th>
+              <th>Unit</th>
+              <th>Grams</th>
+              <th>Notes</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </table>
+        </section>
 
-      <!-- EDIT INGREDIENT MODAL WINDOW -->
-      <div class="edit-ingredient-modal hidden">
-        <form id="editIngredientForm">
-          <sl-icon name="x-square" class="close-modal"></sl-icon>
-          <input id="id" type="hidden" /><br />
-          <label>Ingredient Name:</label>
-          <input id="ingredientName" type="text" /><br />
-          <label>Quantity:</label>
-          <input id="quantity" type="number" value="0" min="0" /><br />
-          <label>Unit:</label>
-          <input id="unit" type="text" /><br />
-          <label>Weight In Grams:</label>
-          <input id="weight" type="number" value="0" min="0" /><br />
-          <label>Notes:</label>
-          <input id="notes" type="text" />
-          <div class="update-ingredient-btn">
-            <sl-button variant="success" type="button" id="editIngredientButton"
-              >Update Ingredient</sl-button
-            >
-          </div>
-        </form>
-      </div>
-      <div class="edit-overlay hidden"></div>
+        <!-- NEW INGREDIENT MODAL WINDOW -->
+        <div class="new-ingredient-modal hidden">
+          <form>
+            <sl-icon name="x-square" class="close-modal"></sl-icon>
+            <h3>Add an Ingredient</h3>
+            <label>Ingredient Name:</label>
+            <input id="ingredientNameInput" type="text" /><br />
+            <label>Quantity:</label>
+            <input id="quantityInput" value="0" min="0" type="number" /><br />
+            <label>Unit:</label>
+            <input id="unitInput" type="text" /><br />
+            <label>Weight In Grams:</label>
+            <input id="weightInput" value="0" min="0" type="number" /><br />
+            <label>Notes:</label>
+            <input id="notesInput" type="text" />
+            <div class="add-ingredient-btn">
+              <sl-button
+                variant="success"
+                type="button"
+                id="addIngredientButton"
+                >Save Ingredient</sl-button
+              >
+            </div>
+          </form>
+        </div>
+        <div class="overlay hidden"></div>
 
-      <script src="/js/recipe.js"></script>
+        <!-- EDIT INGREDIENT MODAL WINDOW -->
+        <div class="edit-ingredient-modal hidden">
+          <form id="editIngredientForm">
+            <sl-icon name="x-square" class="close-modal"></sl-icon>
+            <input id="id" type="hidden" /><br />
+            <label>Ingredient Name:</label>
+            <input id="ingredientName" type="text" /><br />
+            <label>Quantity:</label>
+            <input id="quantity" type="number" value="0" min="0" /><br />
+            <label>Unit:</label>
+            <input id="unit" type="text" /><br />
+            <label>Weight In Grams:</label>
+            <input id="weight" type="number" value="0" min="0" /><br />
+            <label>Notes:</label>
+            <input id="notes" type="text" />
+            <div class="update-ingredient-btn">
+              <sl-button
+                variant="success"
+                type="button"
+                id="editIngredientButton"
+                >Update Ingredient</sl-button
+              >
+            </div>
+          </form>
+        </div>
+        <div class="edit-overlay hidden"></div>
+        <script src="/js/recipe.js"></script>
+      </div>
     </div>
+    <footer class="footer">
+      <p id="copyright" class="copyright text">
+        Copyright &copy; 2024 by Jeff Podmayer.
+      </p>
+    </footer>
   </body>
 </html>

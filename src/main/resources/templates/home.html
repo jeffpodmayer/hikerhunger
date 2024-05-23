@@ -31,22 +31,21 @@
     ></script>
   </head>
   <body>
+    <header class="main-header">
+      <nav class="nav">
+        <img class="logo" src="../static/img/hikerhunger-logo.svg" />
+        <form th:action="@{/landing}" method="get">
+          <sl-button
+            class="logout-btn"
+            type="submit"
+            variant="primary"
+            size="medium"
+            >Logout</sl-button
+          >
+        </form>
+      </nav>
+    </header>
     <div class="container">
-      <header class="main-header">
-        <nav class="nav">
-          <img class="logo" src="../static/img/hikerhunger-logo.svg" />
-          <form th:action="@{/landing}" method="get">
-            <sl-button
-              class="logout-btn"
-              type="submit"
-              variant="primary"
-              size="medium"
-              >Logout</sl-button
-            >
-          </form>
-        </nav>
-      </header>
-      <!-- <h1>Welcome [[${user.firstName}]]!</h1> -->
       <div class="main">
         <section class="home-recipe-section">
           <div class="title-box">

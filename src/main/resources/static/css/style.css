@@ -15,7 +15,10 @@ h3,
 p,
 label,
 sl-button,
-table {
+sl-input,
+sl-select,
+table,
+sl-textarea {
   font-family: Arial, Helvetica, sans-serif;
   color: white;
 }
@@ -23,15 +26,17 @@ table {
 .container {
   width: 100%;
   margin: 0 auto;
+  padding-top: 40px;
 }
 
 /* NAV BAR AND HEADER */
 .main-header {
-  position: absolute;
+  position: fixed;
   top: 0;
   background-color: #053b14;
   border-bottom: 2px solid #72a968;
   width: 100%;
+  height: 75px;
   z-index: 999;
 }
 
@@ -95,7 +100,7 @@ table {
   justify-content: center;
   gap: 100px;
   margin-bottom: 50px;
-  margin-top: 5rem;
+  margin-top: 4rem;
 }
 
 .title-box {
@@ -103,16 +108,16 @@ table {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 10px;
-  margin-top: 30px;
 }
 
-.btn::part(base) {
+sl-button::part(base) {
   font-size: 16px;
 }
 
+.logout-btn {
+  margin-right: 20px;
+}
 .logout-btn::part(base) {
-  background-color: #9a3530;
-  border-color: #9a3530;
   font-size: 16px;
 }
 
@@ -144,10 +149,125 @@ table {
 }
 
 /* CREATE AND EDIT RECIPE PAGE */
-
 .recipe-container {
   display: grid;
-  margin-top: 5rem;
+  grid-template-columns: 1fr 1fr 1fr 300px;
+  grid-template-rows: 180px 1fr;
+  width: 90%;
+  margin: 0 auto;
+  padding-top: 50px;
+  padding-bottom: 20px;
+}
+
+.recipe-section {
+  grid-column: 1 / 3;
+  grid-row: 1/3;
+  padding: 30px 30px 0 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+#recipeName {
+  margin-bottom: 20px;
+  font-size: 25px;
+}
+
+#recipeType {
+  margin-bottom: 20px;
+  width: 300px;
+}
+
+#servings {
+  margin-bottom: 20px;
+  width: 250px;
+}
+
+/* WEIGHT BOX */
+.totalWeight {
+  align-self: self-end;
+
+  margin: 40px 0;
+}
+
+.weights {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 60%;
+  border: 1px white solid;
+  border-radius: 5px;
+}
+
+.weight__label {
+  font-size: 25px;
+  justify-self: center;
+  align-self: end;
+}
+
+.weightInPounds,
+.weightInGrams {
+  justify-self: center;
+  font-size: 35px;
+  color: white;
+}
+
+.weight-box {
+  justify-self: center;
+  align-self: center;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr;
+  height: 80%;
+}
+
+.weight-box input {
+  width: 65px;
+  background: #053b14;
+  border: none;
+}
+
+/* Buttons to discard and submit recipe */
+.recipe-btn {
+  grid-column: 4/5;
+  grid-row: 1/2;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  margin-top: 10px;
+  margin-right: 20px;
+}
+
+.recipe-btn sl-button {
+  width: 150px;
+  margin-bottom: 15px;
+}
+
+.ingredient-section {
+  grid-column: 3 / span 5;
+  grid-row: 2 / span 4;
+  border: white 2px solid;
+}
+
+/* Ingredient Box */
+.ingredient-title-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: white 2px solid;
+}
+
+.ingredient-title-box h2 {
+  font-size: 30px;
+  margin-left: 10px;
+}
+
+.show-newIngredient-modal {
+  padding: 10px 0;
+  margin-right: 15px;
+}
+
+.ingredient-table {
+  width: 100%;
 }
 
 /* CLASSES TO MAKE MODAL WORK */

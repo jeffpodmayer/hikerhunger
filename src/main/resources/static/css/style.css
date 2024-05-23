@@ -27,23 +27,65 @@ table {
 
 /* NAV BAR AND HEADER */
 .main-header {
+  position: absolute;
+  top: 0;
+  background-color: #053b14;
   border-bottom: 2px solid #72a968;
   width: 100%;
-  margin-bottom: 20px;
+  z-index: 999;
 }
 
 .nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 5rem;
+  height: 4.5rem;
   width: 100%;
   padding: 0 1rem;
 }
 
-.logout-btn::part(base) {
-  background-color: #bca79e;
-  border-color: #bca79e;
+.nav-link {
+  display: flex;
+  justify-content: space-between;
+  margin-right: 20px;
+  color: white;
+}
+
+.nav-btn::part(base) {
+  color: white;
+  font-size: 16px;
+}
+
+/* LANDING PAGE */
+.sign-up-btn {
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+.hero-section {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.trail-img {
+  width: 95%;
+  border-radius: 20px;
+  opacity: 0.4;
+  margin-bottom: 20px;
+}
+
+.text-overlay {
+  position: absolute;
+  font-size: 60px;
+  top: 40%;
+  opacity: 0.8;
+}
+
+.section-1 {
+  display: flex;
+  width: 95%;
+  justify-content: center;
 }
 
 /* MAIN */
@@ -51,8 +93,9 @@ table {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 120px;
+  gap: 100px;
   margin-bottom: 50px;
+  margin-top: 5rem;
 }
 
 .title-box {
@@ -60,11 +103,17 @@ table {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 10px;
+  margin-top: 30px;
 }
 
 .btn::part(base) {
+  font-size: 16px;
+}
+
+.logout-btn::part(base) {
   background-color: #9a3530;
   border-color: #9a3530;
+  font-size: 16px;
 }
 
 .recipes-box,
@@ -92,6 +141,13 @@ table {
 
 .copyright {
   margin-top: 20px;
+}
+
+/* CREATE AND EDIT RECIPE PAGE */
+
+.recipe-container {
+  display: grid;
+  margin-top: 5rem;
 }
 
 /* CLASSES TO MAKE MODAL WORK */

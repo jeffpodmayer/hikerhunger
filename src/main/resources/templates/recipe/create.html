@@ -2,7 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
     <title>Create Recipe</title>
-    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="/css/style.css" /> -->
     <script
       src="https://kit.fontawesome.com/783d090aa0.js"
       crossorigin="anonymous"
@@ -18,16 +19,22 @@
     ></script>
   </head>
   <body>
-    <input type="hidden" id="recipeIdInput" th:value="${recipeId}" />
-    <input type="hidden" id="userIdInput" th:value="${user.id}" />
-    <div class="container">
-      <header class="main-header" style="border-bottom: black solid 2px">
-        <h1>LOGO</h1>
-        <form th:action="@{/landing}" method="get">
-          <sl-button type="submit" variant="primary" size="medium"
-            >Logout</sl-button
-          >
-        </form>
+    <div class="recipe-container">
+      <header class="main-header">
+        <input type="hidden" id="recipeIdInput" th:value="${recipeId}" />
+        <input type="hidden" id="userIdInput" th:value="${user.id}" />
+        <nav class="nav">
+          <img class="logo" src="/static/img/hikerhunger-logo.svg" />
+          <form th:action="@{/landing}" method="get">
+            <sl-button
+              class="logout-btn"
+              type="submit"
+              variant="primary"
+              size="medium"
+              >Logout</sl-button
+            >
+          </form>
+        </nav>
       </header>
       <section class="recipe-section">
         <form

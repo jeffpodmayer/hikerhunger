@@ -10,7 +10,10 @@
     <title>Dashboard</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <!-- FOR RUNNING WITH SPRING -->
+    <!-- <link rel="stylesheet" type="text/css" href="/css/style.css" /> -->
+    <!-- Running w/ Live Server -->
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css" />
     <!-- SHOELACE -->
     <link
       rel="stylesheet"
@@ -31,7 +34,7 @@
     <div class="container">
       <header class="main-header">
         <nav class="nav">
-          <img class="logo" src="/img/hikerhunger-logo.svg" />
+          <img class="logo" src="../static/img/hikerhunger-logo.svg" />
           <form th:action="@{/landing}" method="get">
             <sl-button
               class="logout-btn"
@@ -52,7 +55,7 @@
               th:action="@{/home/{userId}/recipe(userId=${user.id})}"
               method="post"
             >
-              <sl-button class="btn" type="submit" variant="success"
+              <sl-button class="btn" type="submit" variant="primary"
                 >Add New Recipe</sl-button
               >
             </form>
@@ -106,7 +109,7 @@
               th:action="@{/home/{userId}/trip(userId=${user.id})}"
               method="post"
             >
-              <sl-button class="btn" type="submit" variant="success"
+              <sl-button class="btn" type="submit" variant="primary"
                 >Build A Trip</sl-button
               >
             </form>

@@ -141,8 +141,8 @@ function updateIngredientRow(updatedRow, updatedIngredientData) {
   updatedRow.cells[1].textContent = updatedIngredientData.ingredientName;
   updatedRow.cells[2].textContent = updatedIngredientData.quantity;
   updatedRow.cells[3].textContent = updatedIngredientData.unit;
-  updatedRow.cells[4].textContent = updatedIngredientData.weightInGrams;
-  updatedRow.cells[5].textContent = updatedIngredientData.notes;
+  updatedRow.cells[4].textContent =
+    updatedIngredientData.weightInGrams + " / grams";
   calculateTotalWeight();
 }
 const renderIngredient = (ingredient) => {
@@ -151,12 +151,11 @@ const renderIngredient = (ingredient) => {
   tr.setAttribute("data-ingredient-id", ingredient.ingredientId);
 
   const ingredientHTML = `
-  <td class="id"><p>${ingredient.ingredientId}</p></td>
+  <td class="id hidden-column"><p>${ingredient.ingredientId}</p></td>
   <td class="ingredientName"><p>${ingredient.ingredientName}</p></td>
   <td class="quantity"><p>${ingredient.quantity}</p></td>
   <td class="unit"><p>${ingredient.unit}</p></td>
-  <td class="weight"><p class="weightInput">${ingredient.weightInGrams}</p></td>
-  <td class="notes"><p>${ingredient.notes}</p></td>
+  <td class="weight"><p class="weightInput">${ingredient.weightInGrams} / grams</p></td>
   <td class="trash_icon"><sl-icon name="trash3"></sl-icon></td>
   <td class="edit_icon"><sl-icon name="pencil-square"></sl-icon>
   </td>

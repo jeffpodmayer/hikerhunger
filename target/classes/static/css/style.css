@@ -234,7 +234,7 @@ sl-button::part(base) {
   align-items: end;
   align-self: end;
   margin-top: 10px;
-  margin-right: 18px;
+  margin-right: 10px;
   margin-bottom: 15px;
 }
 
@@ -255,7 +255,7 @@ sl-button::part(base) {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   border-bottom: white 1px solid;
 }
 
@@ -266,11 +266,55 @@ sl-button::part(base) {
 
 .show-newIngredient-modal {
   padding: 10px 0;
-  margin-right: 15px;
+  margin-right: 10px;
 }
 
-.ingredient-table {
+/* TABLE UNIVERSAL STYLES */
+table {
   width: 100%;
+  padding: 0 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+tr {
+  display: grid;
+  align-items: center;
+  border-radius: 10px;
+  margin-bottom: 8px;
+}
+
+td {
+  padding: 10px;
+}
+
+.hidden-column {
+  display: none;
+}
+
+.ingredient-table tr {
+  background-color: #7150a6;
+  grid-template-columns: 170px 1fr 1fr 1fr auto auto;
+}
+
+.ingredient-table .quantity {
+  text-align: right;
+}
+
+/* ICON UNIVERSAL STYLES */
+sl-icon {
+  border: white 1px solid;
+  padding: 4px;
+  border-radius: 2px;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+sl-icon:hover {
+  background-color: orangered;
+  border: white 1px solid;
+  padding: 4px;
+  border-radius: 2px;
+  cursor: pointer;
 }
 
 /* CLASSES TO MAKE MODAL WORK */

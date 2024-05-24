@@ -2,8 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
     <title>Create Recipe</title>
-    <!-- <link rel="stylesheet" type="text/css" href="/static/css/style.css" /> -->
-    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="/css/style.css" /> -->
     <script
       src="https://kit.fontawesome.com/783d090aa0.js"
       crossorigin="anonymous"
@@ -23,7 +23,7 @@
       <input type="hidden" id="recipeIdInput" th:value="${recipeId}" />
       <input type="hidden" id="userIdInput" th:value="${user.id}" />
       <nav class="nav">
-        <img class="logo" src="/img/hikerhunger-logo.svg" />
+        <img class="logo" src="../../static/img/hikerhunger-logo.svg" />
         <form id="recipeForm" th:action="@{/landing}" method="get">
           <sl-button
             class="logout-btn nav-btn"
@@ -59,6 +59,7 @@
                 id="recipeType"
                 th:field="${recipe.recipeType}"
                 label="Meal Type"
+                placeholder="Breakfast, Lunch, Dinner.."
               >
                 <sl-option value="BREAKFAST">Breakfast</sl-option>
                 <sl-option value="LUNCH">Lunch</sl-option>
@@ -70,13 +71,12 @@
 
             <sl-input
               label="How many people does this serve?"
-              placeholder="2"
+              placeholder="Enter a number..."
               size="medium"
               type="number"
               min="1"
               id="servings"
               th:field="${recipe.servings}"
-              clearable
             ></sl-input>
             <sl-textarea
               id="instructions"
@@ -130,18 +130,21 @@
               >Add an Ingredient</sl-button
             >
           </div>
-          <table class="ingredient-table" id="ingredientsContainer">
-            <tr>
-              <th>ID</th>
-              <th>Ingredient Name</th>
-              <th>Quantity</th>
-              <th>Unit</th>
-              <th>Grams</th>
-              <th>Notes</th>
-              <th></th>
-              <th></th>
-            </tr>
-          </table>
+          <div class="table-wrapper">
+            <table class="ingredient-table" id="ingredientsContainer">
+              <tr>
+                <td class="hidden-column">1</td>
+                <td>Macaroni</td>
+                <td class="quantity">2</td>
+                <td>cups</td>
+                <td>300 / grams</td>
+                <td class="trash_icon"><sl-icon name="trash3"></sl-icon></td>
+                <td class="edit_icon">
+                  <sl-icon name="pencil-square"></sl-icon>
+                </td>
+              </tr>
+            </table>
+          </div>
         </section>
 
         <!-- NEW INGREDIENT MODAL WINDOW -->

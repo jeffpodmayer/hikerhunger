@@ -153,7 +153,7 @@ sl-button::part(base) {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 300px;
   grid-template-rows: 180px 1fr;
-  width: 90%;
+  width: 96%;
   margin: 0 auto;
   padding-top: 20px;
   padding-bottom: 20px;
@@ -174,12 +174,12 @@ sl-button::part(base) {
 
 #recipeType {
   margin-bottom: 20px;
-  width: 300px;
+  width: 45%;
 }
 
 #servings {
   margin-bottom: 20px;
-  width: 250px;
+  width: 40%;
 }
 
 /* WEIGHT BOX */
@@ -199,7 +199,6 @@ sl-button::part(base) {
 .weight__label {
   font-size: 25px;
   justify-self: center;
-  align-self: end;
 }
 
 .weightInPounds,
@@ -234,7 +233,7 @@ sl-button::part(base) {
   align-items: end;
   align-self: end;
   margin-top: 10px;
-  margin-right: 18px;
+  margin-right: 10px;
   margin-bottom: 15px;
 }
 
@@ -255,7 +254,7 @@ sl-button::part(base) {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   border-bottom: white 1px solid;
 }
 
@@ -266,11 +265,59 @@ sl-button::part(base) {
 
 .show-newIngredient-modal {
   padding: 10px 0;
-  margin-right: 15px;
+  margin-right: 10px;
 }
 
-.ingredient-table {
+/* TABLE UNIVERSAL STYLES */
+table {
   width: 100%;
+  padding: 0 10px;
+}
+
+tr {
+  display: grid;
+  align-items: center;
+  border-radius: 10px;
+  margin-bottom: 6px;
+}
+
+td {
+  padding: 10px;
+}
+
+.hidden-column {
+  display: none;
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow-y: auto;
+  max-height: 330px;
+}
+
+.ingredient-table tr {
+  background-color: #7150a6;
+  grid-template-columns: 170px 1fr 1fr 1fr auto auto;
+}
+
+.ingredient-table .quantity {
+  text-align: right;
+}
+
+/* ICON UNIVERSAL STYLES */
+sl-icon {
+  border: white 1px solid;
+  padding: 4px;
+  border-radius: 2px;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+sl-icon:hover {
+  background-color: orangered;
+  border: white 1px solid;
+  padding: 4px;
+  border-radius: 2px;
+  cursor: pointer;
 }
 
 /* CLASSES TO MAKE MODAL WORK */

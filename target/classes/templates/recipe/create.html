@@ -23,7 +23,8 @@
       <input type="hidden" id="recipeIdInput" th:value="${recipeId}" />
       <input type="hidden" id="userIdInput" th:value="${user.id}" />
       <nav class="nav">
-        <img class="logo" src="../../static/img/hikerhunger-logo.svg" />
+        <!-- <img class="logo" src="../../static/img/hikerhunger-logo.svg" /> -->
+        <img class="logo" src="/img/hikerhunger-logo.svg" />
         <form id="recipeForm" th:action="@{/landing}" method="get">
           <sl-button
             class="logout-btn nav-btn"
@@ -59,6 +60,7 @@
                 id="recipeType"
                 th:field="${recipe.recipeType}"
                 label="Meal Type"
+                placeholder="Breakfast, Lunch, Dinner.."
               >
                 <sl-option value="BREAKFAST">Breakfast</sl-option>
                 <sl-option value="LUNCH">Lunch</sl-option>
@@ -129,40 +131,70 @@
               >Add an Ingredient</sl-button
             >
           </div>
-          <table class="ingredient-table" id="ingredientsContainer">
-            <tr>
-              <td class="hidden-column">1</td>
-              <td>Macaroni</td>
-              <td class="quantity">2</td>
-              <td>cups</td>
-              <td>300 / grams</td>
-              <!-- <td>Annies Brand</td> -->
-              <td class="trash_icon"><sl-icon name="trash3"></sl-icon></td>
-              <td class="edit_icon">
-                <sl-icon name="pencil-square"></sl-icon>
-              </td>
-            </tr>
-          </table>
+          <div class="table-wrapper">
+            <table class="ingredient-table" id="ingredientsContainer">
+              <tr>
+                <td class="hidden-column">1</td>
+                <td>Macaroni</td>
+                <td class="quantity">2</td>
+                <td>cups</td>
+                <td>300 / grams</td>
+                <td class="trash_icon"><sl-icon name="trash3"></sl-icon></td>
+                <td class="edit_icon">
+                  <sl-icon name="pencil-square"></sl-icon>
+                </td>
+              </tr>
+            </table>
+          </div>
         </section>
 
         <!-- NEW INGREDIENT MODAL WINDOW -->
         <div class="new-ingredient-modal hidden">
-          <form>
-            <sl-icon name="x-square" class="close-modal"></sl-icon>
-            <h3>Add an Ingredient</h3>
-            <label>Ingredient Name:</label>
-            <input id="ingredientNameInput" type="text" /><br />
-            <label>Quantity:</label>
-            <input id="quantityInput" value="0" min="0" type="number" /><br />
-            <label>Unit:</label>
-            <input id="unitInput" type="text" /><br />
-            <label>Weight In Grams:</label>
-            <input id="weightInput" value="0" min="0" type="number" /><br />
-            <label>Notes:</label>
-            <input id="notesInput" type="text" />
+          <form class="modal-form">
+            <sl-icon name="x" class="close-modal"></sl-icon>
+            <h2>Ingredient Details</h2>
+            <sl-input
+              label="Ingredient Name"
+              id="ingredientNameInput"
+              size="medium"
+              type="text"
+              placeholder="Macaroni, Salt, etc.."
+            ></sl-input>
+            <sl-input
+              label="Quantity"
+              id="quantityInput"
+              size="medium"
+              type="number"
+              value="0"
+              min="0"
+            ></sl-input>
+            <sl-input
+              label="Unit"
+              id="unitInput"
+              size="medium"
+              type="text"
+              placeholder="cups, pinch, boxes, package"
+            ></sl-input>
+            <sl-input
+              label="Weight In Grams"
+              id="weightInput"
+              size="medium"
+              type="number"
+              value="0"
+              min="0"
+              placeholder="Enter weight in grams"
+            ></sl-input>
+            <sl-textarea
+              id="notesInput"
+              label="Ingredient Notes"
+              type="text"
+              placeholder="Enter details about ingredient"
+              rows="3"
+            >
+            </sl-textarea>
             <div class="add-ingredient-btn">
               <sl-button
-                variant="success"
+                variant="primary"
                 type="button"
                 id="addIngredientButton"
                 >Save Ingredient</sl-button
@@ -170,26 +202,52 @@
             </div>
           </form>
         </div>
-        <div class="overlay hidden"></div>
 
         <!-- EDIT INGREDIENT MODAL WINDOW -->
         <div class="edit-ingredient-modal hidden">
-          <form id="editIngredientForm">
-            <sl-icon name="x-square" class="close-modal"></sl-icon>
-            <input id="id" type="hidden" /><br />
-            <label>Ingredient Name:</label>
-            <input id="ingredientName" type="text" /><br />
-            <label>Quantity:</label>
-            <input id="quantity" type="number" value="0" min="0" /><br />
-            <label>Unit:</label>
-            <input id="unit" type="text" /><br />
-            <label>Weight In Grams:</label>
-            <input id="weight" type="number" value="0" min="0" /><br />
-            <label>Notes:</label>
-            <input id="notes" type="text" />
+          <form id="editIngredientForm" class="modal-form">
+            <sl-icon name="x" class="close-modal"></sl-icon>
+            <h2>Update Ingredient</h2>
+            <input id="id" type="hidden" />
+            <sl-input
+              label="Ingredient Name"
+              id="ingredientName"
+              size="medium"
+              type="text"
+            ></sl-input>
+            <sl-input
+              label="Quantity"
+              id="quantity"
+              size="medium"
+              type="number"
+              value="0"
+              min="0"
+            ></sl-input>
+            <sl-input
+              label="Unit"
+              id="unit"
+              size="medium"
+              type="text"
+            ></sl-input>
+            <sl-input
+              label="Weight In Grams"
+              id="weight"
+              size="medium"
+              type="number"
+              value="0"
+              min="0"
+              placeholder="Enter weight in grams"
+            ></sl-input>
+            <sl-textarea
+              id="notes"
+              label="Ingredient Notes"
+              type="text"
+              rows="3"
+            >
+            </sl-textarea>
             <div class="update-ingredient-btn">
               <sl-button
-                variant="success"
+                variant="primary"
                 type="button"
                 id="editIngredientButton"
                 >Update Ingredient</sl-button
@@ -198,6 +256,7 @@
           </form>
         </div>
         <div class="edit-overlay hidden"></div>
+        <div class="overlay hidden"></div>
         <script src="/js/recipe.js"></script>
       </div>
     </div>

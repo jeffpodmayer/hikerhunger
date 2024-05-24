@@ -25,6 +25,7 @@ sl-textarea {
 
 .container {
   width: 100%;
+  min-height: 100%;
   margin: 0 auto;
   padding-top: 40px;
 }
@@ -37,7 +38,7 @@ sl-textarea {
   border-bottom: 2px solid #72a968;
   width: 100%;
   height: 75px;
-  z-index: 999;
+  z-index: 5;
 }
 
 .nav {
@@ -153,7 +154,7 @@ sl-button::part(base) {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 300px;
   grid-template-rows: 180px 1fr;
-  width: 90%;
+  width: 96%;
   margin: 0 auto;
   padding-top: 20px;
   padding-bottom: 20px;
@@ -174,12 +175,12 @@ sl-button::part(base) {
 
 #recipeType {
   margin-bottom: 20px;
-  width: 300px;
+  width: 45%;
 }
 
 #servings {
   margin-bottom: 20px;
-  width: 250px;
+  width: 40%;
 }
 
 /* WEIGHT BOX */
@@ -199,7 +200,6 @@ sl-button::part(base) {
 .weight__label {
   font-size: 25px;
   justify-self: center;
-  align-self: end;
 }
 
 .weightInPounds,
@@ -273,15 +273,13 @@ sl-button::part(base) {
 table {
   width: 100%;
   padding: 0 10px;
-  display: flex;
-  flex-direction: column;
 }
 
 tr {
   display: grid;
   align-items: center;
   border-radius: 10px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 td {
@@ -290,6 +288,12 @@ td {
 
 .hidden-column {
   display: none;
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow-y: auto;
+  max-height: 330px;
 }
 
 .ingredient-table tr {
@@ -310,16 +314,49 @@ sl-icon {
 }
 
 sl-icon:hover {
-  background-color: orangered;
+  background-color: rgb(202, 63, 63);
   border: white 1px solid;
   padding: 4px;
   border-radius: 2px;
   cursor: pointer;
 }
 
-/* CLASSES TO MAKE MODAL WORK */
+/* CLASSES TO MAKE MODAL WORK & STYLES */
 .hidden {
   display: none;
+}
+
+.close-modal {
+  color: white;
+  justify-self: end;
+  margin-bottom: 10px;
+}
+
+.modal-form {
+  display: grid;
+  grid-template-rows: 0.75fr auto 0.5fr;
+}
+
+.modal-form sl-input {
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+#quantityInput,
+#weightInput,
+#unitInput,
+#quantity,
+#weight,
+#unit {
+  width: 50%;
+}
+
+.add-ingredient-btn,
+.update-ingredient-btn {
+  grid-row: 8/9;
+  justify-self: end;
+  align-self: end;
+  margin-top: 15px; /* Align the button to the end of the grid container vertically */
 }
 
 .new-ingredient-modal,
@@ -330,13 +367,13 @@ sl-icon:hover {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 70%;
-
-  background-color: white;
-  padding: 6rem;
-  border-radius: 5px;
+  width: 40%;
+  background-color: #053b14;
+  padding: 2rem;
+  border-radius: 10px;
   box-shadow: 0 3rem 5rem rgba(0, 0, 0, 0.3);
   z-index: 10;
+  border: white 1px solid;
 }
 
 .overlay,
@@ -348,5 +385,5 @@ sl-icon:hover {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(3px);
-  z-index: 5;
+  z-index: 6;
 }

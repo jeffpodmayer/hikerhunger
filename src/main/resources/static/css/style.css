@@ -118,7 +118,7 @@ sl-button::part(base) {
   margin-right: 20px;
 }
 .logout-btn::part(base) {
-  font-size: 16px;
+  color: white;
 }
 
 .recipes-box,
@@ -155,7 +155,7 @@ sl-button::part(base) {
   grid-template-rows: 180px 1fr;
   width: 90%;
   margin: 0 auto;
-  padding-top: 50px;
+  padding-top: 20px;
   padding-bottom: 20px;
 }
 
@@ -185,14 +185,13 @@ sl-button::part(base) {
 /* WEIGHT BOX */
 .totalWeight {
   align-self: self-end;
-
   margin: 40px 0;
 }
 
 .weights {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  height: 60%;
+  height: 70%;
   border: 1px white solid;
   border-radius: 5px;
 }
@@ -206,6 +205,7 @@ sl-button::part(base) {
 .weightInPounds,
 .weightInGrams {
   justify-self: center;
+  text-align: center;
   font-size: 35px;
   color: white;
 }
@@ -220,7 +220,7 @@ sl-button::part(base) {
 }
 
 .weight-box input {
-  width: 65px;
+  width: 80px;
   background: #053b14;
   border: none;
 }
@@ -232,19 +232,22 @@ sl-button::part(base) {
   display: flex;
   flex-direction: column;
   align-items: end;
+  align-self: end;
   margin-top: 10px;
-  margin-right: 20px;
+  margin-right: 18px;
+  margin-bottom: 15px;
 }
 
 .recipe-btn sl-button {
-  width: 150px;
+  width: 164px;
   margin-bottom: 15px;
 }
 
 .ingredient-section {
   grid-column: 3 / span 5;
   grid-row: 2 / span 4;
-  border: white 2px solid;
+  border: white 1px solid;
+  border-radius: 5px;
 }
 
 /* Ingredient Box */
@@ -253,7 +256,7 @@ sl-button::part(base) {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-  border-bottom: white 2px solid;
+  border-bottom: white 1px solid;
 }
 
 .ingredient-title-box h2 {

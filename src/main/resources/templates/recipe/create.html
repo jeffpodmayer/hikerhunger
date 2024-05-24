@@ -2,8 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
     <title>Create Recipe</title>
-    <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
-    <!-- <link rel="stylesheet" type="text/css" href="/css/style.css" /> -->
+    <!-- <link rel="stylesheet" type="text/css" href="/static/css/style.css" /> -->
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
     <script
       src="https://kit.fontawesome.com/783d090aa0.js"
       crossorigin="anonymous"
@@ -23,12 +23,12 @@
       <input type="hidden" id="recipeIdInput" th:value="${recipeId}" />
       <input type="hidden" id="userIdInput" th:value="${user.id}" />
       <nav class="nav">
-        <img class="logo" src="/static/img/hikerhunger-logo.svg" />
-        <form th:action="@{/landing}" method="get">
+        <img class="logo" src="/img/hikerhunger-logo.svg" />
+        <form id="recipeForm" th:action="@{/landing}" method="get">
           <sl-button
-            class="logout-btn"
+            class="logout-btn nav-btn"
             type="submit"
-            variant="danger"
+            variant="primary"
             size="medium"
             outline
             >Logout</sl-button
@@ -46,9 +46,11 @@
           >
             <sl-input
               id="recipeName"
+              class="recipe-name"
               label="Recipe Name"
               placeholder="Mac & Cheese, Fancy Ramen, etc."
               size="medium"
+              th:field="${recipe.recipeName}"
               clearable
             ></sl-input>
             <div>
@@ -106,7 +108,11 @@
           </div>
         </div>
         <div class="recipe-btn">
-          <sl-button variant="primary" type="submit" id="submitButton"
+          <sl-button
+            form="recipeForm"
+            variant="primary"
+            type="submit"
+            id="submitButton"
             >Save Recipe</sl-button
           >
           <sl-button variant="warning" type="submit" outline
@@ -196,7 +202,7 @@
     </div>
     <footer class="footer">
       <p id="copyright" class="copyright text">
-        Copyright &copy; 2024 by Jeff Podmayer.
+        Copyright &copy; 2024 by Jeff Podmayer
       </p>
     </footer>
   </body>

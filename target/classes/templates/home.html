@@ -10,7 +10,10 @@
     <title>Dashboard</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- FOR RUNNING WITH SPRING -->
     <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <!-- Running w/ Live Server -->
+    <!-- <link rel="stylesheet" type="text/css" href="../static/css/style.css" /> -->
     <!-- SHOELACE -->
     <link
       rel="stylesheet"
@@ -28,22 +31,22 @@
     ></script>
   </head>
   <body>
+    <header class="main-header">
+      <nav class="nav">
+        <img class="logo" src="/img/hikerhunger-logo.svg" />
+        <form th:action="@{/landing}" method="get">
+          <sl-button
+            class="logout-btn nav-btn"
+            type="submit"
+            variant="primary"
+            size="medium"
+            outline
+            >Logout</sl-button
+          >
+        </form>
+      </nav>
+    </header>
     <div class="container">
-      <header class="main-header">
-        <nav class="nav">
-          <img class="logo" src="/img/hikerhunger-logo.svg" />
-          <form th:action="@{/landing}" method="get">
-            <sl-button
-              class="logout-btn"
-              type="submit"
-              variant="primary"
-              size="medium"
-              >Logout</sl-button
-            >
-          </form>
-        </nav>
-      </header>
-      <!-- <h1>Welcome [[${user.firstName}]]!</h1> -->
       <div class="main">
         <section class="home-recipe-section">
           <div class="title-box">
@@ -145,8 +148,8 @@
               </table>
             </div>
           </div>
+          <div class="tripViewPopup hidden"></div>
         </section>
-        <div class="tripViewPopup hidden"></div>
 
         <!--[if lt IE 7]>
           <p class="browsehappy">

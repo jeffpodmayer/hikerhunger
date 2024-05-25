@@ -7,7 +7,6 @@ const recipeTypeSelect = document.getElementById("recipeType");
 const instructionsInput = document.getElementById("instructions");
 const servingsInput = document.getElementById("servings");
 const weightInGramsInput = document.getElementById("weightInGrams");
-const submitButton = document.getElementById("submitButton");
 const btnUpdateIngredient = document.getElementById(`editIngredientButton`);
 const btnAddIngredient = document.getElementById(`addIngredientButton`);
 const ingredientNameInput = document.getElementById("ingredientNameInput");
@@ -211,7 +210,6 @@ const validateIngredientData = function (ingredient) {
   }
   return null;
 };
-
 /////////////////////////// ADD INGREDIENT ////////////////////////////
 const addIngredient = function () {
   submitAddIngredient();

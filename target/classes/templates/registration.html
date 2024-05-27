@@ -2,14 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
     <title>Registration Form</title>
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="css/style.css" /> -->
     <style>
       /* Add some basic styling for the form */
       body {
         font-family: Arial, sans-serif;
       }
 
-      .register-container {
+      .container {
         width: 300px;
         padding: 16px;
         background-color: white;
@@ -46,7 +46,7 @@
   </head>
 
   <body>
-    <div class="register-container">
+    <div class="container">
       <h2>Registration Form</h2>
       <form
         th:object="${user}"

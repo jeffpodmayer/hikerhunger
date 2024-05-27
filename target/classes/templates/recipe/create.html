@@ -2,8 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
     <title>Create Recipe</title>
-    <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
-    <!-- <link rel="stylesheet" type="text/css" href="/css/style.css" /> -->
+    <!-- <link rel="stylesheet" type="text/css" href="/static/css/style.css" /> -->
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
     <script
       src="https://kit.fontawesome.com/783d090aa0.js"
       crossorigin="anonymous"
@@ -23,9 +23,9 @@
       <input type="hidden" id="recipeIdInput" th:value="${recipeId}" />
       <input type="hidden" id="userIdInput" th:value="${user.id}" />
       <nav class="nav">
-        <img class="logo" src="../../static/img/hikerhunger-logo.svg" />
-        <!-- <img class="logo" src="/img/hikerhunger-logo.svg" /> -->
-        <form id="recipeForm" th:action="@{/landing}" method="get">
+        <!-- <img class="logo" src="../../static/img/hikerhunger-logo.svg" /> -->
+        <img class="logo" src="/img/hikerhunger-logo.svg" />
+        <form th:action="@{/landing}" method="get">
           <sl-button
             class="logout-btn nav-btn"
             type="submit"
@@ -47,6 +47,7 @@
           >
             <sl-input
               id="recipeName"
+              name="recipeName"
               class="recipe-name"
               label="Recipe Name"
               placeholder="Mac & Cheese, Fancy Ramen, etc."
@@ -58,6 +59,7 @@
               <sl-select
                 for="mealCategory"
                 id="recipeType"
+                name="recipeType"
                 th:field="${recipe.recipeType}"
                 label="Meal Type"
                 placeholder="Breakfast, Lunch, Dinner.."
@@ -76,11 +78,13 @@
               size="medium"
               type="number"
               min="1"
+              name="servings"
               id="servings"
               th:field="${recipe.servings}"
             ></sl-input>
             <sl-textarea
               id="instructions"
+              name="instructions"
               th:field="${recipe.instructions}"
               label="Recipe Instructions"
               placeholder="Step 1: Boil water, Step 2: Add Macaroni, etc..."

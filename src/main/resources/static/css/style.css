@@ -96,19 +96,20 @@ sl-textarea {
 
 /* MAIN */
 .main {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 100px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 60px, 1fr;
+  gap: 120px;
   margin-bottom: 50px;
   margin-top: 4rem;
 }
 
-.title-box {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
+.home-recipe-section {
+  grid-column: 2/3;
+}
+
+.home-trip-section {
+  grid-column: 3/4;
 }
 
 sl-button::part(base) {

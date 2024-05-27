@@ -57,27 +57,20 @@
               th:action="@{/home/{userId}/recipe(userId=${user.id})}"
               method="post"
             >
-              <sl-button class="btn" type="submit" variant="success"
+              <sl-button class="add-btn" type="submit" variant="primary"
                 >Add New Recipe</sl-button
               >
             </form>
           </div>
           <div class="recipes-box">
-            <!-- <div
+            <div
               class="empty"
               th:if="${recipes == null or #lists.size(recipes) == 0}"
             >
               <p>You don't have any recipes yet!</p>
-            </div> -->
+            </div>
             <div th:if="${#lists.size(recipes) > 0}">
               <table id="homeRecipesTable">
-                <tr>
-                  <th>Recipe Name</th>
-                  <th>Recipe Type</th>
-                  <th>Instructions</th>
-                  <th>Serves</th>
-                  <th>Weight</th>
-                </tr>
                 <tr
                   method="get"
                   th:each="recipe : ${recipes}"
@@ -91,9 +84,15 @@
                   />
                   <td th:text="${recipe.recipeName}"></td>
                   <td th:text="${recipe.recipeType?.displayValue}"></td>
-                  <td th:text="${recipe.instructions}"></td>
                   <td th:text="${recipe.servings}"></td>
                   <td th:text="${recipe.totalWeight}"></td>
+                </tr>
+                <tr>
+                  <th>Mac & Cheese</th>
+                  <th>Dinner</th>
+                  <!-- <th>Instructions</th> -->
+                  <th>2 / people</th>
+                  <th>454 / grams</th>
                 </tr>
               </table>
             </div>
@@ -111,7 +110,7 @@
               th:action="@{/home/{userId}/trip(userId=${user.id})}"
               method="post"
             >
-              <sl-button class="btn" type="submit" variant="success"
+              <sl-button class="add-btn" type="submit" variant="primary"
                 >Build A Trip</sl-button
               >
             </form>

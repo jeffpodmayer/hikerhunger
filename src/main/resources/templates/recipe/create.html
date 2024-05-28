@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
     <title>Create Recipe</title>
-    <!-- <link rel="stylesheet" type="text/css" href="/static/css/style.css" /> -->
-    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="/css/style.css" /> -->
     <script
       src="https://kit.fontawesome.com/783d090aa0.js"
       crossorigin="anonymous"
@@ -23,8 +25,8 @@
       <input type="hidden" id="recipeIdInput" th:value="${recipeId}" />
       <input type="hidden" id="userIdInput" th:value="${user.id}" />
       <nav class="nav">
-        <!-- <img class="logo" src="../../static/img/hikerhunger-logo.svg" /> -->
-        <img class="logo" src="/img/hikerhunger-logo.svg" />
+        <img class="logo" src="../../static/img/hikerhunger-logo.svg" />
+        <!-- <img class="logo" src="/img/hikerhunger-logo.svg" /> -->
         <form th:action="@{/landing}" method="get">
           <sl-button
             class="logout-btn nav-btn"
@@ -123,6 +125,7 @@
             >
           </form>
         </div>
+
         <!-- INGREDIENTS SECTION -->
         <section class="ingredient-section" id="ingredientsSection">
           <div class="ingredient-title-box">
@@ -135,19 +138,7 @@
             >
           </div>
           <div class="table-wrapper">
-            <table class="ingredient-table" id="ingredientsContainer">
-              <tr>
-                <td class="hidden-column">1</td>
-                <td>Macaroni</td>
-                <td class="quantity">2</td>
-                <td>cups</td>
-                <td>300 / grams</td>
-                <td class="trash_icon"><sl-icon name="trash3"></sl-icon></td>
-                <td class="edit_icon">
-                  <sl-icon name="pencil-square"></sl-icon>
-                </td>
-              </tr>
-            </table>
+            <table class="ingredient-table" id="ingredientsContainer"></table>
           </div>
         </section>
 

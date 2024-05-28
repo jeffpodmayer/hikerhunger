@@ -150,11 +150,11 @@ const renderIngredient = (ingredient) => {
   tr.setAttribute("data-ingredient-id", ingredient.ingredientId);
 
   const ingredientHTML = `
-  <td class="id hidden-column"><p>${ingredient.ingredientId}</p></td>
-  <td class="ingredientName"><p>${ingredient.ingredientName}</p></td>
-  <td class="quantity"><p>${ingredient.quantity}</p></td>
-  <td class="unit"><p>${ingredient.unit}</p></td>
-  <td class="weight"><p class="weightInput">${ingredient.weightInGrams} / grams</p></td>
+  <td class="id hidden-column">${ingredient.ingredientId}</td>
+  <td class="ingredientName">${ingredient.ingredientName}</td>
+  <td class="quantity">${ingredient.quantity}</td>
+  <td class="unit">${ingredient.unit}</td>
+  <td class="weight weightInput">${ingredient.weightInGrams} / grams</td>
   <td class="trash_icon"><sl-icon name="trash3"></sl-icon></td>
   <td class="edit_icon"><sl-icon name="pencil-square"></sl-icon>
   </td>

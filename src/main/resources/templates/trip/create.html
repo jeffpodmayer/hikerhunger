@@ -1,12 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
+    <title>Build Trip!</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script
       src="https://kit.fontawesome.com/783d090aa0.js"
       crossorigin="anonymous"
     ></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="/css/style.css" /> -->
+    <link rel="stylesheet" type="text/css" href="/static/css/trip.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="/css/trip.css" /> -->
+
     <!-- SHOELACE -->
     <link
       rel="stylesheet"
@@ -16,164 +22,180 @@
       type="module"
       src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/shoelace-autoloader.js"
     ></script>
-    <title>Build Trip!</title>
   </head>
   <body>
-    <input type="hidden" id="tripId" th:value="${trip.tripId}" />
-    <div class="container">
-      <header class="main-header" style="border-bottom: black solid 2px">
-        <h1>LOGO</h1>
+    <header class="main-header">
+      <input type="hidden" id="tripId" th:value="${trip.tripId}" />
+      <nav class="nav">
+        <img class="logo" src="../../static/img/hikerhunger-logo.svg" />
+        <!-- <img class="logo" src="/img/hikerhunger-logo.svg" /> -->
         <form th:action="@{/landing}" method="get">
-          <sl-button type="submit" variant="primary" size="medium"
+          <sl-button
+            class="logout-btn nav-btn"
+            type="submit"
+            variant="primary"
+            size="medium"
+            outline
             >Logout</sl-button
           >
         </form>
-      </header>
-      <section class="trip-details-section">
-        <form
-          id="tripForm"
-          th:action="@{/home/saveTrip/{tripId}(tripId=${trip.tripId})}"
-          method="post"
-        >
-          <div>
-            <label id="tripName">Trip Name:</label>
-            <input type="text" th:field="${trip.tripName}" />
-          </div>
-          <div>
-            <label>Number of Days:</label>
-            <div id="numOfDaysAlert" style="color: red; display: none"></div>
-            <input
+      </nav>
+    </header>
+    <div class="container">
+      <div class="trip-container">
+        <section class="trip-section">
+          <form
+            id="tripForm"
+            th:action="@{/home/saveTrip/{tripId}(tripId=${trip.tripId})}"
+            method="post"
+          >
+            <sl-input
+              id="tripName"
+              name="tripName"
+              class="trip-name"
+              label="Trip Name"
+              placeholder="Washington 5-Day Backpacking, Day Hike..."
+              size="medium"
+              th:field="${trip.tripName}"
+              clearable
+            ></sl-input>
+            <sl-input
               id="numOfDays"
               type="number"
               min="1"
               value="1"
+              name="numOfDays"
+              class="numOfDays"
+              label="Number of Days"
+              placeholder="Enter a number"
+              size="medium"
               th:field="${trip.numOfDays}"
-            />
-          </div>
-          <div>
-            <label>Number of People:</label>
-            <div id="numOfPeopleAlert" style="color: red; display: none"></div>
-            <input
+              clearable
+            ></sl-input>
+            <sl-input
               id="numOfPeople"
               type="number"
               min="1"
               value="1"
+              name="numOfPeople"
+              class="numOfPeople"
+              label="Number of People"
+              placeholder="Enter a number"
+              size="medium"
               th:field="${trip.numOfPeople}"
-            />
-          </div>
-          <div>
-            <label id="tripDetails">Trip Details:</label>
-            <textarea
+              clearable
+            ></sl-input>
+            <sl-textarea
+              id="tripDetails"
+              name="tripDetails"
               th:field="${trip.tripDetails}"
-              rows="4"
-              cols="50"
-            ></textarea>
-          </div>
+              label="Trip Details"
+              placeholder="Vegetarian Menu, Day 1: Hike to Blue Lake"
+              rows="12"
+            >
+            </sl-textarea>
 
-          <hr />
-
-          <div class="totalWeight">
-            <h3>Weight Per Person/Per Day</h3>
-            <div>
-              <p class="weight__label">Grams:</p>
-              <input
-                th:field="${trip.gramsPerPersonPerDay}"
-                class="weightInGrams"
-                type="number"
-                min="0"
-                value="0"
-                id="weightInGrams"
-                readonly
-              />
+            <div class="totalWeight">
+              <h3>Weight Per Person/Per Day</h3>
+              <div>
+                <p class="weight__label">Grams:</p>
+                <input
+                  th:field="${trip.gramsPerPersonPerDay}"
+                  class="weightInGrams"
+                  type="number"
+                  min="0"
+                  value="0"
+                  id="weightInGrams"
+                  readonly
+                />
+              </div>
+              <div>
+                <p class="weight__label">Pounds:</p>
+                <p id="weightInPounds" class="weightInPounds">0.0</p>
+              </div>
             </div>
-            <div>
-              <p class="weight__label">Pounds:</p>
-              <p id="weightInPounds" class="weightInPounds">0.0</p>
-            </div>
-          </div>
 
-          <hr />
-          <sl-button
-            variant="success"
-            class="save-trip-btn"
-            type="submit"
-            id="saveTripButton"
-            >Save Trip</sl-button
+            <hr />
+            <sl-button
+              variant="success"
+              class="save-trip-btn"
+              type="submit"
+              id="saveTripButton"
+              >Save Trip</sl-button
+            >
+          </form>
+          <form
+            th:action="@{/home/postDeleteTrip/{tripId}(tripId=${trip.tripId})}"
+            method="post"
           >
-        </form>
-        <form
-          th:action="@{/home/postDeleteTrip/{tripId}(tripId=${trip.tripId})}"
-          method="post"
-        >
-          <sl-button
-            class="delete-trip-btn"
-            id="discardTripButton"
-            type="submit"
-            variant="danger"
-            outline
-            >Discard Trip</sl-button
-          >
-        </form>
+            <sl-button
+              class="delete-trip-btn"
+              id="discardTripButton"
+              type="submit"
+              variant="danger"
+              outline
+              >Discard Trip</sl-button
+            >
+          </form>
+        </section>
+        <section class="trip-recipe-section">
+          <div id="tripRecipeSection">
+            <h2>Chosen Recipes for Your Trip:</h2>
+            <table id="tripRecipeTable">
+              <tr>
+                <th>Quantity</th>
+                <th>Recipe Name</th>
+                <th>Recipe Type</th>
+                <th>Instructions</th>
+                <th>Serves</th>
+                <th>Weight</th>
+                <th>Delete?</th>
+              </tr>
+            </table>
+          </div>
+        </section>
 
         <hr />
-      </section>
-      <section class="trip-recipe-section">
-        <div id="tripRecipeSection">
-          <h2>Chosen Recipes for Your Trip:</h2>
-          <table id="tripRecipeTable">
-            <tr>
-              <th>Quantity</th>
-              <th>Recipe Name</th>
-              <th>Recipe Type</th>
-              <th>Instructions</th>
-              <th>Serves</th>
-              <th>Weight</th>
-              <th>Delete?</th>
-            </tr>
-          </table>
-        </div>
-      </section>
 
-      <hr />
-
-      <section class="recipe-section">
-        <h3>Your Recipe Book</h3>
-        <div th:if="${recipes == null or #lists.size(recipes) == 0}">
-          You don't have any recipes yet!
-        </div>
-        <div th:if="${#lists.size(recipes) > 0}">
-          <table id="recipeTable">
-            <tr>
-              <th>Add</th>
-              <th>Recipe Name</th>
-              <th>Recipe Type</th>
-              <th>Instructions</th>
-              <th>Serves</th>
-              <th>Weight</th>
-            </tr>
-            <tr
-              method="get"
-              th:each="recipe : ${recipes}"
-              th:attr=" data-recipe-id=${recipe.recipeId}"
-            >
-              <td>
-                <input
-                  type="checkbox"
-                  id="recipeCheckbox"
-                  class="recipeCheckbox"
-                  th:value="${recipe.recipeId}"
-                />
-              </td>
-              <td th:text="${recipe.recipeName}"></td>
-              <td th:text="${recipe.recipeType?.displayValue}"></td>
-              <td th:text="${recipe.instructions}"></td>
-              <td th:text="${recipe.servings}"></td>
-              <td th:text="${recipe.totalWeight}"></td>
-            </tr>
-          </table>
-        </div>
-      </section>
-      <script src="/js/trip.js"></script>
+        <section class="recipe-book-section">
+          <h3>Your Recipe Book</h3>
+          <div th:if="${recipes == null or #lists.size(recipes) == 0}">
+            You don't have any recipes yet!
+          </div>
+          <div th:if="${#lists.size(recipes) > 0}">
+            <table id="recipeTable">
+              <tr>
+                <th>Add</th>
+                <th>Recipe Name</th>
+                <th>Recipe Type</th>
+                <th>Instructions</th>
+                <th>Serves</th>
+                <th>Weight</th>
+              </tr>
+              <tr
+                method="get"
+                th:each="recipe : ${recipes}"
+                th:attr=" data-recipe-id=${recipe.recipeId}"
+              >
+                <td>
+                  <input
+                    type="checkbox"
+                    id="recipeCheckbox"
+                    class="recipeCheckbox"
+                    th:value="${recipe.recipeId}"
+                  />
+                </td>
+                <td th:text="${recipe.recipeName}"></td>
+                <td th:text="${recipe.recipeType?.displayValue}"></td>
+                <td th:text="${recipe.instructions}"></td>
+                <td th:text="${recipe.servings}"></td>
+                <td th:text="${recipe.totalWeight}"></td>
+              </tr>
+            </table>
+          </div>
+        </section>
+        <script src="/js/trip.js"></script>
+      </div>
     </div>
   </body>
 </html>

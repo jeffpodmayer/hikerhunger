@@ -34,6 +34,8 @@
     <header class="main-header">
       <nav class="nav">
         <img class="logo" src="/img/hikerhunger-logo.svg" />
+        <!-- <img class="logo" src="../../static/img/hikerhunger-logo.svg" /> -->
+
         <form th:action="@{/landing}" method="get">
           <sl-button
             class="logout-btn nav-btn"
@@ -48,33 +50,32 @@
     </header>
     <div class="container">
       <div class="main">
-        <section class="home-recipe-section">
+        <section class="home-recipe-section dashboard">
           <div class="title-box">
             <h2>Your Recipes</h2>
             <form
               th:action="@{/home/{userId}/recipe(userId=${user.id})}"
               method="post"
             >
-              <sl-button class="btn" type="submit" variant="success"
+              <sl-button class="add-btn" type="submit" variant="primary"
                 >Add New Recipe</sl-button
               >
             </form>
           </div>
-          <div class="recipes-box">
+          <div class="info-table">
             <div
               class="empty"
               th:if="${recipes == null or #lists.size(recipes) == 0}"
             >
               <p>You don't have any recipes yet!</p>
             </div>
-            <div th:if="${#lists.size(recipes) > 0}">
-              <table id="homeRecipesTable">
+            <div class="wrapper" th:if="${#lists.size(recipes) > 0}">
+              <table class="recipes-table home-table" id="homeRecipesTable">
                 <tr>
-                  <th>Recipe Name</th>
-                  <th>Recipe Type</th>
-                  <th>Instructions</th>
-                  <th>Serves</th>
-                  <th>Weight</th>
+                  <th>Name</th>
+                  <th>Meal</th>
+                  <th># Serves</th>
+                  <th>Grams</th>
                 </tr>
                 <tr
                   method="get"
@@ -89,7 +90,6 @@
                   />
                   <td th:text="${recipe.recipeName}"></td>
                   <td th:text="${recipe.recipeType?.displayValue}"></td>
-                  <td th:text="${recipe.instructions}"></td>
                   <td th:text="${recipe.servings}"></td>
                   <td th:text="${recipe.totalWeight}"></td>
                 </tr>
@@ -102,32 +102,32 @@
         <div class="recipeViewPopup hidden"></div>
         <div class="overlay hidden"></div>
 
-        <section class="home-trip-section">
+        <section class="home-trip-section dashboard">
           <div class="title-box">
             <h2>Your Trips</h2>
             <form
               th:action="@{/home/{userId}/trip(userId=${user.id})}"
               method="post"
             >
-              <sl-button class="btn" type="submit" variant="success"
+              <sl-button class="add-btn" type="submit" variant="primary"
                 >Build A Trip</sl-button
               >
             </form>
           </div>
-          <div class="trips-box">
+          <div class="info-table">
             <div
               class="empty"
               th:if="${trips == null or #lists.size(trips) == 0}"
             >
               <p>You don't have any trips yet!</p>
             </div>
-            <div th:if="${#lists.size(trips) > 0}">
-              <table id="homeTripsTable">
+            <div class="wrapper" th:if="${#lists.size(trips) > 0}">
+              <table class="home-table" id="homeTripsTable">
                 <tr>
-                  <th>Trip Name</th>
-                  <th>Number Of Days</th>
-                  <th>Number of People</th>
-                  <th>Weight Per Person/Per Day</th>
+                  <th>Name</th>
+                  <th># / Days</th>
+                  <th># / People</th>
+                  <th>Grams Pppd</th>
                 </tr>
                 <tr
                   method="get"

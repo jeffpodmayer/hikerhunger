@@ -11,9 +11,9 @@
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- FOR RUNNING WITH SPRING -->
-    <!-- <link rel="stylesheet" type="text/css" href="/css/style.css" /> -->
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
     <!-- Running w/ Live Server -->
-    <link rel="stylesheet" type="text/css" href="../static/css/style.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="../static/css/style.css" /> -->
     <!-- SHOELACE -->
     <link
       rel="stylesheet"
@@ -33,8 +33,8 @@
   <body>
     <header class="main-header">
       <nav class="nav">
-        <!-- <img class="logo" src="/img/hikerhunger-logo.svg" /> -->
-        <img class="logo" src="../../static/img/hikerhunger-logo.svg" />
+        <img class="logo" src="/img/hikerhunger-logo.svg" />
+        <!-- <img class="logo" src="../../static/img/hikerhunger-logo.svg" /> -->
 
         <form th:action="@{/landing}" method="get">
           <sl-button
@@ -50,7 +50,7 @@
     </header>
     <div class="container">
       <div class="main">
-        <section class="home-recipe-section">
+        <section class="home-recipe-section dashboard">
           <div class="title-box">
             <h2>Your Recipes</h2>
             <form
@@ -62,15 +62,21 @@
               >
             </form>
           </div>
-          <div class="recipes-box">
+          <div class="info-table">
             <div
               class="empty"
               th:if="${recipes == null or #lists.size(recipes) == 0}"
             >
               <p>You don't have any recipes yet!</p>
             </div>
-            <div th:if="${#lists.size(recipes) > 0}">
-              <table id="homeRecipesTable">
+            <div class="wrapper" th:if="${#lists.size(recipes) > 0}">
+              <table class="recipes-table home-table" id="homeRecipesTable">
+                <tr>
+                  <th>Name</th>
+                  <th>Meal</th>
+                  <th># Serves</th>
+                  <th>Grams</th>
+                </tr>
                 <tr
                   method="get"
                   th:each="recipe : ${recipes}"
@@ -87,13 +93,6 @@
                   <td th:text="${recipe.servings}"></td>
                   <td th:text="${recipe.totalWeight}"></td>
                 </tr>
-                <tr>
-                  <th>Mac & Cheese</th>
-                  <th>Dinner</th>
-                  <!-- <th>Instructions</th> -->
-                  <th>2 / people</th>
-                  <th>454 / grams</th>
-                </tr>
               </table>
             </div>
           </div>
@@ -103,7 +102,7 @@
         <div class="recipeViewPopup hidden"></div>
         <div class="overlay hidden"></div>
 
-        <section class="home-trip-section">
+        <section class="home-trip-section dashboard">
           <div class="title-box">
             <h2>Your Trips</h2>
             <form
@@ -115,20 +114,20 @@
               >
             </form>
           </div>
-          <div class="trips-box">
+          <div class="info-table">
             <div
               class="empty"
               th:if="${trips == null or #lists.size(trips) == 0}"
             >
               <p>You don't have any trips yet!</p>
             </div>
-            <div th:if="${#lists.size(trips) > 0}">
-              <table id="homeTripsTable">
+            <div class="wrapper" th:if="${#lists.size(trips) > 0}">
+              <table class="home-table" id="homeTripsTable">
                 <tr>
-                  <th>Trip Name</th>
-                  <th>Number Of Days</th>
-                  <th>Number of People</th>
-                  <th>Weight Per Person/Per Day</th>
+                  <th>Name</th>
+                  <th># / Days</th>
+                  <th># / People</th>
+                  <th>Grams Pppd</th>
                 </tr>
                 <tr
                   method="get"

@@ -1,17 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
-    <title>Build Trip!</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script
       src="https://kit.fontawesome.com/783d090aa0.js"
       crossorigin="anonymous"
     ></script>
-    <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
-    <!-- <link rel="stylesheet" type="text/css" href="/css/style.css" /> -->
-    <link rel="stylesheet" type="text/css" href="/static/css/trip.css" />
-    <!-- <link rel="stylesheet" type="text/css" href="/css/trip.css" /> -->
+    <!-- <link rel="stylesheet" type="text/css" href="/static/css/style.css" /> -->
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
 
     <!-- SHOELACE -->
     <link
@@ -22,13 +19,18 @@
       type="module"
       src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/shoelace-autoloader.js"
     ></script>
+    <title>Build Your Trip!</title>
   </head>
   <body>
     <header class="main-header">
       <input type="hidden" id="tripId" th:value="${trip.tripId}" />
       <nav class="nav">
-        <img class="logo" src="../../static/img/hikerhunger-logo.svg" />
-        <!-- <img class="logo" src="/img/hikerhunger-logo.svg" /> -->
+        <!-- <img
+          class="logo"
+          alt="mountain logo"
+          src="../../static/img/hikerhunger-logo.svg"
+        /> -->
+        <img class="logo" alt="mountain logo" src="/img/hikerhunger-logo.svg" />
         <form th:action="@{/landing}" method="get">
           <sl-button
             class="logout-btn nav-btn"
@@ -70,7 +72,6 @@
               placeholder="Enter a number"
               size="medium"
               th:field="${trip.numOfDays}"
-              clearable
             ></sl-input>
             <sl-input
               id="numOfPeople"
@@ -83,7 +84,6 @@
               placeholder="Enter a number"
               size="medium"
               th:field="${trip.numOfPeople}"
-              clearable
             ></sl-input>
             <sl-textarea
               id="tripDetails"
@@ -96,34 +96,33 @@
             </sl-textarea>
 
             <div class="totalWeight">
-              <h3>Weight Per Person/Per Day</h3>
-              <div>
-                <p class="weight__label">Grams:</p>
-                <input
-                  th:field="${trip.gramsPerPersonPerDay}"
-                  class="weightInGrams"
-                  type="number"
-                  min="0"
-                  value="0"
-                  id="weightInGrams"
-                  readonly
-                />
-              </div>
-              <div>
-                <p class="weight__label">Pounds:</p>
-                <p id="weightInPounds" class="weightInPounds">0.0</p>
+              <h2>Weight Per Person/Per Day</h2>
+              <div class="weights">
+                <div class="weight-box">
+                  <label class="weight__label">Grams</label>
+                  <input
+                    th:field="${trip.gramsPerPersonPerDay}"
+                    class="weightInGrams"
+                    type="number"
+                    min="0"
+                    value="0"
+                    id="weightInGrams"
+                    readonly
+                  />
+                </div>
+                <div class="weight-box">
+                  <p class="weight__label">Pounds</p>
+                  <p id="weightInPounds" class="weightInPounds">0.0</p>
+                </div>
               </div>
             </div>
-
-            <hr />
-            <sl-button
-              variant="success"
-              class="save-trip-btn"
-              type="submit"
-              id="saveTripButton"
-              >Save Trip</sl-button
-            >
           </form>
+        </section>
+
+        <div class="trip-btn">
+          <sl-button form="tripForm" variant="primary" type="submit"
+            >Save Trip</sl-button
+          >
           <form
             th:action="@{/home/postDeleteTrip/{tripId}(tripId=${trip.tripId})}"
             method="post"
@@ -132,45 +131,47 @@
               class="delete-trip-btn"
               id="discardTripButton"
               type="submit"
-              variant="danger"
+              variant="warning"
               outline
               >Discard Trip</sl-button
             >
           </form>
-        </section>
-        <section class="trip-recipe-section">
-          <div id="tripRecipeSection">
-            <h2>Chosen Recipes for Your Trip:</h2>
-            <table id="tripRecipeTable">
-              <tr>
+        </div>
+
+        <section class="trip-recipe-section" id="tripRecipeSection">
+          <div class="trip-recipe-title-box">
+            <h2>Trip Recipes</h2>
+          </div>
+          <div class="trip-recipe-wrapper">
+            <table class="trip-recipe-table" id="tripRecipeTable">
+              <!-- <tr>
                 <th>Quantity</th>
                 <th>Recipe Name</th>
                 <th>Recipe Type</th>
-                <th>Instructions</th>
-                <th>Serves</th>
                 <th>Weight</th>
-                <th>Delete?</th>
-              </tr>
+              </tr> -->
             </table>
           </div>
         </section>
 
-        <hr />
-
         <section class="recipe-book-section">
-          <h3>Your Recipe Book</h3>
-          <div th:if="${recipes == null or #lists.size(recipes) == 0}">
-            You don't have any recipes yet!
+          <div class="trip-recipe-title-box">
+            <h2>Your Recipe Book</h2>
           </div>
-          <div th:if="${#lists.size(recipes) > 0}">
-            <table id="recipeTable">
+          <div
+            class="empty"
+            th:if="${recipes == null or #lists.size(recipes) == 0}"
+          >
+            <p>You don't have any recipes yet!</p>
+          </div>
+          <div class="wrapper" th:if="${#lists.size(recipes) > 0}">
+            <table class="recipe-book-table" id="recipeTable">
               <tr>
                 <th>Add</th>
                 <th>Recipe Name</th>
                 <th>Recipe Type</th>
-                <th>Instructions</th>
                 <th>Serves</th>
-                <th>Weight</th>
+                <th>Weight in Grams</th>
               </tr>
               <tr
                 method="get"
@@ -185,9 +186,8 @@
                     th:value="${recipe.recipeId}"
                   />
                 </td>
-                <td th:text="${recipe.recipeName}"></td>
+                <td class="recipe-name" th:text="${recipe.recipeName}"></td>
                 <td th:text="${recipe.recipeType?.displayValue}"></td>
-                <td th:text="${recipe.instructions}"></td>
                 <td th:text="${recipe.servings}"></td>
                 <td th:text="${recipe.totalWeight}"></td>
               </tr>
@@ -197,5 +197,10 @@
         <script src="/js/trip.js"></script>
       </div>
     </div>
+    <footer class="footer">
+      <p id="copyright" class="copyright text">
+        Copyright &copy; 2024 by Jeff Podmayer
+      </p>
+    </footer>
   </body>
 </html>

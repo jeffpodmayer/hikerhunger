@@ -28,8 +28,12 @@
       />
       <input type="hidden" id="userIdInput" th:value="${user.id}" />
       <nav class="nav">
-        <!-- <img class="logo" src="../../static/img/hikerhunger-logo.svg" /> -->
-        <img class="logo" src="/img/hikerhunger-logo.svg" />
+        <!-- <img
+          class="logo"
+          alt="mountain logo"
+          src="../../static/img/hikerhunger-logo.svg"
+        /> -->
+        <img class="logo" alt="mountain logo" src="/img/hikerhunger-logo.svg" />
         <form th:action="@{/landing}" method="get">
           <sl-button
             class="logout-btn nav-btn"
@@ -171,8 +175,10 @@
                 <td class="unit" th:text="${ingredient.unit}"></td>
                 <td
                   class="weight weightInput"
-                  th:text="${ingredient.weightInGrams} / grams"
-                ></td>
+                  th:text="${ingredient.weightInGrams + ' / grams'}"
+                >
+                  / grams
+                </td>
                 <td class="trash_icon">
                   <sl-icon name="trash3"></sl-icon>
                 </td>

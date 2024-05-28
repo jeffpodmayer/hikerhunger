@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
     <title>Create Recipe</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- <link rel="stylesheet" type="text/css" href="/static/css/style.css" /> -->
     <link rel="stylesheet" type="text/css" href="/css/style.css" />
     <script
@@ -23,8 +25,12 @@
       <input type="hidden" id="recipeIdInput" th:value="${recipeId}" />
       <input type="hidden" id="userIdInput" th:value="${user.id}" />
       <nav class="nav">
-        <!-- <img class="logo" src="../../static/img/hikerhunger-logo.svg" /> -->
-        <img class="logo" src="/img/hikerhunger-logo.svg" />
+        <img
+          class="logo"
+          alt="mountain logo"
+          src="../../static/img/hikerhunger-logo.svg"
+        />
+        <!-- <img class="logo" alt="mountain logo" src="/img/hikerhunger-logo.svg" /> -->
         <form th:action="@{/landing}" method="get">
           <sl-button
             class="logout-btn nav-btn"

@@ -12,56 +12,6 @@ const numOfPeopleAlert = document.getElementById("numOfPeopleAlert");
 const numOfDaysAlert = document.getElementById("numOfDaysAlert");
 const allRecipes = [];
 
-// checkNumberAlert
-[numOfPeopleInput, numOfDaysInput].forEach((input) => {
-  input.addEventListener("keydown", function (event) {
-    // Check if the key pressed is the "-" key
-    if (
-      event.key === "-" ||
-      event.key === "Minus" ||
-      event.key === "Subtract"
-    ) {
-      // Prevent the default action (typing the "-" key)
-      event.preventDefault();
-      // Show alert message
-      if (input === numOfPeopleInput) {
-        numOfPeopleAlert.textContent = "Please enter a non-negative number.";
-        numOfPeopleAlert.style.display = "block";
-      } else {
-        numOfDaysAlert.textContent = "Please enter a non-negative number.";
-        numOfDaysAlert.style.display = "block";
-      }
-    } else {
-      // Hide alert message
-      if (input === numOfPeopleInput) {
-        numOfPeopleAlert.style.display = "none";
-      } else {
-        numOfDaysAlert.style.display = "none";
-      }
-    }
-  });
-
-  input.addEventListener("input", function (event) {
-    if (input.value < 0) {
-      if (input === numOfPeopleInput) {
-        numOfPeopleAlert.textContent = "Please enter a non-negative number.";
-        numOfPeopleAlert.style.display = "block";
-        numOfPeopleInput.value = 0;
-      } else {
-        numOfDaysAlert.textContent = "Please enter a non-negative number.";
-        numOfDaysAlert.style.display = "block";
-        numOfDaysInput.value = 0;
-      }
-    } else {
-      if (input === numOfPeopleInput) {
-        numOfPeopleAlert.style.display = "none";
-      } else {
-        numOfDaysAlert.style.display = "none";
-      }
-    }
-  });
-});
-
 // create an array of all recipes -  using DOM Content loaded to create a fetch GET request and add the response to the array
 document.addEventListener("DOMContentLoaded", async function () {
   try {
@@ -154,13 +104,12 @@ const renderRecipe = (recipe) => {
   tr.setAttribute("data-recipe-id", recipe.recipeId);
 
   const recipeHTML = `
-  <td><sl-icon name="dash-square" class="minus_icon"></sl-icon>
-  <input type="number" class="recipeCountInput" id="recipeCounter" min="1" step="1" value="1" readonly><sl-icon name="plus-square" class="plus_icon"></sl-icon></i></td>
-  <td class="recipeName"><p>${recipe.recipeName}</p></td>
-  <td class="type"><p>${recipe.recipeType}</p></td>
-  <td class="instructions"><p>${recipe.instructions}</p></td>
-  <td class="servings"><p>${recipe.servings}</p></td>
-  <td class="weight"><p>${recipe.totalWeight}</p></td>
+  <td class="center-content"><sl-icon name="dash" class="minus_icon"></sl-icon>
+  <input type="number" class="recipeCountInput" id="recipeCounter" min="1" step="1" value="1" readonly><sl-icon name="plus" class="plus_icon"></sl-icon></td>
+  <td class="recipeName">${recipe.recipeName}</td>
+  <td class="type">${recipe.recipeType}</td>
+  <td class="servings hidden-column">${recipe.servings}</td>
+  <td class="weight">${recipe.totalWeight} / grams</td>
   <td class="trash_icon"><sl-icon name="trash3"></sl-icon></td>
      `;
 
@@ -361,7 +310,7 @@ function updateDOMRecipeRow(row, servings, totalWeight) {
   const totalWeightElement = row.querySelector(".weight");
 
   servingsElement.textContent = servings;
-  totalWeightElement.textContent = totalWeight;
+  totalWeightElement.textContent = totalWeight + " / grams";
 }
 
 async function updateRecipeInDatabase(tripId, recipeId, recipe) {

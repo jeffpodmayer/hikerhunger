@@ -107,7 +107,10 @@ const renderRecipe = (recipe) => {
   <td class="center-content"><sl-icon name="dash" class="minus_icon"></sl-icon>
   <input type="number" class="recipeCountInput" id="recipeCounter" min="1" step="1" value="1" readonly><sl-icon name="plus" class="plus_icon"></sl-icon></td>
   <td class="recipeName">${recipe.recipeName}</td>
-  <td class="type">${recipe.recipeType}</td>
+  <td class="type">${
+    recipe.recipeType.slice(0, 1).toUpperCase() +
+    recipe.recipeType.slice(1).toLowerCase()
+  }</td>
   <td class="servings hidden-column">${recipe.servings}</td>
   <td class="weight">${recipe.totalWeight} / grams</td>
   <td class="trash_icon"><sl-icon name="trash3"></sl-icon></td>

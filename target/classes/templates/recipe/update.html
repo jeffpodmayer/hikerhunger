@@ -175,8 +175,10 @@
                 <td class="unit" th:text="${ingredient.unit}"></td>
                 <td
                   class="weight weightInput"
-                  th:text="${ingredient.weightInGrams} / grams"
-                ></td>
+                  th:text="${ingredient.weightInGrams + ' / grams'}"
+                >
+                  / grams
+                </td>
                 <td class="trash_icon">
                   <sl-icon name="trash3"></sl-icon>
                 </td>

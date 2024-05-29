@@ -67,12 +67,12 @@
             </form>
           </div>
           <div class="info-table">
-            <div
+            <!-- <div
               class="empty"
               th:if="${recipes == null or #lists.size(recipes) == 0}"
             >
               <p>You don't have any recipes yet!</p>
-            </div>
+            </div> -->
             <div class="wrapper" th:if="${#lists.size(recipes) > 0}">
               <table class="recipes-table home-table" id="homeRecipesTable">
                 <tr>
@@ -96,6 +96,13 @@
                   <td th:text="${recipe.recipeType?.displayValue}"></td>
                   <td th:text="${recipe.servings}"></td>
                   <td th:text="${recipe.totalWeight}"></td>
+                </tr>
+                <tr>
+                  <input type="hidden" value="2" class="" />
+                  <td>Mac and Cheese</td>
+                  <td>Dinner</td>
+                  <td>3</td>
+                  <td>470</td>
                 </tr>
               </table>
             </div>
@@ -164,7 +171,7 @@
       </div>
       <footer class="footer">
         <p id="copyright" class="copyright text">
-          Copyright &copy; 2024 by Jeff Podmayer.
+          Copyright &copy; 2024 by Jeff Podmayer
         </p>
       </footer>
     </div>

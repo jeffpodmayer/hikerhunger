@@ -38,7 +38,7 @@ tr {
 }
 
 td {
-  padding: 10px;
+  padding: 5px;
   text-align: center;
 }
 
@@ -124,11 +124,11 @@ td {
 }
 
 .recipes-table td:nth-child(3),
-.recipe-book-table td:nth-child(3) {
+.recipe-book-table td:nth-child(3),
+.trip-recipe-table td:nth-child(3) {
   /* CSS styles for the specific cell */
   background-color: lightgray;
   border-radius: 25px;
-  margin: 5px;
 }
 
 .home-table tr:first-child,

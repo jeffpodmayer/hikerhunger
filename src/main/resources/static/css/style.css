@@ -490,6 +490,20 @@ sl-icon:hover {
   z-index: 10;
   border: white 1px solid;
 }
+.recipeViewPopup {
+  width: 60%;
+  gap: 10px;
+}
+
+.icon-popup {
+  color: white;
+  justify-self: end;
+  align-items: center;
+}
+
+.popup-edit-icon {
+  margin-bottom: 10px;
+}
 
 .overlay,
 .edit-overlay {

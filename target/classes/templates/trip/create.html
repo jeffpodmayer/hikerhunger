@@ -7,8 +7,8 @@
       src="https://kit.fontawesome.com/783d090aa0.js"
       crossorigin="anonymous"
     ></script>
-    <!-- <link rel="stylesheet" type="text/css" href="/static/css/style.css" /> -->
-    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="/css/style.css" /> -->
 
     <!-- SHOELACE -->
     <link
@@ -25,12 +25,12 @@
     <header class="main-header">
       <input type="hidden" id="tripId" th:value="${trip.tripId}" />
       <nav class="nav">
-        <!-- <img
+        <img
           class="logo"
           alt="mountain logo"
           src="../../static/img/hikerhunger-logo.svg"
-        /> -->
-        <img class="logo" alt="mountain logo" src="/img/hikerhunger-logo.svg" />
+        />
+        <!-- <img class="logo" alt="mountain logo" src="/img/hikerhunger-logo.svg" /> -->
         <form th:action="@{/landing}" method="get">
           <sl-button
             class="logout-btn nav-btn"
@@ -143,14 +143,7 @@
             <h2>Trip Recipes</h2>
           </div>
           <div class="trip-recipe-wrapper">
-            <table class="trip-recipe-table" id="tripRecipeTable">
-              <!-- <tr>
-                <th>Quantity</th>
-                <th>Recipe Name</th>
-                <th>Recipe Type</th>
-                <th>Weight</th>
-              </tr> -->
-            </table>
+            <table class="trip-recipe-table" id="tripRecipeTable"></table>
           </div>
         </section>
 
@@ -158,12 +151,12 @@
           <div class="trip-recipe-title-box">
             <h2>Your Recipe Book</h2>
           </div>
-          <div
+          <!-- <div
             class="empty"
             th:if="${recipes == null or #lists.size(recipes) == 0}"
           >
             <p>You don't have any recipes yet!</p>
-          </div>
+          </div> -->
           <div class="wrapper" th:if="${#lists.size(recipes) > 0}">
             <table class="recipe-book-table" id="recipeTable">
               <tr>
@@ -190,6 +183,23 @@
                 <td th:text="${recipe.recipeType?.displayValue}"></td>
                 <td th:text="${recipe.servings}"></td>
                 <td th:text="${recipe.totalWeight}"></td>
+              </tr>
+              <tr
+                method="get"
+                th:each="recipe : ${recipes}"
+                th:attr=" data-recipe-id=${recipe.recipeId}"
+              >
+                <td>
+                  <input
+                    type="checkbox"
+                    id="recipeCheckbox"
+                    class="recipeCheckbox"
+                  />
+                </td>
+                <td class="recipe-name">Mac and Cheese</td>
+                <td>Dinner</td>
+                <td>3</td>
+                <td>370</td>
               </tr>
             </table>
           </div>

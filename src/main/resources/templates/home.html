@@ -11,9 +11,9 @@
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- FOR RUNNING WITH SPRING -->
-    <!-- <link rel="stylesheet" type="text/css" href="/css/style.css" /> -->
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
     <!-- Running w/ Live Server -->
-    <link rel="stylesheet" type="text/css" href="../static/css/style.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="../static/css/style.css" /> -->
     <!-- SHOELACE -->
     <link
       rel="stylesheet"
@@ -33,12 +33,12 @@
   <body>
     <header class="main-header">
       <nav class="nav">
-        <img
+        <!-- <img
           class="logo"
           alt="mountain logo"
           src="../../static/img/hikerhunger-logo.svg"
-        />
-        <!-- <img class="logo" alt="mountain logo" src="/img/hikerhunger-logo.svg" /> -->
+        /> -->
+        <img class="logo" alt="mountain logo" src="/img/hikerhunger-logo.svg" />
 
         <form th:action="@{/landing}" method="get">
           <sl-button
@@ -97,21 +97,21 @@
                   <td th:text="${recipe.servings}"></td>
                   <td th:text="${recipe.totalWeight}"></td>
                 </tr>
-                <tr>
+                <!-- <tr>
                   <input type="hidden" value="2" class="" />
                   <td>Mac and Cheese</td>
                   <td>Dinner</td>
                   <td>3</td>
                   <td>470</td>
-                </tr>
+                </tr> -->
               </table>
             </div>
           </div>
         </section>
 
         <!-- ////////////// RECIPE POP_UP WINDOW //////////////////////// -->
-        <div class="recipeViewPopup modal-form">
-          <div class="icon-popup">
+        <div class="hidden recipeViewPopup modal-form">
+          <!-- <div class="icon-popup">
             <sl-icon
               class="edit_icon popup-edit-icon"
               name="pencil-square"
@@ -119,38 +119,46 @@
             <sl-icon name="x" class="close-modal"></sl-icon>
           </div>
           <input type="hidden" class="recipe-id" ${data.recipeId} />
-          <h2>Macaroni & Cheese</h2>
-          <p>Dinner</p>
-          <p>Serves: 3 / people</p>
-          <h3>Weight:</h3>
-          <p>300 / grams</p>
-
-          <h3>Instructions:</h3>
-          <p>Step 1: Boil Water, Step 2: Add Pasta</p>
-          <h3>Ingredients</h3>
-          <table class="ingredient-table">
-            <!-- <thead>
-              <tr>
-                <th>Name</th>
-                <th>Quantity</th>
-                <th>Unit</th>
-                <th>Weight</th>
-                <th>Notes</th>
-              </tr>
-            </thead> -->
-            <tbody>
-              <tr>
-                <td class="ingredientName">Macaroni</td>
-                <td class="quantity">3</td>
-                <td class="unit">boxes</td>
-                <td class="weight weightInput">370 / grams</td>
-                <td>Annies Mac and Cheese</td>
-              </tr>
-              `
-            </tbody>
-          </table>
+          <div class="recipe-popup-title">
+            <h1>Macaroni & Cheese</h1>
+            <p class="recipe-popup-meal">Dinner</p>
+          </div>
+          <div>
+            <h3>Serves:</h3>
+            <p>3 / people</p>
+          </div>
+          <div>
+            <h3>Weight:</h3>
+            <p>300 / grams</p>
+          </div>
+          <div>
+            <h3>Instructions:</h3>
+            <p>Step 1: Boil Water, Step 2: Add Pasta</p>
+          </div>
+          <div class="recipe-popup-table">
+            <h2>Ingredients</h2>
+            <table class="ingredient-table"> -->
+          <!-- <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Quantity</th>
+                  <th>Unit</th>
+                  <th>Weight</th>
+                  <th>Notes</th>
+                </tr>
+              </thead> -->
+          <!-- <tbody>
+                <tr>
+                  <td class="ingredientName">Macaroni</td>
+                  <td class="quantity">3</td>
+                  <td class="unit">boxes</td>
+                  <td class="weight weightInput">370 / grams</td>
+                  <td>Annies Mac</td>
+                </tr>
+              </tbody>
+            </table>
+          </div> -->
         </div>
-        <div class="overlay"></div>
 
         <section class="home-trip-section dashboard">
           <div class="title-box">
@@ -213,6 +221,7 @@
           Copyright &copy; 2024 by Jeff Podmayer
         </p>
       </footer>
+      <div class="overlay hidden"></div>
     </div>
     <script src="/js/home.js"></script>
   </body>

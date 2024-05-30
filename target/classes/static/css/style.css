@@ -359,7 +359,7 @@ sl-button::part(base) {
 .ingredient-table tr,
 .trip-recipe-table tr {
   background-color: #fffdd0;
-  grid-template-columns: 170px 1fr 1fr 1fr auto auto;
+  grid-template-columns: 170px 1fr 120px 1fr auto auto;
   color: black;
 }
 
@@ -405,6 +405,10 @@ sl-button::part(base) {
   grid-template-rows: auto 1fr;
   background-color: #fffdd0;
 }
+
+.recipe-book-table tr {
+  padding: 5px;
+}
 .recipeCountInput {
   width: 25px;
   background-color: #fffdd0;
@@ -434,7 +438,7 @@ sl-icon:hover {
 
 /* CLASSES TO MAKE MODAL WORK & STYLES */
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .close-modal {
@@ -485,6 +489,52 @@ sl-icon:hover {
   box-shadow: 0 3rem 5rem rgba(0, 0, 0, 0.3);
   z-index: 10;
   border: white 1px solid;
+}
+.recipeViewPopup {
+  gap: 10px;
+}
+.recipeViewPopup p {
+  padding-top: 5px;
+}
+
+.recipe-popup-title {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: solid 1px white;
+  margin-bottom: 10px;
+}
+
+.recipe-popup-meal {
+  background-color: lightgray;
+  width: 75px;
+  text-align: center;
+  border-radius: 25px;
+  color: black;
+  height: 29px;
+}
+
+.recipe-popup-table {
+  margin-top: 20px;
+}
+
+.recipe-popup-table h2 {
+  margin-bottom: 10px;
+  border-bottom: white 1px solid;
+}
+
+.recipe-popup-table .ingredientName {
+  text-align: left;
+  padding-left: 15px;
+}
+
+.icon-popup {
+  color: white;
+  justify-self: end;
+  align-items: center;
+}
+
+.popup-edit-icon {
+  margin-bottom: 10px;
 }
 
 .overlay,

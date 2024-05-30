@@ -86,42 +86,51 @@ const renderRecipePopup = function (data) {
     .map(
       (ingredient) => `
           <tr>
-              <td>${ingredient.ingredientName}</td>
-              <td>${ingredient.quantity}</td>
-              <td>${ingredient.unit}</td>
-              <td>${ingredient.weightInGrams}</td>
+              <td class="ingredientName">${ingredient.ingredientName}</td>
+              <td class="quantity">${ingredient.quantity}</td>
+              <td class="unit">${ingredient.unit}</td>
+              <td class="weight weightInput">${ingredient.weightInGrams}/grams</td>
               <td>${ingredient.notes}</td>
           </tr>`
     )
     .join("");
 
   const tableHTML = `
-          <table>
-              <thead>
-                  <tr>
-                      <th>Name</th>
-                      <th>Quantity</th>
-                      <th>Unit</th>
-                      <th>Weight</th>
-                      <th>Notes</th>
-                  </tr>
-              </thead>
+          <h2>Ingredinents</h2>
+          <table class="ingredient-table">
               <tbody>
                   ${ingredientsHTML}
               </tbody>
           </table>`;
 
   const markupHTML = `
-    <button type="button" class="close-modal">&times;</button>
-    <button class="edit_icon"><i class="fa-solid fa-pencil"></i></button>
+    <div class="icon-popup">
+         <sl-icon class="edit_icon popup-edit-icon"
+           name="pencil-square"
+        ></sl-icon>
+        <sl-icon name="x" class="close-modal"></sl-icon>
+    </div>
     <input type="hidden" class="recipe-id" ${data.recipeId}/>
-    <h2>${data.recipeName}</h2>
-    <p>Recipe Type: ${data.recipeType}</p>
-    <p>Instructions: ${data.instructions}</p>
-    <p>Serves: ${data.servings}</p>
-    <p>Weight in Grams: ${data.totalWeight}</p>
-    <h3>Ingredients</h3>
-    <p>${tableHTML}</p>`;
+    <div class="recipe-popup-title"> 
+      <h1>${data.recipeName}</h1>
+      <p class="recipe-popup-meal">${
+        data.recipeType.slice(0, 1).toUpperCase() +
+        data.recipeType.slice(1).toLowerCase()
+      }</p>
+    </div>
+    <div>
+     <h3>Serves:</h3> 
+     <p>${data.servings} / people</p>
+    </div>
+    <div>
+      <h3>Weight in Grams:</h3> 
+     <p>${data.totalWeight} / grams</p>
+    </div>
+    <div>
+      <h3>Instructions:</h3> 
+     <p>${data.instructions}</p>
+    </div>
+    <div class="recipe-popup-table">${tableHTML}</div>`;
 
   recipePopup.innerHTML = markupHTML;
 

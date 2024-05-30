@@ -438,7 +438,7 @@ sl-icon:hover {
 
 /* CLASSES TO MAKE MODAL WORK & STYLES */
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .close-modal {
@@ -491,8 +491,40 @@ sl-icon:hover {
   border: white 1px solid;
 }
 .recipeViewPopup {
-  width: 60%;
   gap: 10px;
+}
+.recipeViewPopup p {
+  padding-top: 5px;
+}
+
+.recipe-popup-title {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: solid 1px white;
+  margin-bottom: 10px;
+}
+
+.recipe-popup-meal {
+  background-color: lightgray;
+  width: 75px;
+  text-align: center;
+  border-radius: 25px;
+  color: black;
+  height: 29px;
+}
+
+.recipe-popup-table {
+  margin-top: 20px;
+}
+
+.recipe-popup-table h2 {
+  margin-bottom: 10px;
+  border-bottom: white 1px solid;
+}
+
+.recipe-popup-table .ingredientName {
+  text-align: left;
+  padding-left: 15px;
 }
 
 .icon-popup {

@@ -96,7 +96,7 @@ const renderRecipePopup = function (data) {
     .join("");
 
   const tableHTML = `
-          <h2>Ingredinents</h2>
+          <h2>Ingredients</h2>
           <table class="ingredient-table">
               <tbody>
                   ${ingredientsHTML}
@@ -140,17 +140,9 @@ const renderRecipePopup = function (data) {
 };
 
 const renderTripPopup = function (data) {
-  console.log(data);
   const tableHTML = `
-  <table>
-    <thead>
-      <tr>
-        <th>Quantity</th>
-        <th>Name</th>
-        <th>Recipe Type</th>
-        <th>Weight</th>
-      </tr>
-    </thead>
+  <table class="trip-recipe-popup-table">
+    <h2>Trip Recipes</h2>
     <tbody>
       ${data.tripRecipes
         .map(
@@ -158,8 +150,11 @@ const renderTripPopup = function (data) {
           <tr>
             <td>${tripRecipe.recipeQuantity}</td>
             <td>${tripRecipe.recipe.recipeName}</td> 
-            <td>${tripRecipe.recipe.recipeType}</td> 
-            <td>${tripRecipe.totalWeight}</td>
+            <td>${
+              tripRecipe.recipe.recipeType.slice(0, 1).toUpperCase() +
+              tripRecipe.recipe.recipeType.slice(1).toLowerCase()
+            }</td> 
+            <td>${tripRecipe.totalWeight} / grams</td>
           </tr>
         `
         )
@@ -168,16 +163,30 @@ const renderTripPopup = function (data) {
   </table>`;
 
   const markupHTML = `
-  <button type="button" class="close-modal">&times;</button>
-  <button class="edit_icon"><i class="fa-solid fa-pencil"></i></button>
+  <div class="icon-popup">
+    <sl-icon class="edit_icon popup-edit-icon"
+    name="pencil-square"
+    ></sl-icon>
+    <sl-icon name="x" class="close-modal"></sl-icon>
+  </div>
   <input type="hidden" class="trip-id" ${data.tripId}/>
-  <h2>${data.tripName}</h2>
-  <p>Number of days: ${data.numOfDays}</p>
-  <p>Weight Per Person/Per Day: ${data.gramsPerPersonPerDay}</p>
-  <p>Number of People: ${data.numOfPeople}</p>
-  <p>Details: ${data.tripDetails}</p>
-  <h3>Recipes</h3>
-  <p>${tableHTML}</p>`;
+  <div class="recipe-popup-title">
+    <h1>${data.tripName}</h1>
+    <p class="recipe-popup-meal">${data.numOfDays} / days</p>
+  </div>
+  <div>
+    <h3>Weight Per Person/Per Day</h3>
+    <p>${data.gramsPerPersonPerDay} / grams</p>
+  </div>
+  <div>
+    <h3>Number of People:</h3>
+    <p>${data.numOfPeople} / people</p>
+  </div>
+  <div>
+    <h3>Trip Details:</h3>
+    <p>${data.tripDetails}</p>
+  </div>
+  <div class="recipe-popup-table">${tableHTML}</div>`;
 
   tripPopup.innerHTML = markupHTML;
 

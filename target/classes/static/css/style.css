@@ -359,7 +359,7 @@ sl-button::part(base) {
 .ingredient-table tr,
 .trip-recipe-table tr {
   background-color: #fffdd0;
-  grid-template-columns: 170px 1fr 120px 1fr auto auto;
+  grid-template-columns: 150px auto 120px auto 170px 60px;
   color: black;
 }
 
@@ -373,6 +373,14 @@ sl-button::part(base) {
 
 .ingredient-table .unit {
   text-align: left;
+}
+
+.ingredient-table .trash_icon {
+  justify-self: end;
+}
+
+.ingredient-table .edit_icon {
+  justify-self: start; /* Aligns the icon to the left */
 }
 
 /* CREATE AND EDIT TRIP PAGE */
@@ -429,11 +437,21 @@ sl-icon {
 }
 
 sl-icon:hover {
-  background-color: rgb(202, 63, 63);
   border: white 1px solid;
   padding: 4px;
   border-radius: 2px;
+  color: white;
   cursor: pointer;
+}
+
+sl-icon.trash_icon:hover {
+  background-color: rgb(202, 63, 63);
+}
+
+sl-icon.edit_icon:hover,
+sl-icon.plus_icon:hover,
+sl-icon.minus_icon:hover {
+  background-color: #1274c4;
 }
 
 /* CLASSES TO MAKE MODAL WORK & STYLES */
@@ -490,27 +508,35 @@ sl-icon:hover {
   z-index: 10;
   border: white 1px solid;
 }
-.recipeViewPopup {
+.recipeViewPopup,
+.tripViewPopup {
   gap: 10px;
 }
 .recipeViewPopup p {
   padding-top: 5px;
 }
 
+.recipe-popup-title p {
+  padding-top: 5px;
+  margin-bottom: 10px;
+}
+
 .recipe-popup-title {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   border-bottom: solid 1px white;
   margin-bottom: 10px;
 }
 
-.recipe-popup-meal {
+.recipe-popup-meal,
+.trip-recipe-popup-table td:nth-child(3) {
   background-color: lightgray;
-  width: 75px;
+  width: 100px;
   text-align: center;
   border-radius: 25px;
   color: black;
-  height: 29px;
+  height: 28px;
 }
 
 .recipe-popup-table {
@@ -527,6 +553,13 @@ sl-icon:hover {
   padding-left: 15px;
 }
 
+.recipe-popup-table td:nth-child(5) {
+  grid-column: span 2;
+}
+
+.trip-recipe-table td:nth-child(3) {
+  grid-column: span 2;
+}
 .icon-popup {
   color: white;
   justify-self: end;
@@ -535,6 +568,16 @@ sl-icon:hover {
 
 .popup-edit-icon {
   margin-bottom: 10px;
+}
+
+.trip-recipe-popup-table tr {
+  grid-template-columns: 50px 200px 1fr 1fr;
+}
+.trip-recipe-popup-table tr:hover {
+  cursor: default;
+  border: none;
+  transform: none;
+  opacity: 1;
 }
 
 .overlay,

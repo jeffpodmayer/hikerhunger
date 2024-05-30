@@ -67,12 +67,12 @@
             </form>
           </div>
           <div class="info-table">
-            <!-- <div
+            <div
               class="empty"
               th:if="${recipes == null or #lists.size(recipes) == 0}"
             >
               <p>You don't have any recipes yet!</p>
-            </div> -->
+            </div>
             <div class="wrapper" th:if="${#lists.size(recipes) > 0}">
               <table class="recipes-table home-table" id="homeRecipesTable">
                 <tr>
@@ -206,7 +206,45 @@
               </table>
             </div>
           </div>
-          <div class="tripViewPopup hidden"></div>
+          <div class="tripViewPopup modal-form hidden">
+            <!-- <div class="icon-popup">
+              <sl-icon
+                class="edit_icon popup-edit-icon"
+                name="pencil-square"
+              ></sl-icon>
+              <sl-icon name="x" class="close-modal"></sl-icon>
+            </div>
+            <input type="hidden" class="trip-id" ${data.tripId} />
+            <div class="recipe-popup-title">
+              <h1>Washington Backpacking</h1>
+              <p class="recipe-popup-meal">5 / days</p>
+            </div>
+            <div>
+              <h3>Weight Per Person/Per Day</h3>
+              <p>300 / grams</p>
+            </div>
+            <div>
+              <h3>Number of People:</h3>
+              <p>3 / people</p>
+            </div>
+            <div>
+              <h3>Trip Details:</h3>
+              <p>5 Days backpacking in the Pasayten</p>
+            </div>
+            <div class="recipe-popup-table">
+              <h2>Trip Recipes</h2>
+              <table class="trip-recipe-popup-table">
+                <tbody>
+                  <tr>
+                    <td>3</td>
+                    <td>Macaroni & Cheese</td>
+                    <td>Dinner</td>
+                    <td>300 / grams</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div> -->
+          </div>
         </section>
 
         <!--[if lt IE 7]>

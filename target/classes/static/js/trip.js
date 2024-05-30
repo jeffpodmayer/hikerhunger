@@ -113,7 +113,7 @@ const renderRecipe = (recipe) => {
   }</td>
   <td class="servings hidden-column">${recipe.servings}</td>
   <td class="weight">${recipe.totalWeight} / grams</td>
-  <td class="trash_icon"><sl-icon name="trash3"></sl-icon></td>
+  <td class="trash_icon"><sl-icon class="trash_icon" name="trash3"></sl-icon></td>
      `;
 
   tr.innerHTML = recipeHTML;

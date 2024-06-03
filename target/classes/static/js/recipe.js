@@ -21,6 +21,10 @@ const userId = +id;
 const labelWeightInGrams = document.querySelector(`.weightInGrams`);
 const labelWeightInPounds = document.querySelector(`.weightInPounds`);
 
+document.addEventListener("DOMContentLoaded", () => {
+  calculateTotalWeight();
+});
+
 ////////////////// FUNCTIONS /////////////////////////////
 const submitAddIngredient = async function () {
   const ingredientData = {

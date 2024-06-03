@@ -279,7 +279,6 @@ public class TripController {
             List<Recipe> allRecipes = user.getRecipes();
             List<TripRecipe> tripRecipes = trip.getTripRecipes();
 
-            // Filter recipes to include only non-deleted recipes associated with the trip
             List<Recipe> recipes = allRecipes.stream()
                     .filter(recipe -> !recipe.isDeleted() || tripRecipes.stream().anyMatch(tr -> tr.getRecipe().equals(recipe)))
                     .collect(Collectors.toList());

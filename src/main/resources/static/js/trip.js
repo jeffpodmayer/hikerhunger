@@ -6,17 +6,8 @@ let weightInGrams = document.getElementById("weightInGrams");
 let weightInPounds = document.getElementById("weightInPounds");
 let numOfDays = document.getElementById("numOfDays");
 let numberOfPeople = document.getElementById("numOfPeople");
-const numOfPeopleInput = document.getElementById("numOfPeople");
-const numOfDaysInput = document.getElementById("numOfDays");
-const numOfPeopleAlert = document.getElementById("numOfPeopleAlert");
-const numOfDaysAlert = document.getElementById("numOfDaysAlert");
 const allRecipes = [];
 
-document.addEventListener("DOMContentLoaded", () =>
-  calculateWeightPerPersonPerDay()
-);
-
-// create an array of all recipes -  using DOM Content loaded to create a fetch GET request and add the response to the array
 document.addEventListener("DOMContentLoaded", async function () {
   try {
     const response = await fetch(`/home/fetchAllRecipes`);
@@ -27,7 +18,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     recipesData.forEach((recipe) => {
       allRecipes.push(recipe);
     });
-    console.log("All recipes:", allRecipes);
   } catch (error) {
     console.error("Error:", error);
   }
@@ -43,7 +33,7 @@ tripRecipeTable.addEventListener("click", function (event) {
 
 tripRecipeTable.addEventListener("click", handlePlusMinusIconClick);
 
-///// HANDLE CHECKBOX CLICK
+// HANDLE CHECKBOX CLICK
 recipeTable.addEventListener("change", async function (event) {
   if (event.target.classList.contains("recipeCheckbox")) {
     const recipeId = parseInt(
@@ -62,11 +52,7 @@ recipeTable.addEventListener("change", async function (event) {
         );
         renderRecipe(recipeToUpdate);
         calculateWeightPerPersonPerDay();
-        // calculate and update the new recipe
-        // .filter method to filter recipes related to that trip
         await saveRecipeToTrip(recipeId, recipeToUpdate, tripId);
-        console.log(allRecipes);
-        // updateRecipe(tripId, recipeId, recipe);
       } catch (error) {
         console.error("Error:", error);
       }
@@ -97,7 +83,6 @@ numberOfPeople.addEventListener("input", async () => {
       await updateRecipeInDatabase(tripId, recipeId, recipe);
     }
   }
-  console.log(allRecipes);
   calculateWeightPerPersonPerDay();
 });
 
@@ -176,16 +161,6 @@ function deleteOneRecipeFromTrip(recipeId) {
     },
   });
   calculateWeightPerPersonPerDay();
-  console.log("One recipe deleted.");
-  // .then((response) => {
-  //   if (response.ok) {
-  //   } else {
-  //     throw new Error("Failed to delete recipe from trip");
-  //   }
-  // })
-  // .catch((error) => {
-  //   console.error("Error:", error);
-  // });
 }
 
 function handlePlusMinusIconClick(event) {
@@ -228,28 +203,15 @@ const calculateWeightPerPersonPerDay = () => {
   const gramsToPounds = 0.00220462;
 
   recipeRows.forEach((recipeRow) => {
-    // Get the recipe count from the row
     const recipeCountInput = recipeRow.querySelector(".recipeCountInput");
     const recipeCount = +recipeCountInput.value;
-
-    // Get the weight of the recipe from the row
     const gramsCell = recipeRow.querySelector(".weight");
     const weightInGrams = parseFloat(gramsCell.textContent.trim());
-    // console.log("WeightInGrams:" + weightInGrams);
 
-    // Update total weight by multiplying recipe weight by recipe count
     totalWeight += weightInGrams * recipeCount;
-    // console.log("TotalWeight:" + totalWeight);
   });
-  // console.log(
-  //   "NumOfPeople:" + numberOfPeople.value,
-  //   "NumOfDays:" + numOfDays.value
-  // );
-  // Calculate weight per person per day
   const weightPerPersonPerDay =
     totalWeight / (numberOfPeople.value * numOfDays.value);
-
-  // console.log(weightPerPersonPerDay);
 
   weightInGrams.value = weightPerPersonPerDay.toFixed(0);
   weightInPounds.textContent = isNaN(weightPerPersonPerDay * gramsToPounds)
@@ -273,7 +235,6 @@ async function saveRecipeToTrip(recipeId, recipeData, tripId) {
       throw new Error("Failed to save recipe to trip");
     }
     const savedRecipe = await response.json();
-    console.log("Recipe saved to trip.");
     return savedRecipe;
   } catch (error) {
     console.error("Error saving:", error);
@@ -334,5 +295,4 @@ async function updateRecipeInDatabase(tripId, recipeId, recipe) {
   if (!response.ok) {
     throw new Error("Failed to update recipe in database");
   }
-  console.log("Recipe updated successfully in the database");
 }

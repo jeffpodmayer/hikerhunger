@@ -91,7 +91,7 @@
               th:field="${trip.tripDetails}"
               label="Trip Details"
               placeholder="Vegetarian Menu, Day 1: Hike to Blue Lake"
-              rows="12"
+              rows="6"
             >
             </sl-textarea>
 
@@ -100,14 +100,26 @@
               <div class="weights">
                 <div class="weight-box">
                   <label class="weight__label">Grams</label>
-                  <input
-                    th:field="${trip.gramsPerPersonPerDay}"
-                    name="gramsPerPersonPerDay"
-                    class="weightInGrams"
-                    type="number"
-                    id="weightInGrams"
-                    readonly
-                  />
+                  <div th:if="${trip.gramsPerPersonPerDay == null}">
+                    <input
+                      name="gramsPerPersonPerDay"
+                      class="weightInGrams"
+                      type="number"
+                      id="weightInGrams"
+                      value="0"
+                      readonly
+                    />
+                  </div>
+                  <div th:if="${trip.gramsPerPersonPerDay != null}">
+                    <input
+                      th:field="${trip.gramsPerPersonPerDay}"
+                      name="gramsPerPersonPerDay"
+                      class="weightInGrams"
+                      type="number"
+                      id="weightInGrams"
+                      readonly
+                    />
+                  </div>
                 </div>
                 <div class="weight-box">
                   <p class="weight__label">Pounds</p>

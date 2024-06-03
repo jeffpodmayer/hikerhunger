@@ -95,7 +95,7 @@
               th:value="${trip.tripDetails}"
               label="Trip Details"
               placeholder="Vegetarian Menu, Day 1: Hike to Blue Lake"
-              rows="12"
+              rows="6"
             >
             </sl-textarea>
 
@@ -107,6 +107,7 @@
                   <input
                     th:field="${trip.gramsPerPersonPerDay}"
                     th:value="${trip.gramsPerPersonPerDay}"
+                    name="gramsPerPersonPerDay"
                     class="weightInGrams"
                     type="number"
                     id="weightInGrams"
@@ -176,12 +177,18 @@
                   class="recipeName"
                   th:text="${tripRecipe.recipe.recipeName}"
                 ></td>
-                <td class="type" th:text="${tripRecipe.recipe.recipeType}"></td>
+                <td
+                  class="type"
+                  th:text="${#strings.capitalize(tripRecipe.recipe.recipeType.toString().toLowerCase())}"
+                ></td>
                 <td
                   class="servings hidden-column"
                   th:text="${tripRecipe.recipeServings}"
                 ></td>
-                <td class="weight" th:text="${tripRecipe.totalWeight}"></td>
+                <td
+                  class="weight"
+                  th:text="${tripRecipe.totalWeight + ' / grams'}"
+                ></td>
                 <td class="trash_icon">
                   <sl-icon name="trash3"></sl-icon>
                 </td>

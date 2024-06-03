@@ -187,9 +187,8 @@ const calculateTotalWeight = () => {
   const tableRows = document.querySelectorAll(".ingredient");
   const gramsToPounds = 0.00220462;
 
-  // Use reduce to sum up the weight values of all rows
   const totalWeight = Array.from(tableRows).reduce((acc, row) => {
-    const gramsCell = row.querySelector(".weight"); // Assuming the weight cell has a class "weight"
+    const gramsCell = row.querySelector(".weight");
     const weightInGrams = parseFloat(gramsCell.textContent.trim());
     return acc + weightInGrams;
   }, 0);
@@ -290,3 +289,20 @@ document.addEventListener(`keydown`, function (event) {
     }
   }
 });
+
+const onBackButtonEvent = async (event) => {
+  try {
+    const response = await fetch(`/home/deleteRecipe/${recipeIdNumber}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Failed to delete recipe");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+window.addEventListener("popstate", onBackButtonEvent);

@@ -20,6 +20,8 @@ public class Trip {
     private Integer numOfPeople;
     private String tripDetails;
     private Integer gramsPerPersonPerDay;
+    private Float poundsPerPersonPerDay;
+
     @OneToMany(mappedBy = "trip", cascade = CascadeType.MERGE)
     private List<TripRecipe> tripRecipes = new ArrayList<>();
 
@@ -77,6 +79,14 @@ public class Trip {
 
     public void setGramsPerPersonPerDay(Integer gramsPerPersonPerDay) {
         this.gramsPerPersonPerDay = gramsPerPersonPerDay;
+    }
+
+    public Float getPoundsPerPersonPerDay() {
+        return poundsPerPersonPerDay;
+    }
+
+    public void setPoundsPerPersonPerDay(Float poundsPerPersonPerDay) {
+        this.poundsPerPersonPerDay = poundsPerPersonPerDay;
     }
 
     public List<TripRecipe> getTripRecipes() {

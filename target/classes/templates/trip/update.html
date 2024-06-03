@@ -104,19 +104,50 @@
               <div class="weights">
                 <div class="weight-box">
                   <label class="weight__label">Grams</label>
-                  <input
-                    th:field="${trip.gramsPerPersonPerDay}"
-                    th:value="${trip.gramsPerPersonPerDay}"
-                    name="gramsPerPersonPerDay"
-                    class="weightInGrams"
-                    type="number"
-                    id="weightInGrams"
-                    readonly
-                  />
+                  <div th:if="${trip.gramsPerPersonPerDay == null}">
+                    <input
+                      name="gramsPerPersonPerDay"
+                      class="weightInGrams"
+                      type="number"
+                      id="weightInGrams"
+                      value="0"
+                      readonly
+                    />
+                  </div>
+                  <div th:if="${trip.gramsPerPersonPerDay != null}">
+                    <input
+                      th:field="${trip.gramsPerPersonPerDay}"
+                      th:value="${trip.gramsPerPersonPerDay}"
+                      name="gramsPerPersonPerDay"
+                      class="weightInGrams"
+                      type="number"
+                      id="weightInGrams"
+                      readonly
+                    />
+                  </div>
                 </div>
                 <div class="weight-box">
-                  <p class="weight__label">Pounds</p>
-                  <p id="weightInPounds" class="weightInPounds">0.0</p>
+                  <label class="weight__label">Pounds</label>
+                  <div th:if="${trip.poundsPerPersonPerDay == null}">
+                    <input
+                      name="poundsPerPersonPerDay"
+                      class="weightInPounds"
+                      type="number"
+                      id="weightInPounds"
+                      value="0.00"
+                      readonly
+                    />
+                  </div>
+                  <div th:if="${trip.poundsPerPersonPerDay != null}">
+                    <input
+                      th:field="${trip.poundsPerPersonPerDay}"
+                      name="poundsPerPersonPerDay"
+                      class="weightInPounds"
+                      type="number"
+                      id="weightInPounds"
+                      readonly
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -189,8 +220,8 @@
                   class="weight"
                   th:text="${tripRecipe.totalWeight + ' / grams'}"
                 ></td>
-                <td class="trash_icon">
-                  <sl-icon name="trash3"></sl-icon>
+                <td>
+                  <sl-icon class="trash_icon" name="trash3"></sl-icon>
                 </td>
               </tr>
             </table>
@@ -222,12 +253,13 @@
                 th:attr=" data-recipe-id=${recipe.recipeId}"
               >
                 <td>
-                  <sl-checkbox
+                  <input
+                    type="checkbox"
                     id="recipeCheckbox"
                     class="recipeCheckbox"
                     th:value="${recipe.recipeId}"
                     th:checked="${tripRecipes.![recipe.recipeId].contains(recipe.recipeId)}"
-                  ></sl-checkbox>
+                  />
                 </td>
                 <td class="recipe-name" th:text="${recipe.recipeName}"></td>
                 <td th:text="${recipe.recipeType?.displayValue}"></td>

@@ -7,32 +7,56 @@ const overlay = document.querySelector(`.overlay`);
 const tripTable = document.getElementById("homeTripsTable");
 
 /////////////////////// FUNCTIONS ///////////////////////////////
-function attachCommonEventListeners(
-  popupElement,
-  overlayElement,
-  itemId,
-  itemType
-) {
-  const btnCloseItemView = document.querySelector(".close-modal");
-  const overlay = document.querySelector(".overlay");
-  const btnEditItem = document.querySelector(".edit_icon");
+function closePopup(popupElement, overlayElement) {
+  popupElement.classList.add("hidden");
+  overlayElement.classList.add("hidden");
+}
 
-  btnCloseItemView.addEventListener("click", () =>
-    closePopup(popupElement, overlayElement)
-  );
-  overlay.addEventListener("click", () =>
-    closePopup(popupElement, overlayElement)
-  );
-  btnEditItem.addEventListener("click", () => goToEditPage(itemId, itemType));
+function attachCommonEventListeners() {
   document.addEventListener("click", function (event) {
-    if (event.target.classList.contains("trash_icon")) {
+    if (event.target.classList.contains("close-modal")) {
+      closePopup(
+        event.target.closest(".recipeViewPopup, .tripViewPopup"),
+        overlay
+      );
+    } else if (event.target.classList.contains("edit_icon")) {
+      const popupElement = event.target.closest(
+        ".recipeViewPopup, .tripViewPopup"
+      );
+      const itemId = popupElement.querySelector("input[type='hidden']").value;
+      const itemType = popupElement.classList.contains("recipeViewPopup")
+        ? "recipe"
+        : "trip";
+      goToEditPage(itemId, itemType);
+    } else if (event.target.classList.contains("trash_icon")) {
+      const popupElement = event.target.closest(
+        ".recipeViewPopup, .tripViewPopup"
+      );
+      const itemId = popupElement.querySelector("input[type='hidden']").value;
+      const itemType = popupElement.classList.contains("recipeViewPopup")
+        ? "recipe"
+        : "trip";
       handleDeleteItem(itemId, itemType);
     }
   });
-  document.addEventListener(`keydown`, function (event) {
-    if (event.key === `Escape`) {
-      !popupElement.classList.contains(`hidden`);
-      closePopup(popupElement, overlayElement);
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+      const openPopup = document.querySelector(
+        ".recipeViewPopup:not(.hidden), .tripViewPopup:not(.hidden)"
+      );
+      if (openPopup) {
+        closePopup(openPopup, overlay);
+      }
+    }
+  });
+
+  overlay.addEventListener("click", function () {
+    const openPopup = document.querySelector(
+      ".recipeViewPopup:not(.hidden), .tripViewPopup:not(.hidden)"
+    );
+    if (openPopup) {
+      closePopup(openPopup, overlay);
     }
   });
 }
@@ -97,11 +121,12 @@ const renderRecipePopup = function (data) {
 
   const tableHTML = `
           <h2>Ingredients</h2>
-          <table class="ingredient-table">
-              <tbody>
-                  ${ingredientsHTML}
-              </tbody>
-          </table>`;
+            <table class="ingredient-table">
+                <tbody>
+                    ${ingredientsHTML}
+                </tbody>
+            </table>
+          `;
 
   const markupHTML = `
     <div class="icon-popup">
@@ -110,7 +135,7 @@ const renderRecipePopup = function (data) {
         ></sl-icon>
         <sl-icon name="x" class="close-modal"></sl-icon>
     </div>
-    <input type="hidden" class="recipe-id" ${data.recipeId}/>
+    <input type="hidden" class="recipe-id" value="${data.recipeId}"/>
     <div class="recipe-popup-title"> 
       <h1>${data.recipeName}</h1>
       <p class="recipe-popup-meal">${
@@ -135,32 +160,32 @@ const renderRecipePopup = function (data) {
   recipePopup.innerHTML = markupHTML;
 
   openPopup(recipePopup, overlay);
-
-  attachCommonEventListeners(recipePopup, overlay, data.recipeId, "recipe");
 };
 
 const renderTripPopup = function (data) {
   const tableHTML = `
-  <table class="trip-recipe-popup-table">
-    <h2>Trip Recipes</h2>
-    <tbody>
-      ${data.tripRecipes
-        .map(
-          (tripRecipe) => `
-          <tr>
-            <td>${tripRecipe.recipeQuantity}</td>
-            <td>${tripRecipe.recipe.recipeName}</td> 
-            <td>${
-              tripRecipe.recipe.recipeType.slice(0, 1).toUpperCase() +
-              tripRecipe.recipe.recipeType.slice(1).toLowerCase()
-            }</td> 
-            <td>${tripRecipe.totalWeight} / grams</td>
-          </tr>
-        `
-        )
-        .join("")}
-    </tbody>
-  </table>`;
+  <div class="table-wrapper">
+    <table class="trip-recipe-popup-table">
+      <h2>Trip Recipes</h2>
+      <tbody>
+        ${data.tripRecipes
+          .map(
+            (tripRecipe) => `
+            <tr>
+              <td>${tripRecipe.recipeQuantity}</td>
+              <td>${tripRecipe.recipe.recipeName}</td> 
+              <td>${
+                tripRecipe.recipe.recipeType.slice(0, 1).toUpperCase() +
+                tripRecipe.recipe.recipeType.slice(1).toLowerCase()
+              }</td> 
+              <td>${tripRecipe.totalWeight} / grams</td>
+            </tr>
+          `
+          )
+          .join("")}
+      </tbody>
+    </table>
+  </div>`;
 
   const markupHTML = `
   <div class="icon-popup">
@@ -169,7 +194,7 @@ const renderTripPopup = function (data) {
     ></sl-icon>
     <sl-icon name="x" class="close-modal"></sl-icon>
   </div>
-  <input type="hidden" class="trip-id" ${data.tripId}/>
+  <input type="hidden" class="trip-id" value="${data.tripId}"/>
   <div class="recipe-popup-title">
     <h1>${data.tripName}</h1>
     <p class="recipe-popup-meal">${data.numOfDays} / days</p>
@@ -191,8 +216,6 @@ const renderTripPopup = function (data) {
   tripPopup.innerHTML = markupHTML;
 
   openPopup(tripPopup, overlay);
-
-  attachCommonEventListeners(tripPopup, overlay, data.tripId, "trip");
 };
 
 const goToEditPage = function (itemId, itemType) {
@@ -208,11 +231,6 @@ const openPopup = function (popupElement, overlayElement) {
   overlayElement.classList.remove("hidden");
 };
 
-const closePopup = function (popupElement, overlayElement) {
-  popupElement.classList.add("hidden");
-  overlayElement.classList.add("hidden");
-};
-
 ///////////////////// EVENT LISTENERS //////////////////////////
 if (recipeTable) {
   recipeTable.addEventListener("click", handleTableRowClick);
@@ -222,58 +240,5 @@ if (tripTable) {
   tripTable.addEventListener("click", handleTableRowClick);
 }
 
-// const handleDeleteItem = (itemId, itemType) => {
-//   // const confirmed = window.confirm(
-//   //   `Are you sure you want to delete this ${itemType}?`
-//   // );
-
-//   // if (confirmed) {
-//   fetch(
-//     `/home/delete${
-//       itemType.charAt(0).toUpperCase() + itemType.slice(1)
-//     }/${itemId}`,
-//     {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({ itemId }),
-//     }
-//   )
-//     .then((response) => {
-//       if (!response.ok) {
-//         throw new Error("Network response was not ok");
-//       }
-//       console.log(`Delete request successful for ${itemType}`);
-//       if (itemType === "recipe") {
-//         closePopup(recipePopup, overlay);
-//       } else if (itemType === "trip") {
-//         closePopup(tripPopup, overlay);
-//       }
-//       removeTableRow(itemId, itemType);
-//       console.log(
-//         `${
-//           itemType.charAt(0).toUpperCase() + itemType.slice(1)
-//         } deleted successfully`
-//       );
-//       // window.location.reload();
-//     })
-//     .catch((error) => {
-//       console.error(`Error deleting ${itemType}:`, error);
-//     });
-//   // }
-// };
-
-// const removeTableRow = (itemId, itemType) => {
-//   const tableRow = document.querySelector(
-//     `tr[data-${itemType}-id="${itemId}"]`
-//   );
-//   if (tableRow) {
-//     tableRow.remove();
-//     console.log(
-//       `Table row with ${itemType} ID ${itemId} removed successfully.`
-//     );
-//   } else {
-//     console.log(`Table row with ${itemType} ID ${itemId} not found.`);
-//   }
-// };
+// Attach common event listeners to the document
+attachCommonEventListeners();

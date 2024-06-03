@@ -69,6 +69,7 @@
                 th:field="${recipe.recipeType}"
                 label="Meal Type"
                 placeholder="Breakfast, Lunch, Dinner.."
+                required
               >
                 <sl-option value="BREAKFAST">Breakfast</sl-option>
                 <sl-option value="LUNCH">Lunch</sl-option>
@@ -87,6 +88,7 @@
               name="servings"
               id="servings"
               th:field="${recipe.servings}"
+              required
             ></sl-input>
             <sl-textarea
               id="instructions"
@@ -94,7 +96,7 @@
               th:field="${recipe.instructions}"
               label="Recipe Instructions"
               placeholder="Step 1: Boil water, Step 2: Add Macaroni, etc..."
-              rows="12"
+              rows="8"
             >
             </sl-textarea>
 
@@ -123,7 +125,10 @@
           <sl-button form="recipeForm" variant="primary" type="submit"
             >Save Recipe</sl-button
           >
-          <form>
+          <form
+            th:action="@{/home/postDeleteRecipe/{recipeId}(recipeId=${recipe.recipeId})}"
+            method="post"
+          >
             <sl-button variant="warning" type="submit" outline
               >Discard Recipe</sl-button
             >

@@ -270,11 +270,11 @@ sl-button::part(base) {
 .weight__label {
   font-size: 25px;
   justify-self: center;
+  padding-right: 15px;
 }
 
 .weightInPounds,
 .weightInGrams {
-  justify-self: center;
   text-align: center;
   font-size: 35px;
   color: white;
@@ -290,7 +290,7 @@ sl-button::part(base) {
 }
 
 .weight-box input {
-  width: 80px;
+  width: 90px;
   background: #053b14;
   border: none;
 }
@@ -518,6 +518,7 @@ sl-icon.minus_icon:hover {
 .recipeViewPopup,
 .tripViewPopup {
   gap: 10px;
+  overflow: auto;
 }
 .recipeViewPopup p {
   padding-top: 5px;

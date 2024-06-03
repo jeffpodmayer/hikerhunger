@@ -75,6 +75,7 @@ public class TripController {
                 trip.setNumOfDays(tripData.getNumOfDays());
                 trip.setTripDetails(tripData.getTripDetails());
                 trip.setGramsPerPersonPerDay(tripData.getGramsPerPersonPerDay());
+                trip.setPoundsPerPersonPerDay(tripData.getPoundsPerPersonPerDay());
 
                 tripService.save(trip);
                 return "redirect:/home/" + trip.getUser().getId();

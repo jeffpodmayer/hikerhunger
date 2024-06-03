@@ -214,7 +214,7 @@ const calculateWeightPerPersonPerDay = () => {
     totalWeight / (numberOfPeople.value * numOfDays.value);
 
   weightInGrams.value = weightPerPersonPerDay.toFixed(0);
-  weightInPounds.textContent = isNaN(weightPerPersonPerDay * gramsToPounds)
+  weightInPounds.value = isNaN(weightPerPersonPerDay * gramsToPounds)
     ? 0
     : (weightPerPersonPerDay * gramsToPounds).toFixed(2);
 };
@@ -295,4 +295,7 @@ async function updateRecipeInDatabase(tripId, recipeId, recipe) {
   if (!response.ok) {
     throw new Error("Failed to update recipe in database");
   }
+}
+if (weightInGrams > 0) {
+  calculateWeightPerPersonPerDay();
 }

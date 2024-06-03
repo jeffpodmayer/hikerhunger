@@ -122,8 +122,27 @@
                   </div>
                 </div>
                 <div class="weight-box">
-                  <p class="weight__label">Pounds</p>
-                  <p id="weightInPounds" class="weightInPounds">0.0</p>
+                  <label class="weight__label">Pounds</label>
+                  <div th:if="${trip.poundsPerPersonPerDay == null}">
+                    <input
+                      name="poundsPerPersonPerDay"
+                      class="weightInPounds"
+                      type="number"
+                      id="weightInPounds"
+                      value="0.00"
+                      readonly
+                    />
+                  </div>
+                  <div th:if="${trip.poundsPerPersonPerDay != null}">
+                    <input
+                      th:field="${trip.poundsPerPersonPerDay}"
+                      name="poundsPerPersonPerDay"
+                      class="weightInPounds"
+                      type="number"
+                      id="weightInPounds"
+                      readonly
+                    />
+                  </div>
                 </div>
               </div>
             </div>

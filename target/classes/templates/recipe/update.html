@@ -100,7 +100,7 @@
               th:value="${recipe.instructions}"
               label="Recipe Instructions"
               placeholder="Step 1: Boil water, Step 2: Add Macaroni, etc..."
-              rows="12"
+              rows="8"
             >
             </sl-textarea>
             <div class="totalWeight">
@@ -176,11 +176,9 @@
                 <td
                   class="weight weightInput"
                   th:text="${ingredient.weightInGrams + ' / grams'}"
-                >
-                  / grams
-                </td>
-                <td class="trash_icon">
-                  <sl-icon name="trash3"></sl-icon>
+                ></td>
+                <td>
+                  <sl-icon class="trash_icon" name="trash3"></sl-icon>
                 </td>
                 <td class="edit_icon">
                   <sl-icon name="pencil-square"></sl-icon>

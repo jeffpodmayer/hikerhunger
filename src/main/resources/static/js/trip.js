@@ -12,6 +12,10 @@ const numOfPeopleAlert = document.getElementById("numOfPeopleAlert");
 const numOfDaysAlert = document.getElementById("numOfDaysAlert");
 const allRecipes = [];
 
+document.addEventListener("DOMContentLoaded", () =>
+  calculateWeightPerPersonPerDay()
+);
+
 // create an array of all recipes -  using DOM Content loaded to create a fetch GET request and add the response to the array
 document.addEventListener("DOMContentLoaded", async function () {
   try {

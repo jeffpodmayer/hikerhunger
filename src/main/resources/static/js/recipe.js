@@ -7,7 +7,6 @@ const recipeTypeSelect = document.getElementById("recipeType");
 const instructionsInput = document.getElementById("instructions");
 const servingsInput = document.getElementById("servings");
 const weightInGramsInput = document.getElementById("weightInGrams");
-const submitButton = document.getElementById("submitButton");
 const btnUpdateIngredient = document.getElementById(`editIngredientButton`);
 const btnAddIngredient = document.getElementById(`addIngredientButton`);
 const ingredientNameInput = document.getElementById("ingredientNameInput");
@@ -141,8 +140,8 @@ function updateIngredientRow(updatedRow, updatedIngredientData) {
   updatedRow.cells[1].textContent = updatedIngredientData.ingredientName;
   updatedRow.cells[2].textContent = updatedIngredientData.quantity;
   updatedRow.cells[3].textContent = updatedIngredientData.unit;
-  updatedRow.cells[4].textContent = updatedIngredientData.weightInGrams;
-  updatedRow.cells[5].textContent = updatedIngredientData.notes;
+  updatedRow.cells[4].textContent =
+    updatedIngredientData.weightInGrams + " / grams";
   calculateTotalWeight();
 }
 const renderIngredient = (ingredient) => {
@@ -151,14 +150,13 @@ const renderIngredient = (ingredient) => {
   tr.setAttribute("data-ingredient-id", ingredient.ingredientId);
 
   const ingredientHTML = `
-  <td class="id"><p>${ingredient.ingredientId}</p></td>
-  <td class="ingredientName"><p>${ingredient.ingredientName}</p></td>
-  <td class="quantity"><p>${ingredient.quantity}</p></td>
-  <td class="unit"><p>${ingredient.unit}</p></td>
-  <td class="weight"><p class="weightInput">${ingredient.weightInGrams}</p></td>
-  <td class="notes"><p>${ingredient.notes}</p></td>
-  <td class="trash_icon"><i class="fa-regular fa-trash-can"></i></td>
-  <td class="edit_icon"><i class="fa-solid fa-pencil"></i></td>
+  <td class="id hidden-column">${ingredient.ingredientId}</td>
+  <td class="ingredientName">${ingredient.ingredientName}</td>
+  <td class="quantity">${ingredient.quantity}</td>
+  <td class="unit">${ingredient.unit}</td>
+  <td class="weight weightInput">${ingredient.weightInGrams} / grams</td>
+  <td class="trash_icon"><sl-icon class="trash_icon" name="trash3"></sl-icon></td>
+  <td class="edit_icon"><sl-icon class="edit_icon" name="pencil-square"></sl-icon>
      `;
 
   tr.innerHTML = ingredientHTML;
@@ -211,7 +209,6 @@ const validateIngredientData = function (ingredient) {
   }
   return null;
 };
-
 /////////////////////////// ADD INGREDIENT ////////////////////////////
 const addIngredient = function () {
   submitAddIngredient();

@@ -7,8 +7,8 @@
       src="https://kit.fontawesome.com/783d090aa0.js"
       crossorigin="anonymous"
     ></script>
-    <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
-    <!-- <link rel="stylesheet" type="text/css" href="/css/style.css" /> -->
+    <!-- <link rel="stylesheet" type="text/css" href="/static/css/style.css" /> -->
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
 
     <!-- SHOELACE -->
     <link
@@ -25,12 +25,12 @@
     <header class="main-header">
       <input type="hidden" id="tripId" th:value="${trip.tripId}" />
       <nav class="nav">
-        <img
+        <!-- <img
           class="logo"
           alt="mountain logo"
           src="../../static/img/hikerhunger-logo.svg"
-        />
-        <!-- <img class="logo" alt="mountain logo" src="/img/hikerhunger-logo.svg" /> -->
+        /> -->
+        <img class="logo" alt="mountain logo" src="/img/hikerhunger-logo.svg" />
         <form th:action="@{/landing}" method="get">
           <sl-button
             class="logout-btn nav-btn"

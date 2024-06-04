@@ -126,7 +126,6 @@ td {
 .recipes-table td:nth-child(3),
 .recipe-book-table td:nth-child(3),
 .trip-recipe-table td:nth-child(3) {
-  /* CSS styles for the specific cell */
   background-color: lightgray;
   border-radius: 25px;
 }
@@ -363,6 +362,10 @@ sl-button::part(base) {
   color: black;
 }
 
+.ingredient-table td:nth-child(6) {
+  text-align: end;
+}
+
 .ingredient-table td,
 .trip-recipe-table td {
   color: black;
@@ -387,6 +390,13 @@ sl-button::part(base) {
 .totalWeight h2 {
   text-align: center;
   margin-bottom: 10px;
+}
+
+.weight-tooltip {
+  margin-left: 5px;
+  margin-bottom: 3px;
+  background-color: #053b14;
+  vertical-align: middle;
 }
 
 .trip-recipe-wrapper {

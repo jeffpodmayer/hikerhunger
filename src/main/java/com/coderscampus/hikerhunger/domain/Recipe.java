@@ -15,6 +15,7 @@ public class Recipe {
     private User user;
     private String recipeName;
     private RecipeType recipeType;
+    @Column(length=1000)
     private String instructions;
     private Integer servings;
     private Integer totalWeight;

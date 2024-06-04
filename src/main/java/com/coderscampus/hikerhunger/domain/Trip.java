@@ -18,6 +18,7 @@ public class Trip {
     private String tripName;
     private Float numOfDays;
     private Integer numOfPeople;
+    @Column(length=1000)
     private String tripDetails;
     private Integer gramsPerPersonPerDay;
     private Float poundsPerPersonPerDay;

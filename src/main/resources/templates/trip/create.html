@@ -7,8 +7,8 @@
       src="https://kit.fontawesome.com/783d090aa0.js"
       crossorigin="anonymous"
     ></script>
-    <!-- <link rel="stylesheet" type="text/css" href="/static/css/style.css" /> -->
-    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="/css/style.css" /> -->
 
     <!-- SHOELACE -->
     <link
@@ -25,12 +25,12 @@
     <header class="main-header">
       <input type="hidden" id="tripId" th:value="${trip.tripId}" />
       <nav class="nav">
-        <!-- <img
+        <img
           class="logo"
           alt="mountain logo"
           src="../../static/img/hikerhunger-logo.svg"
-        /> -->
-        <img class="logo" alt="mountain logo" src="/img/hikerhunger-logo.svg" />
+        />
+        <!-- <img class="logo" alt="mountain logo" src="/img/hikerhunger-logo.svg" /> -->
         <form th:action="@{/landing}" method="get">
           <sl-button
             class="logout-btn nav-btn"
@@ -96,7 +96,13 @@
             </sl-textarea>
 
             <div class="totalWeight">
-              <h2>Weight Per Person/Per Day</h2>
+              <h2>
+                Weight Per Person/Per Day<sl-tooltip
+                  content="Backpackers tend to shoot for 2 pounds of food per person/per day when meal planning. Consider the weather, time of year and your personal appetite during high levels of physical exertion."
+                >
+                  <sl-icon class="weight-tooltip" name="info-circle"></sl-icon>
+                </sl-tooltip>
+              </h2>
               <div class="weights">
                 <div class="weight-box">
                   <label class="weight__label">Grams</label>

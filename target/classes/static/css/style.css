@@ -393,7 +393,6 @@ sl-button::part(base) {
 }
 
 .weight-tooltip {
-  width: 20px;
   margin-left: 5px;
   margin-bottom: 3px;
   background-color: #053b14;

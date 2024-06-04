@@ -28,7 +28,7 @@ public class UserController {
     public String getUserHomepage(ModelMap model, @PathVariable Integer userId) {
         User user = userService.findUserById(userId).orElse(null);
         if(user == null){
-            return "redirect:/";
+            return "redirect:/landing";
         }
         List<Recipe> recipes = user.getRecipes().stream()
                 .filter(recipe -> !recipe.isDeleted())

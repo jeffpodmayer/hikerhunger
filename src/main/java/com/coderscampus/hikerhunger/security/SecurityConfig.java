@@ -73,7 +73,7 @@ public class SecurityConfig {
 //                                .requestMatchers("/home/**").permitAll()
 //                                .requestMatchers("/createRecipe/**").permitAll()
                                 .requestMatchers("/register").permitAll()
-                                .requestMatchers("/index").permitAll()
+                                .requestMatchers("/landingPage").permitAll()
                                 .requestMatchers("/login").permitAll()
                                 .anyRequest().permitAll()
                 )

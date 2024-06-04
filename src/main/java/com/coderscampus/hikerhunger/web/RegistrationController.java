@@ -48,9 +48,9 @@ public class RegistrationController {
 		this.passwordEncoder = passwordEncoder;
 	}
 
-	@GetMapping("/landing")
-	public String getLandingPage() {
-		return "landing";
+	@GetMapping("/")
+	public String getIndexPage() {
+		return "index";
 	}
 
 	@GetMapping("/register")

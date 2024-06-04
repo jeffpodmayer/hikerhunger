@@ -59,4 +59,18 @@ public class RecipeService {
     public List<Recipe> findByUserId(Integer userId) {
         return recipeRepo.findByUserId(userId);
     }
+
+    public void setRecipeServingsAndWeight(Recipe recipe){
+            recipe.setServings(1);
+            recipe.setTotalWeight(0);
+    }
+
+    public void updateRecipe(Recipe recipeData, Recipe recipe) {
+            recipe.setRecipeName(recipeData.getRecipeName());
+            recipe.setRecipeType(recipeData.getRecipeType());
+            recipe.setInstructions(recipeData.getInstructions());
+            recipe.setServings(recipeData.getServings());
+            recipe.setTotalWeight(recipeData.getTotalWeight());
+            saveRecipe(recipe);
+    }
 }

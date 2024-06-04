@@ -50,11 +50,9 @@ public class TripService {
                 totalWeightOfTrip += tripRecipe.getTotalWeight()*tripRecipe.getRecipeQuantity();
             }
 
-            System.out.println("Total Weight of Trip: " + totalWeightOfTrip);
             Integer numOfPeople = trip.getNumOfPeople();
             Float numOfDays = trip.getNumOfDays();
             int gramsPerPersonPerDay = (int) (totalWeightOfTrip/(numOfPeople * numOfDays));
-            System.out.println("GramsPerPersonPerDay: " + gramsPerPersonPerDay);
             trip.setGramsPerPersonPerDay(Math.round(gramsPerPersonPerDay));
             save(trip);
         }

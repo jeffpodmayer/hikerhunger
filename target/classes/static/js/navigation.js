@@ -13,7 +13,7 @@ const onBackButtonEvent = (endpoint, itemIdNumber) => {
   }
 };
 
-window.addEventListener("beforeunload", () => {
+window.addEventListener("popstate", () => {
   let itemIdNumber, endpoint;
 
   if (recipeIdInput) {

@@ -289,20 +289,3 @@ document.addEventListener(`keydown`, function (event) {
     }
   }
 });
-
-const onBackButtonEvent = async (event) => {
-  try {
-    const response = await fetch(`/home/deleteRecipe/${recipeIdNumber}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (!response.ok) {
-      throw new Error("Failed to delete recipe");
-    }
-  } catch (error) {
-    console.error("Error:", error);
-  }
-};
-window.addEventListener("popstate", onBackButtonEvent);

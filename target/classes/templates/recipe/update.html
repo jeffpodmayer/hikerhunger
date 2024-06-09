@@ -21,7 +21,6 @@
   <body>
     <header class="main-header">
       <input
-        type="hidden"
         id="recipeIdInput"
         th:field="${recipe.recipeId}"
         th:value="${recipe.recipeId}"
@@ -126,11 +125,7 @@
         </section>
 
         <div class="recipe-btn">
-          <sl-button
-            form="recipeForm"
-            variant="primary"
-            type="submit"
-            id="updateButton"
+          <sl-button form="recipeForm" variant="primary" type="submit"
             >Update Recipe</sl-button
           >
           <form

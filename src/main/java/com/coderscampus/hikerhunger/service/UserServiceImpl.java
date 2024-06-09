@@ -3,6 +3,7 @@ package com.coderscampus.hikerhunger.service;
 import com.coderscampus.hikerhunger.domain.Authority;
 import com.coderscampus.hikerhunger.domain.User;
 
+import jakarta.persistence.EntityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +27,14 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 	
     private final UserRepository userRepository;
+    private final EntityManager entityManager;
     private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, EntityManager entityManager) {
+        super();
+        this.entityManager = entityManager;
         this.userRepository = userRepository;
+
     }
     
     @Override
@@ -94,6 +99,10 @@ public class UserServiceImpl implements UserService {
 		}
 		return userRepository.save(user);
 	}
+
+    public void detachUser(User user) {
+        entityManager.detach(user);
+    }
     
     public Optional<User> findUserByEmail(String email) {
     	return userRepository.findByEmail(email);

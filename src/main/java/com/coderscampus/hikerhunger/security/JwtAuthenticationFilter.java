@@ -40,7 +40,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	private final UserServiceImpl userService;
 	private final RefreshTokenService refreshTokenService;
 	private Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
-
+	@Autowired 
 	public JwtAuthenticationFilter(JwtServiceImpl jwtService, UserServiceImpl userService,
 			RefreshTokenService refreshTokenService) {
 		super();

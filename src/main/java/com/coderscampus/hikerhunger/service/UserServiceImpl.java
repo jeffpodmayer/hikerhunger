@@ -5,6 +5,7 @@ import com.coderscampus.hikerhunger.domain.User;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -26,7 +27,7 @@ public class UserServiceImpl implements UserService {
 	
     private final UserRepository userRepository;
     private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
-    
+    @Autowired
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }

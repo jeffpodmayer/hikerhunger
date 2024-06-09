@@ -61,7 +61,11 @@
               th:action="@{/home/{userId}/recipe(userId=${user.id})}"
               method="post"
             >
-              <sl-button class="add-btn" type="submit" variant="primary"
+              <sl-button
+                class="add-btn"
+                id="addRecipeBtn"
+                type="submit"
+                variant="primary"
                 >Add New Recipe</sl-button
               >
             </form>
@@ -262,5 +266,6 @@
       <div class="overlay hidden"></div>
     </div>
     <script src="/js/home.js"></script>
+    <script src="/js/navigation.js"></script>
   </body>
 </html>

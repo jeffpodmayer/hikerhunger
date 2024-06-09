@@ -21,6 +21,7 @@
   <body>
     <header class="main-header">
       <input
+        type="hidden"
         id="recipeIdInput"
         th:field="${recipe.recipeId}"
         th:value="${recipe.recipeId}"
@@ -172,7 +173,7 @@
                   class="weight weightInput"
                   th:text="${ingredient.weightInGrams + ' / grams'}"
                 ></td>
-                <td>
+                <td class="trash_icon">
                   <sl-icon class="trash_icon" name="trash3"></sl-icon>
                 </td>
                 <td>

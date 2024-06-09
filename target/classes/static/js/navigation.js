@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Push a new state when navigating to the "add new recipe" page
     history.pushState({ page: "addRecipe" }, "Add Recipe", null);
   });
+  console.dir("History object:" + history);
 });
 
 const onBackButtonEvent = (endpoint, itemIdNumber) => {
@@ -20,8 +21,6 @@ const onBackButtonEvent = (endpoint, itemIdNumber) => {
     console.error("Error:", error);
   }
 };
-
-history.pushState({ page: 1 }, "Create Recipe", window.location.href);
 
 window.addEventListener("popstate", (event) => {
   const state = event.state;

@@ -7,10 +7,6 @@ const overlay = document.querySelector(`.overlay`);
 const tripTable = document.getElementById("homeTripsTable");
 
 /////////////////////// FUNCTIONS ///////////////////////////////
-if (performance.navigation.type === 2) {
-  location.reload();
-}
-
 function closePopup(popupElement, overlayElement) {
   popupElement.classList.add("hidden");
   overlayElement.classList.add("hidden");

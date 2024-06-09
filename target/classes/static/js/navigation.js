@@ -40,7 +40,6 @@ window.addEventListener("popstate", (event) => {
     if (itemIdNumber && endpoint) {
       onBackButtonEvent(endpoint, itemIdNumber);
     }
-
     // Reload the page
     location.reload();
   }

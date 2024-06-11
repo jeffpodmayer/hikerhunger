@@ -76,7 +76,6 @@ public class RecipeController {
         Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
         if (optionalRecipe.isPresent()) {
             Recipe recipe = optionalRecipe.get();
-            System.out.println("DELETING");
             recipeService.delete(recipe);
             return "redirect:/home/" + recipe.getUser().getId();
         } else {

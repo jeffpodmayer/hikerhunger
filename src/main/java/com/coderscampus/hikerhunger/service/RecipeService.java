@@ -73,4 +73,12 @@ public class RecipeService {
             recipe.setTotalWeight(recipeData.getTotalWeight());
             saveRecipe(recipe);
     }
+
+    public boolean isRecipeEmpty(Recipe recipe) {
+        return recipe.getRecipeName() == null &&
+                recipe.getRecipeType() == null &&
+                recipe.getInstructions() == null &&
+                recipe.getServings() == null &&
+                recipe.getTotalWeight() == null;
+    }
 }

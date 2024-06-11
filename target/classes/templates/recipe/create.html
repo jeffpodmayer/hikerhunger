@@ -90,6 +90,16 @@
               th:field="${recipe.servings}"
               required
             ></sl-input>
+            <sl-alert
+              variant="danger"
+              id="alert1"
+              closable
+              class="alert-closable"
+            >
+              <sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
+              All numbers entered need to be positive! Please enter a positive
+              number.
+            </sl-alert>
             <sl-textarea
               id="instructions"
               name="instructions"
@@ -171,6 +181,16 @@
               value="0"
               min="0"
             ></sl-input>
+            <sl-alert
+              variant="danger"
+              id="alert2"
+              closable
+              class="alert-closable"
+            >
+              <sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
+              All numbers entered need to be positive! Please enter a positive
+              number.
+            </sl-alert>
             <sl-input
               label="Unit"
               id="unitInput"
@@ -187,6 +207,16 @@
               min="0"
               placeholder="Enter weight in grams"
             ></sl-input>
+            <sl-alert
+              variant="danger"
+              id="alert3"
+              closable
+              class="alert-closable"
+            >
+              <sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
+              All numbers entered need to be positive! Please enter a positive
+              number.
+            </sl-alert>
             <sl-textarea
               id="notesInput"
               label="Ingredient Notes"
@@ -227,6 +257,16 @@
               value="0"
               min="0"
             ></sl-input>
+            <sl-alert
+              variant="danger"
+              id="alert4"
+              closable
+              class="alert-closable"
+            >
+              <sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
+              All numbers entered need to be positive! Please enter a positive
+              number.
+            </sl-alert>
             <sl-input
               label="Unit"
               id="unit"
@@ -242,6 +282,16 @@
               min="0"
               placeholder="Enter weight in grams"
             ></sl-input>
+            <sl-alert
+              variant="danger"
+              id="alert5"
+              closable
+              class="alert-closable"
+            >
+              <sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
+              All numbers entered need to be positive! Please enter a positive
+              number.
+            </sl-alert>
             <sl-textarea
               id="notes"
               label="Ingredient Notes"
@@ -268,6 +318,6 @@
       </footer>
     </div>
     <script src="/js/recipe.js"></script>
-    <script src="/js/navigation.js"></script>
+    <script src="/js/validation.js"></script>
   </body>
 </html>

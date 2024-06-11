@@ -57,4 +57,7 @@ public class TripService {
             save(trip);
         }
     }
+
+    public void deleteEmptyTrips(List<Trip> trips) {
+    }
 }

@@ -33,7 +33,6 @@ tripRecipeTable.addEventListener("click", function (event) {
 
 tripRecipeTable.addEventListener("click", handlePlusMinusIconClick);
 
-// HANDLE CHECKBOX CLICK
 recipeTable.addEventListener("change", async function (event) {
   if (event.target.classList.contains("recipeCheckbox")) {
     const recipeId = parseInt(
@@ -68,12 +67,10 @@ numOfDays.addEventListener("input", () => {
 });
 
 numberOfPeople.addEventListener("input", async () => {
-  // Iterate through each recipe row
   for (const recipeRow of document.querySelectorAll(".tripRecipe")) {
     const recipeId = +recipeRow.getAttribute("data-recipe-id");
     const recipe = allRecipes.find((recipe) => recipe.recipeId === recipeId);
     if (recipe) {
-      // Update servings and weights of the recipe
       await updateRecipeBasedOnNumberOfPeople(
         recipeId,
         recipe,
@@ -140,7 +137,6 @@ function removeRecipeRow(recipeId) {
 }
 
 function uncheckCheckboxInRecipeTable(recipeId) {
-  // Find the checkbox corresponding to the recipeId in the other table
   const row = document.querySelector(
     `#recipeTable tr[data-recipe-id="${recipeId}"]`
   );

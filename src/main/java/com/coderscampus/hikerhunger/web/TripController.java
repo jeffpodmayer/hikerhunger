@@ -146,7 +146,6 @@ public class TripController {
 
             trip.getTripRecipes().add(tripRecipe);
             tripService.save(trip);
-            System.out.println(tripRecipe);
         return ResponseEntity.status(HttpStatus.CREATED).body(tripRecipe.getRecipe());
 
         } else {
@@ -246,7 +245,6 @@ public class TripController {
 
         if (optionalTrip.isPresent()) {
             Trip trip = optionalTrip.get();
-            System.out.println("Retrieved trip: " + trip.getTripRecipes());
             return ResponseEntity.ok().body(trip);
         } else {
             return ResponseEntity.notFound().build();

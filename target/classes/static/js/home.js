@@ -73,9 +73,7 @@ const handleTableRowClick = (event) => {
     isRecipeRow ? `.recipe-id` : `.trip-id`
   );
   if (!idInput) return;
-
   const itemId = idInput.value;
-
   const endpoint = isRecipeRow
     ? `/home/fetch-recipe/${itemId}`
     : `/home/fetch-trip/${itemId}`;
@@ -240,5 +238,4 @@ if (tripTable) {
   tripTable.addEventListener("click", handleTableRowClick);
 }
 
-// Attach common event listeners to the document
 attachCommonEventListeners();

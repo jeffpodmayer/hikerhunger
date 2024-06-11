@@ -6,6 +6,7 @@ import com.coderscampus.hikerhunger.domain.TripIngredient;
 import com.coderscampus.hikerhunger.repository.TripIngredientRepository;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,23 +33,17 @@ public class TripIngredientService {
 
     public void updateRelatedTripIngredients(Ingredient ingredient) {
         // Find Associated TripIngredient
-        Optional<TripIngredient> optionalTripIngredient = findById(ingredient.getIngredientId());
-        System.out.println("Found trip Ingredient: " + optionalTripIngredient.toString());
+        Optional<TripIngredient> optionalTripIngredient = tripIngredientRepo.findByIngredient_IngredientId(ingredient.getIngredientId());
         TripIngredient tripIngredient = optionalTripIngredient.get();
 
         // Calculate Adjustment ratio
         Integer originalRecipeServings = ingredient.getRecipe().getServings();
-        System.out.println("Existing recipe servings: " + originalRecipeServings);
         Integer numOfPeople = tripIngredient.getTripRecipe().getTrip().getNumOfPeople();
-        System.out.println("Num Of People on Trip: " + numOfPeople);
         double ratio = (double) numOfPeople / originalRecipeServings;
-        System.out.println("Calculated ratio: " + ratio);
 
         // Update TripIngredient's Quantity & WeightInGrams
         tripIngredient.setQuantity((float) (ingredient.getQuantity() * ratio));
         tripIngredient.setWeightInGrams((int) (ingredient.getWeightInGrams() * ratio));
         save(tripIngredient);
-        System.out.println("Updated quantity: " + tripIngredient.getQuantity());
-        System.out.println("Updated weight: " + tripIngredient.getWeightInGrams());
     }
 }

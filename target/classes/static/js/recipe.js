@@ -1,12 +1,6 @@
 "use strict";
 
 ////////////////////// GLOBAL VARIABLE DECLARATION /////////////////////
-const recipeForm = document.getElementById("recipeForm");
-const recipeNameInput = document.getElementById("recipeName");
-const recipeTypeSelect = document.getElementById("recipeType");
-const instructionsInput = document.getElementById("instructions");
-const servingsInput = document.getElementById("servings");
-const weightInGramsInput = document.getElementById("weightInGrams");
 const btnUpdateIngredient = document.getElementById(`editIngredientButton`);
 const btnAddIngredient = document.getElementById(`addIngredientButton`);
 const ingredientNameInput = document.getElementById("ingredientNameInput");

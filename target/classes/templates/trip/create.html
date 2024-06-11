@@ -73,6 +73,16 @@
               size="medium"
               th:field="${trip.numOfDays}"
             ></sl-input>
+            <sl-alert
+              variant="danger"
+              id="alert1"
+              closable
+              class="alert-closable"
+            >
+              <sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
+              All numbers entered need to be positive! Please enter a positive
+              number.
+            </sl-alert>
             <sl-input
               id="numOfPeople"
               type="number"
@@ -85,6 +95,16 @@
               size="medium"
               th:field="${trip.numOfPeople}"
             ></sl-input>
+            <sl-alert
+              variant="danger"
+              id="alert2"
+              closable
+              class="alert-closable"
+            >
+              <sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
+              All numbers entered need to be positive! Please enter a positive
+              number.
+            </sl-alert>
             <sl-textarea
               id="tripDetails"
               name="tripDetails"
@@ -251,6 +271,6 @@
       </p>
     </footer>
     <script src="/js/trip.js"></script>
-    <!-- <script src="/js/navigation.js"></script> -->
+    <script src="/js/validation.js"></script>
   </body>
 </html>

@@ -2,18 +2,24 @@ package com.coderscampus.hikerhunger.service;
 
 import com.coderscampus.hikerhunger.domain.Ingredient;
 import com.coderscampus.hikerhunger.domain.Recipe;
+import com.coderscampus.hikerhunger.domain.TripIngredient;
 import com.coderscampus.hikerhunger.repository.IngredientRepository;
+import com.coderscampus.hikerhunger.repository.TripIngredientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class IngredientService {
     private final IngredientRepository ingredientRepo;
+
+    private final TripIngredientRepository tripIngredientRepo;
     @Autowired
-    public IngredientService(IngredientRepository ingredientRepo) {
+    public IngredientService(IngredientRepository ingredientRepo, TripIngredientRepository tripIngredientRepo) {
         this.ingredientRepo = ingredientRepo;
+        this.tripIngredientRepo = tripIngredientRepo;
     }
 
 
@@ -27,6 +33,8 @@ public class IngredientService {
     }
 
     public void delete(Ingredient ingredient) {
+        List<TripIngredient> tripIngredients = tripIngredientRepo.findByIngredient(ingredient);
+        tripIngredientRepo.deleteAll(tripIngredients);
         ingredientRepo.delete(ingredient);
     }
 

@@ -58,6 +58,11 @@ public class TripService {
         }
     }
 
-    public void deleteEmptyTrips(List<Trip> trips) {
+    public boolean isTripEmpty(Trip trip) {
+        return trip.getTripName() == null &&
+                trip.getNumOfDays() == null &&
+                trip.getTripDetails() == null &&
+                trip.getGramsPerPersonPerDay() == null &&
+                trip.getPoundsPerPersonPerDay() == null;
     }
 }

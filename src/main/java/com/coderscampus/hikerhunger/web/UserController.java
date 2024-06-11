@@ -41,7 +41,7 @@ public class UserController {
                 .filter(recipe -> !recipe.isDeleted() && !recipeService.isRecipeEmpty(recipe))
                 .collect(Collectors.toList());
 
-        List<Trip> trips = user.getTrips();
+        List<Trip> trips = user.getTrips().stream().filter(trip-> !tripService.isTripEmpty(trip)).collect(Collectors.toList());
 
         model.put("user", user);
         model.put("recipes", recipes);

@@ -85,7 +85,7 @@ public class RecipeController {
 
     @PostMapping("/updateRecipe/{recipeId}")
     public String updateRecipe(@ModelAttribute Recipe recipeData, @PathVariable Long recipeId) {
-//        try {
+        try {
             Optional<Recipe> optionalRecipe = recipeService.findById(recipeId);
 
             if (optionalRecipe.isPresent()) {
@@ -97,9 +97,9 @@ public class RecipeController {
             } else {
                 return "Recipe not found!";
             }
-//        } catch (Exception e) {
-//            return "Error updating recipe: " + e.getMessage();
-//        }
+        } catch (Exception e) {
+            return "Error updating recipe: " + e.getMessage();
+        }
     }
 
     @GetMapping("/edit-recipe/{recipeId}")

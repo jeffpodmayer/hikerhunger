@@ -19,7 +19,7 @@ public class Recipe {
     private String instructions;
     private Integer servings;
     private Integer totalWeight;
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.REMOVE)
     @JsonIgnoreProperties("recipe")
     private List<Ingredient> ingredients = new ArrayList<>();
     @OneToMany(mappedBy = "recipe")

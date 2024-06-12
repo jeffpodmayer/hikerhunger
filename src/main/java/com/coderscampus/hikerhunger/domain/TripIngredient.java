@@ -10,7 +10,7 @@ public class TripIngredient {
     @ManyToOne
     @JoinColumn(name = "trip_recipe_id")
     private TripRecipe tripRecipe;
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name="ingredient_id")
     private Ingredient ingredient;
     private Integer weightInGrams;

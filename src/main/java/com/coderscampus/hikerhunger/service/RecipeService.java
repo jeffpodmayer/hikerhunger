@@ -61,6 +61,7 @@ public class RecipeService {
     }
 
     public void setRecipeServingsAndWeight(Recipe recipe){
+            recipe.setRecipeType(Recipe.RecipeType.DINNER);
             recipe.setServings(1);
             recipe.setTotalWeight(0);
     }

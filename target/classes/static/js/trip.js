@@ -292,6 +292,7 @@ async function updateRecipeInDatabase(tripId, recipeId, recipe) {
     throw new Error("Failed to update recipe in database");
   }
 }
+
 if (weightInGrams > 0) {
   calculateWeightPerPersonPerDay();
 }

@@ -161,6 +161,7 @@ const renderRecipePopup = function (data) {
 };
 
 const renderTripPopup = function (data) {
+  console.log(data);
   const tableHTML = `
   <div class="table-wrapper">
     <table class="trip-recipe-popup-table">

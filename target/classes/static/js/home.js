@@ -174,8 +174,10 @@ const renderTripPopup = function (data) {
               <td>${tripRecipe.recipeQuantity}</td>
               <td>${tripRecipe.recipe.recipeName}</td> 
               <td>${
-                tripRecipe.recipe.recipeType.slice(0, 1).toUpperCase() +
-                tripRecipe.recipe.recipeType.slice(1).toLowerCase()
+                tripRecipe.recipe.recipeType
+                  ? tripRecipe.recipe.recipeType.slice(0, 1).toUpperCase() +
+                    tripRecipe.recipe.recipeType.slice(1).toLowerCase()
+                  : "N/A"
               }</td> 
               <td>${tripRecipe.totalWeight} / grams</td>
             </tr>

@@ -1,7 +1,7 @@
-# HikerHunger Backcountry Meal Planning Application
+# hikerhunger Backcountry Meal Planning Application
 
 ## Description
-HikerHunger is a web application designed to help backpackers and hikers plan and organize backcountry camping and hiking recipes. The app allows users to create recipes, store them, and then plan a trip by adding existing recipes to a trip itinerary. The app automatically adjusts recipe ingredient quantities based on the number of people on the trip, and it calculates the total weight of food per person per day, ensuring users have packed sufficient amounts.
+hikerhunger is a web application designed to help backpackers and hikers plan and organize backcountry camping and hiking recipes. The app allows users to create recipes, store them, and then plan a trip by adding existing recipes to a trip itinerary. The app automatically adjusts recipe ingredient quantities based on the number of people on the trip, and it calculates the total weight of food per person per day, ensuring users have packed sufficient amounts.
 
 ## Why?
 Planning meals for backcountry trips can be challenging, especially when it comes to adjusting recipes for different group sizes and ensuring the right balance between nutrition and carrying capacity. HikerHunger solves these problems by helping hikers plan meals, adjust ingredients for group sizes, and track food weight for better packing decisions. The goal is to ensure efficient meal planning that maximizes food enjoyment and minimizes unnecessary weight.
